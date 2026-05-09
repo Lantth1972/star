@@ -8,13 +8,12 @@
         :root {
             --gold: #d4af37;
             --star-white: rgba(255, 255, 255, 0.8);
-            --bg-color: linear-gradient(to bottom, #02060c 0%, #0a192f 60%, #000 100%);
-            --sphere-color: #4facfe; 
+            --bg-color: #02060c;
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background: #000; color: white; font-family: "PingFang SC", "STHeiti", serif;
+            background: #000; color: white; font-family: "PingFang SC", serif;
             overflow: hidden; touch-action: manipulation;
         }
 
@@ -45,18 +44,14 @@
         }
         .divider-line.right { --dir: left; }
         .star-mini { color: var(--gold); font-size: 14px; margin: 0 10px; }
-        .moon-phases { display: flex; align-items: center; gap: 8px; color: var(--gold); font-size: 12px; }
 
         .page { display: none; opacity: 0; transition: opacity 1.5s ease; width: 90%; text-align: center; }
         .active { display: block; opacity: 1; }
 
-        .content-body { margin-top: -5vh; } 
-
         .text-breathe { 
             font-size: 26px; letter-spacing: 5px; opacity: 0; 
             text-shadow: 0 0 20px var(--star-white);
-            position: absolute; width: 100%; left: 0;
-            top: 50%; transform: translateY(-50%);
+            position: absolute; width: 100%; left: 0; top: 50%; transform: translateY(-50%);
         }
         
         .anim-breathe { animation: breatheFade 5.5s ease-in-out forwards; }
@@ -66,46 +61,42 @@
             100% { opacity: 0; transform: translateY(-60%) scale(1.05); filter: blur(8px); }
         }
 
-        .hint-question {
-            font-size: 18px; color: var(--star-white); margin-bottom: 12px;
-            height: 25px; transition: opacity 0.8s; opacity: 0.6;
+        /* 第二页样式：文字尺寸已统一 */
+        .guide-text { 
+            font-size: 20px; 
+            color: var(--gold); 
+            font-weight: bold; 
+            letter-spacing: 1px;
         }
+        .guide-main { margin-bottom: 40px; }
+        .guide-sub { margin-top: 0; }
 
-        /* 第二页指引字体缩小 */
-        .guide-main { font-size: 15px; font-weight: normal; margin-bottom: 40px; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); }
-
-        .input-num-group { display: flex; gap: 15px; justify-content: center; margin-bottom: 40px; }
+        .input-num-group { display: flex; gap: 15px; justify-content: center; margin-bottom: 40px; margin-top: 10px; }
         .num-box {
             width: 55px; height: 75px; background: rgba(255,255,255,0.95); border-radius: 10px; 
-            color: #000; font-size: 36px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            border: 2px solid transparent; outline: none; text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            color: #000; font-size: 36px; font-weight: bold; text-align: center;
+            border: 2px solid transparent; outline: none;
         }
-        .num-box:focus { border-color: var(--gold); background: #fff; }
-
-        .guide-sub { font-size: 20px; color: var(--gold); letter-spacing: 1px; font-weight: bold; }
 
         .energy-sphere { 
-            width: 170px; height: 170px; 
-            background: radial-gradient(circle at 35% 35%, #fff 0%, var(--sphere-color) 80%, #2980b9 100%);
+            width: 180px; height: 180px; 
             border-radius: 50%; margin: 0 auto; 
-            box-shadow: 0 0 50px var(--sphere-color), inset -10px -10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 0 60px rgba(255,255,255,0.3);
             animation: pulse 3s infinite alternate ease-in-out; cursor: pointer; 
         }
-        .energy-sphere:active { transform: scale(0.92); transition: 0.1s; }
 
-        /* 第四页样式调整：英文加大并充满意境 */
-        .ans-cn { font-size: 38px; font-weight: bold; margin-bottom: 22px; letter-spacing: 4px; color: #fff; }
-        .ans-en { font-size: 28px; color: var(--gold); font-style: italic; line-height: 1.3; font-weight: 500; max-width: 85%; margin: 0 auto; }
+        @keyframes pulse {
+            0% { transform: scale(1); filter: brightness(1); }
+            100% { transform: scale(1.1); filter: brightness(1.3); }
+        }
+
+        .ans-cn { font-size: 36px; font-weight: bold; margin-bottom: 22px; color: #fff; }
+        .ans-en { font-size: 26px; color: var(--gold); font-style: italic; max-width: 90%; margin: 0 auto; }
         
         .reset-btn { 
             background: transparent; border: 1.5px solid var(--gold); color: var(--gold); 
-            padding: 14px 50px; border-radius: 50px; font-size: 18px; font-weight: bold;
-            cursor: pointer; margin-top: 60px;
+            padding: 14px 50px; border-radius: 50px; font-size: 18px; margin-top: 60px;
         }
-
-        .disclaimer { position: fixed; bottom: 4vh; width: 100%; text-align: center; font-size: 11px; color: rgba(255,255,255,0.2); }
     </style>
 </head>
 <body>
@@ -122,101 +113,97 @@
     </div>
 
     <div class="container">
-        <!-- Page 1 -->
+        <!-- P1: 动画 -->
         <div id="page1" class="page active">
-            <div class="content-body" style="height:120px; position:relative;">
+            <div style="height:120px; position:relative;">
                 <div id="line1" class="text-breathe">聆听来自宇宙的回应</div>
                 <div id="line2" class="text-breathe">感受宇宙能量的奥妙</div>
             </div>
         </div>
 
-        <!-- Page 2 -->
+        <!-- P2: 输入 (文字尺寸已统一) -->
         <div id="page2" class="page">
-            <div class="content-body">
-                <div id="q-hint" class="hint-question">适合换工作吗？</div>
-                <div class="guide-main">请闭上眼，默念三遍你想问的问题</div>
-                <div class="input-num-group">
-                    <input type="tel" maxlength="1" class="num-box" id="num1" inputmode="numeric">
-                    <input type="tel" maxlength="1" class="num-box" id="num2" inputmode="numeric">
-                    <input type="tel" maxlength="1" class="num-box" id="num3" inputmode="numeric">
-                </div>
-                <div class="guide-sub">输入当下浮现在心中的数字</div>
+            <div class="guide-text guide-main">请闭上眼，默念三遍你想问的问题</div>
+            <div class="input-num-group">
+                <input type="tel" maxlength="1" class="num-box" id="num1" inputmode="numeric">
+                <input type="tel" maxlength="1" class="num-box" id="num2" inputmode="numeric">
+                <input type="tel" maxlength="1" class="num-box" id="num3" inputmode="numeric">
             </div>
+            <div class="guide-text guide-sub">输入此时浮现在脑海的数字</div>
         </div>
 
-        <!-- Page 3 -->
+        <!-- P3: 能量球 -->
         <div id="page3" class="page">
-            <div class="content-body">
-                <div style="font-size: 20px; margin-bottom: 50px; color: rgba(255,255,255,0.8); letter-spacing: 4px;" id="display-num"></div>
-                <div class="energy-sphere" onclick="showAnswer()"></div>
-                <div style="margin-top: 50px; color: var(--gold); font-size: 20px; font-weight: bold; letter-spacing: 2px;">触碰能量球 · 聆听回应</div>
-            </div>
+            <div id="display-num" style="margin-bottom:40px; opacity:0.7;"></div>
+            <div id="sphere" class="energy-sphere" onclick="showAnswer()"></div>
+            <div style="margin-top: 50px; color: var(--gold); font-size: 20px;">触碰能量球 · 聆听回应</div>
         </div>
 
-        <!-- Page 4 -->
+        <!-- P4: 结果 -->
         <div id="page4" class="page">
             <div class="ans-cn" id="ans-cn"></div>
             <div class="ans-en" id="ans-en"></div>
-            <button class="reset-btn" onclick="location.reload()">再次聆听回响</button>
+            <button class="reset-btn" onclick="location.reload()">再次聆听</button>
         </div>
     </div>
 
-    <div class="disclaimer" id="bottom-disclaimer" style="display:none;">宇宙始终在注视着你的努力</div>
-
 <script>
-    const hints = ["事业会有新的转机吗？", "真诚的期待会有结果吗？", "现在的方向是正确的吗？", "该勇敢迈出这一步吗？", "未来会更加明朗吗？"];
-    
-    // 精修答案库：包含中性回答和正向鼓励，杜绝恐吓
-    const curatedLibrary = [
-        // 中性与清晰的指向
-        { cn: "是", en: "The cosmos says Yes" },
-        { cn: "不", en: "Not this path, for now" },
-        { cn: "好", en: "The signs are favorable" },
-        { cn: "很有可能", en: "Stars are aligning for it" },
-        { cn: "暂时保密", en: "The universe keeps its secrets" },
-        { cn: "静候花开", en: "Patience brings beautiful harvest" },
-        { cn: "就在当下", en: "The magic happens right now" },
-        { cn: "顺其自然", en: "Flow with the cosmic tide" },
-        
-        // 鼓励与意境
-        { cn: "听从内心的光", en: "Follow your inner starlight" },
-        { cn: "值得期待", en: "Something wonderful is arriving" },
-        { cn: "勇敢前行", en: "The universe backs your courage" },
-        { cn: "换个角度", en: "A new perspective reveals the way" },
-        { cn: "蓄势待发", en: "Gathering energy for your leap" },
-        { cn: "坚定信念", en: "Faith moves the mountains" },
-        { cn: "如你所愿", en: "Destiny aligns with your heartbeat" },
-        { cn: "不必执着", en: "Freedom comes when you let go" },
-        { cn: "慢一点也无妨", en: "Gentle steps reach far" },
-        { cn: "会有回响", en: "Your efforts are being heard" }
+    // 文案库补全逻辑 (确保300条)
+    const baseLibrary = [
+        { cn: "是", en: "The cosmos says Yes" }, { cn: "不", en: "Not this path, for now" },
+        { cn: "好", en: "The signs are favorable" }, { cn: "顺其自然", en: "Flow with the cosmic tide" },
+        { cn: "静候花开", en: "Patience brings beautiful harvest" }, { cn: "去行动", en: "Take the leap of faith" },
+        { cn: "很有可能", en: "Stars are aligning for it" }, { cn: "重新开始", en: "Every sunrise is a new page" },
+        { cn: "坚定信念", en: "Faith moves the mountains" }, { cn: "值得期待", en: "Something wonderful is arriving" },
+        { cn: "如你所愿", en: "Destiny aligns with your heart" }, { cn: "会有回响", en: "Your efforts are being heard" },
+        { cn: "相信直觉", en: "Trust your primary instinct" }, { cn: "保持平和", en: "Maintain your inner peace" },
+        { cn: "这就是答案", en: "You are looking at the answer" }, { cn: "奇迹会出现", en: "Miracles happen every day" }
     ];
 
-    let answers = [];
-    while(answers.length < 300) {
-        let item = curatedLibrary[Math.floor(Math.random() * curatedLibrary.length)];
-        answers.push(item);
-    }
+    const cosmicColors = [
+        { sphere: '#4facfe', bg: 'linear-gradient(to bottom, #02060c, #0a192f)' },
+        { sphere: '#f093fb', bg: 'linear-gradient(to bottom, #1e002a, #000000)' },
+        { sphere: '#43e97b', bg: 'linear-gradient(to bottom, #001a1a, #000000)' },
+        { sphere: '#fa709a', bg: 'linear-gradient(to bottom, #2a0a0a, #000000)' },
+        { sphere: '#f6d365', bg: 'linear-gradient(to bottom, #1a1a00, #000000)' }
+    ];
 
-    let showMeteors = true;
+    let fullLibrary = [];
+    while(fullLibrary.length < 300) {
+        fullLibrary.push(...baseLibrary);
+    }
+    fullLibrary = fullLibrary.slice(0, 300);
 
     window.onload = function() {
         initStarEngine();
         document.getElementById('line1').classList.add('anim-breathe');
-        setTimeout(() => { document.getElementById('line2').classList.add('anim-breathe'); }, 5000);
-        setTimeout(() => { nextPage(1, 2); }, 10500);
+        setTimeout(() => document.getElementById('line2').classList.add('anim-breathe'), 5000);
+        setTimeout(() => nextPage(1, 2), 10500);
     };
 
     function nextPage(from, to) {
         document.getElementById('page' + from).classList.remove('active');
         setTimeout(() => {
             document.getElementById('page' + to).classList.add('active');
-            if(to === 2) { setupInputLogic(); startHintRotation(); }
-            if(to === 4) { 
-                showMeteors = false; 
-                document.getElementById('top-divider').style.opacity = '0';
-                document.getElementById('bottom-disclaimer').style.display = 'block';
-            }
+            if(to === 2) setupInputLogic();
+            if(to === 3) setSphereColor();
         }, 800);
+    }
+
+    function setSphereColor() {
+        const color = cosmicColors[Math.floor(Math.random() * cosmicColors.length)];
+        const sphere = document.getElementById('sphere');
+        sphere.style.background = `radial-gradient(circle at 35% 35%, #fff 0%, ${color.sphere} 70%, #000 100%)`;
+        sphere.style.boxShadow = `0 0 60px ${color.sphere}`;
+    }
+
+    function showAnswer() {
+        const color = cosmicColors[Math.floor(Math.random() * cosmicColors.length)];
+        document.getElementById('bg-wrapper').style.background = color.bg;
+        const res = fullLibrary[Math.floor(Math.random() * fullLibrary.length)];
+        document.getElementById('ans-cn').innerText = res.cn;
+        document.getElementById('ans-en').innerText = res.en;
+        nextPage(3, 4);
     }
 
     function setupInputLogic() {
@@ -227,37 +214,12 @@
                 if (box.value && i < 2) boxes[i+1].focus();
                 else if (box.value && i === 2) {
                     box.blur();
-                    setTimeout(() => {
-                        document.getElementById('display-num').innerText = `数字感应：${boxes[0].value} ${boxes[1].value} ${boxes[2].value}`;
-                        nextPage(2, 3);
-                    }, 400);
+                    document.getElementById('display-num').innerText = `感应数字：${boxes[0].value}${boxes[1].value}${boxes[2].value}`;
+                    setTimeout(() => nextPage(2, 3), 500);
                 }
             });
-            box.addEventListener('keydown', (e) => {
-                if (e.key === "Backspace" && !box.value && i > 0) boxes[i - 1].focus();
-            });
         });
-        setTimeout(() => boxes[0].focus(), 500);
-    }
-
-    function startHintRotation() {
-        const hEl = document.getElementById('q-hint');
-        let idx = 0;
-        setInterval(() => {
-            hEl.style.opacity = 0;
-            setTimeout(() => {
-                idx = (idx + 1) % hints.length;
-                hEl.innerText = hints[idx];
-                hEl.style.opacity = 0.6;
-            }, 800);
-        }, 3500);
-    }
-
-    function showAnswer() {
-        const res = answers[Math.floor(Math.random() * answers.length)];
-        document.getElementById('ans-cn').innerText = res.cn;
-        document.getElementById('ans-en').innerText = res.en;
-        nextPage(3, 4);
+        boxes[0].focus();
     }
 
     function initStarEngine() {
@@ -265,47 +227,18 @@
         const ctx = canvas.getContext('2d');
         let w = canvas.width = window.innerWidth;
         let h = canvas.height = window.innerHeight;
-
-        const stars = Array.from({length: 120}, () => ({
+        const stars = Array.from({length: 100}, () => ({
             x: Math.random() * w, y: Math.random() * h,
-            size: Math.random() * 1.8, opacity: Math.random(),
-            speed: 0.005 + Math.random() * 0.015
+            size: Math.random() * 2, opacity: Math.random(), speed: 0.01
         }));
-
-        let meteors = [];
-        function createMeteor() {
-            if (!showMeteors) return;
-            meteors.push({
-                x: Math.random() * w + 200, y: Math.random() * h/2 - 100,
-                len: Math.random() * 100 + 80, speed: Math.random() * 12 + 8,
-                opacity: 1
-            });
-        }
-
-        setInterval(() => { if(Math.random() > 0.75) createMeteor(); }, 1000);
-
         function draw() {
             ctx.clearRect(0, 0, w, h);
             stars.forEach(s => {
                 s.opacity += s.speed;
-                if (s.opacity > 1 || s.opacity < 0.1) s.speed = -s.speed;
-                ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
+                if (s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
                 ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
             });
-
-            if (showMeteors) {
-                meteors.forEach((m, index) => {
-                    m.x -= m.speed; m.y += m.speed; m.opacity -= 0.015;
-                    if (m.opacity <= 0) meteors.splice(index, 1);
-                    else {
-                        const grad = ctx.createLinearGradient(m.x, m.y, m.x + m.len, m.y - m.len);
-                        grad.addColorStop(0, `rgba(255, 255, 255, ${m.opacity})`);
-                        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                        ctx.strokeStyle = grad; ctx.lineWidth = 1.5; ctx.beginPath();
-                        ctx.moveTo(m.x, m.y); ctx.lineTo(m.x + m.len, m.y - m.len); ctx.stroke();
-                    }
-                });
-            }
             requestAnimationFrame(draw);
         }
         draw();
