@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>动态深邃星空</title>
+    <title>每日星空 - 自动换色版</title>
     <style>
         body, html {
             margin: 0;
@@ -11,13 +11,11 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            /* 1:1 复刻你图片中的渐变背景 */
-            background: linear-gradient(to bottom, #02060c 0%, #051930 60%, #004d7a 100%);
+            /* 初始背景设为黑色，防止计算颜色时闪屏 */
+            background-color: #000; 
+            transition: background 1.5s ease; /* 颜色切换时平滑过渡 */
         }
-
-        #starCanvas {
-            display: block;
-        }
+        #starCanvas { display: block; }
     </style>
 </head>
 <body>
@@ -27,11 +25,31 @@
 <script>
     const canvas = document.getElementById('starCanvas');
     const ctx = canvas.getContext('2d');
-
     let stars = [];
-    const starCount = 350; // 星星数量，可按需增减
 
-    // 自适应屏幕大小
+    // --- 核心逻辑：基于日期生成颜色 ---
+    function getDailyColors() {
+        const now = new Date();
+        const dateSeed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
+        
+        // 利用日期数字生成一个 0-360 的色相值 (Hue)
+        // 这样每一天的色相都会偏移大约 40 度，一周左右完成一个色环循环
+        const hue = (dateSeed * 137.5) % 360; 
+        
+        // 生成三个渐变点：顶部永远是深黑，中部是深色相，底部是亮色相
+        const colorTop = '#02060c'; // 深空顶
+        const colorMid = `hsl(${hue}, 50%, 10%)`; // 中部深色
+        const colorBottom = `hsl(${hue}, 70%, 25%)`; // 底部亮色
+        
+        return { colorTop, colorMid, colorBottom };
+    }
+
+    function applyDailyBackground() {
+        const colors = getDailyColors();
+        document.body.style.background = `linear-gradient(to bottom, ${colors.colorTop} 0%, ${colors.colorMid} 60%, ${colors.colorBottom} 100%)`;
+    }
+
+    // --- 星空绘制逻辑 (保持原有的流畅动效) ---
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -40,39 +58,23 @@
     window.addEventListener('resize', resize);
     resize();
 
-    // 创建星星类
     class Star {
-        constructor() {
-            this.init();
-        }
-
+        constructor() { this.init(); }
         init() {
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 1.5; // 星星大小
-            this.speed = Math.random() * 0.2 + 0.05; // 向下流动的速度
-            this.opacity = Math.random(); // 初始透明度
-            this.blinkSpeed = Math.random() * 0.02 + 0.005; // 闪烁速度
-            this.direction = Math.random() > 0.5 ? 1 : -1; // 闪烁方向
+            this.size = Math.random() * 1.5;
+            this.speed = Math.random() * 0.15 + 0.05;
+            this.opacity = Math.random();
+            this.blinkSpeed = Math.random() * 0.01 + 0.005;
+            this.direction = Math.random() > 0.5 ? 1 : -1;
         }
-
-        // 更新状态
         update() {
-            // 1. 位置移动（缓慢向下流动）
             this.y += this.speed;
-            if (this.y > canvas.height) {
-                this.y = -10;
-                this.x = Math.random() * canvas.width;
-            }
-
-            // 2. 呼吸闪烁逻辑
+            if (this.y > canvas.height) { this.y = -10; this.x = Math.random() * canvas.width; }
             this.opacity += this.blinkSpeed * this.direction;
-            if (this.opacity > 1 || this.opacity < 0.1) {
-                this.direction *= -1;
-            }
+            if (this.opacity > 1 || this.opacity < 0.1) this.direction *= -1;
         }
-
-        // 绘制
         draw() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -81,27 +83,22 @@
         }
     }
 
-    // 初始化星星阵列
-    function createStars() {
-        for (let i = 0; i < starCount; i++) {
-            stars.push(new Star());
-        }
+    function init() {
+        applyDailyBackground(); // 设置今日主题色
+        stars = [];
+        for (let i = 0; i < 350; i++) stars.push(new Star());
     }
 
-    // 动画循环
     function animate() {
-        // 清屏
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
         stars.forEach(star => {
             star.update();
             star.draw();
         });
-
         requestAnimationFrame(animate);
     }
 
-    createStars();
+    init();
     animate();
 </script>
 
