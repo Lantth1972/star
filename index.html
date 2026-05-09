@@ -33,12 +33,18 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        /* 顶部固定装饰线 */
+        /* --- 顶部固定装饰线条（位置上调） --- */
         .divider-fixed {
-            position: fixed; top: 22vh; left: 50%; transform: translateX(-50%);
-            width: 85%; max-width: 400px;
+            position: fixed;
+            top: 15vh; /* 显著上移 */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            max-width: 400px;
             display: flex; align-items: center; justify-content: center;
-            z-index: 15; opacity: 0.8; pointer-events: none;
+            z-index: 15;
+            opacity: 0.8;
+            pointer-events: none;
         }
         .divider-line {
             flex-grow: 1; height: 1px;
@@ -51,7 +57,7 @@
         .page { display: none; opacity: 0; transition: opacity 1.5s ease; width: 90%; text-align: center; }
         .active { display: block; opacity: 1; }
 
-        .content-body { margin-top: 10vh; }
+        .content-body { margin-top: 12vh; }
 
         /* 呼吸文字 */
         .text-breathe { 
@@ -66,24 +72,19 @@
             100% { opacity: 0; transform: scale(1.1); }
         }
 
-        /* 提问框区域 */
-        .input-group { position: relative; width: 100%; margin-bottom: 20px; }
-        #user-question {
-            width: 100%; background: rgba(255, 255, 255, 0.08);
+        /* 数字输入框 */
+        #user-number {
+            width: 220px; background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 40px; padding: 18px 30px;
-            color: white; font-size: 18px; text-align: center;
+            border-radius: 40px; padding: 18px 0;
+            color: white; font-size: 28px; text-align: center;
             outline: none; backdrop-filter: blur(10px);
-            box-sizing: border-box; transition: all 0.3s;
+            letter-spacing: 15px; text-indent: 15px; /* 数字间隔 */
+            transition: all 0.3s;
         }
-        #user-question:focus { border-color: var(--gold); }
+        #user-number:focus { border-color: var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
         
-        /* 校验失败样式 */
-        #user-question.invalid { border-color: #ff4d4d; box-shadow: 0 0 15px rgba(255, 77, 77, 0.3); }
-        .error-hint { color: #ff4d4d; font-size: 12px; margin-top: 10px; opacity: 0; transition: 0.3s; }
-        .error-hint.show { opacity: 1; }
-
-        .shake { animation: shakeAnim 0.4s ease-in-out; }
+        .shake { animation: shakeAnim 0.4s ease-in-out; border-color: #ff4d4d !important; }
         @keyframes shakeAnim {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-8px); }
@@ -100,13 +101,17 @@
         }
         @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
 
+        /* 结果页文字大小优化 */
+        .ans-cn { font-size: 38px; font-weight: bold; margin-bottom: 25px; letter-spacing: 4px; color: #fff; }
+        .ans-en { font-size: 22px; color: rgba(255,255,255,0.75); font-style: italic; line-height: 1.5; padding: 0 20px; }
+        
         .reset-btn { 
             background: rgba(212, 175, 55, 0.1); border: 2px solid var(--gold); color: var(--gold); 
             padding: 15px 50px; border-radius: 50px; font-size: 20px; font-weight: bold;
-            cursor: pointer; transition: 0.4s; margin-top: 10px;
+            cursor: pointer; transition: 0.4s; margin-top: 50px;
         }
 
-        /* 底部固定免责声明 */
+        /* 底部固定声明 */
         .disclaimer-fixed { 
             position: fixed; bottom: 5vh; left: 0; width: 100%; text-align: center;
             font-size: 12px; color: rgba(255, 255, 255, 0.25); z-index: 15; pointer-events: none;
@@ -135,31 +140,30 @@
             </div>
         </div>
 
-        <!-- 第2页：输入页 -->
+        <!-- 第2页：输入3位数字 -->
         <div id="page2" class="page">
             <div class="content-body">
-                <div style="font-size: 18px; letter-spacing: 2px; margin-bottom: 30px; color: var(--star-white);">请在心中默念并描述你的困惑</div>
-                <div class="input-group">
-                    <input type="text" id="user-question" maxlength="20" autocomplete="off" placeholder="点击输入问题...">
-                    <div id="error-msg" class="error-hint">宇宙需要更明确的感应（请输入至少4个字）</div>
+                <div style="font-size: 20px; letter-spacing: 3px; margin-bottom: 40px;">请输入3位灵感数字</div>
+                <input type="tel" id="user-number" maxlength="3" autocomplete="off" placeholder="···">
+                <div style="margin-top: 30px;">
+                    <button class="reset-btn" style="padding:10px 40px; font-size:16px;" onclick="goToEnergy()">同步能量</button>
                 </div>
-                <button class="reset-btn" style="padding:10px 40px; font-size:16px;" onclick="goToEnergy()">同步能量</button>
             </div>
         </div>
 
         <!-- 第3页 -->
         <div id="page3" class="page">
             <div class="content-body">
-                <div style="font-size: 20px; margin-bottom: 50px; color: var(--star-white); min-height: 30px; font-style: italic;" id="display-q"></div>
+                <div style="font-size: 24px; margin-bottom: 50px; color: var(--star-white); min-height: 30px;" id="display-num"></div>
                 <div class="energy-sphere" onclick="showAnswer()"></div>
-                <div style="margin-top: 40px; color: var(--gold); font-size: 16px; letter-spacing: 2px;">触碰能量球 · 接收回响</div>
+                <div style="margin-top: 40px; color: var(--gold); font-size: 18px;">触碰能量球 · 接收感应</div>
             </div>
         </div>
 
         <!-- 第4页 -->
         <div id="page4" class="page">
-            <div id="ans-cn" style="font-size: 32px; margin-bottom: 20px; font-weight: bold;"></div>
-            <div id="ans-en" style="font-size: 16px; color: rgba(255,255,255,0.6); margin-bottom: 40px;"></div>
+            <div class="ans-cn" id="ans-cn"></div>
+            <div class="ans-en" id="ans-en"></div>
             <button class="reset-btn" onclick="location.reload()">再次聆听</button>
         </div>
     </div>
@@ -169,25 +173,20 @@
     </div>
 
 <script>
-    // 基础配置
-    const MIN_CHAR_COUNT = 4; // 最小字数限制
-
     const baseAnswers = [
         { cn: "顺其自然", en: "Let it be" }, { cn: "绝对不要", en: "Absolutely not" },
         { cn: "答案就在你心中", en: "The answer is within you" }, { cn: "时机尚未成熟", en: "The time is not yet ripe" },
-        { cn: "勇敢地去尝试", en: "Go for it bravely" }, { cn: "会有意外的收获", en: "Unexpected gains await" },
+        { cn: "勇敢地去尝试", en: "Go for it bravely" }, { cn: "会有意外收获", en: "Unexpected gains" },
         { cn: "不要犹豫", en: "Do not hesitate" }, { cn: "重新审视初衷", en: "Re-examine your intention" },
         { cn: "结果令人满意", en: "Satisfying results" }, { cn: "现在正是时候", en: "Now is the time" }
     ];
     let answers = [...baseAnswers];
     const extraCns = ["是的","不","很有可能","很难说","暂时别想","全力以赴","换个角度","你会后悔的","别回头","这是好主意"];
-    const extraEns = ["Yes","No","Highly likely","Hard to say","Forget it","Go all out","Another perspective","Regretful","Don't look back","Good idea"];
+    const extraEns = ["Yes","No","Highly likely","Hard to say","Forget it","Go all out","Another perspective","You'll regret it","Don't look back","Good idea"];
     while(answers.length < 200) {
         let idx = Math.floor(Math.random() * extraCns.length);
         answers.push({ cn: extraCns[idx], en: extraEns[idx] });
     }
-
-    const hints = ["他爱我吗？", "该换工作吗？", "未来会变好吗？", "坚持还是放弃？"];
 
     window.onload = function() {
         initStarEngine();
@@ -202,7 +201,6 @@
         document.getElementById('page' + from).classList.remove('active');
         setTimeout(() => {
             document.getElementById('page' + to).classList.add('active');
-            if(to === 2) startHintRotation();
             if(to === 3) randomizeSphere();
             if(to === 4) {
                 document.getElementById('top-divider').style.display = 'none';
@@ -211,46 +209,21 @@
         }, 1000);
     }
 
-    // 关键校验逻辑
     function goToEnergy() {
-        const input = document.getElementById('user-question');
-        const errorMsg = document.getElementById('error-msg');
-        const q = input.value.trim();
-        
-        if (q.length < MIN_CHAR_COUNT) {
-            input.classList.add('shake', 'invalid');
-            errorMsg.classList.add('show');
-            setTimeout(() => {
-                input.classList.remove('shake');
-            }, 400);
+        const input = document.getElementById('user-number');
+        const val = input.value.trim();
+        if (val.length < 3) {
+            input.classList.add('shake');
+            setTimeout(() => input.classList.remove('shake'), 400);
             return;
         }
-
-        // 校验通过
-        input.classList.remove('invalid');
-        errorMsg.classList.remove('show');
-        document.getElementById('display-q').innerText = `「 ${q} 」`;
+        document.getElementById('display-num').innerText = `数字感应：${val}`;
         nextPage(2, 3);
     }
 
     function randomizeSphere() {
         const randomHue = Math.floor(Math.random() * 360);
         document.documentElement.style.setProperty('--sphere-color', `hsl(${randomHue}, 80%, 60%)`);
-    }
-
-    function startHintRotation() {
-        const input = document.getElementById('user-question');
-        let i = 0;
-        setInterval(() => {
-            i = (i + 1) % hints.length;
-            input.placeholder = hints[i];
-        }, 3000);
-        input.addEventListener('keypress', (e) => { if (e.key === 'Enter') goToEnergy(); });
-        // 输入时自动清除错误样式
-        input.addEventListener('input', () => {
-            input.classList.remove('invalid');
-            document.getElementById('error-msg').classList.remove('show');
-        });
     }
 
     function showAnswer() {
@@ -267,9 +240,9 @@
         const ctx = canvas.getContext('2d');
         let w = canvas.width = window.innerWidth;
         let h = canvas.height = window.innerHeight;
-        const stars = Array.from({length: 150}, () => ({
+        const stars = Array.from({length: 180}, () => ({
             x: Math.random() * w, y: Math.random() * h,
-            size: Math.random() * 1.2, opacity: Math.random(),
+            size: Math.random() * 1.5, opacity: Math.random(),
             speed: 0.01 + Math.random() * 0.02
         }));
         function draw() {
