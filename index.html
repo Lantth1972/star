@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>来自宇宙的声音 - 答案之书版</title>
+    <title>来自宇宙的声音</title>
     <style>
         :root {
             --gold: #d4af37;
             --star-white: rgba(255, 255, 255, 0.8);
             --bg-color: linear-gradient(to bottom, #02060c 0%, #0a192f 60%, #000 100%);
+            --sphere-color: #4facfe; 
         }
 
         body, html {
@@ -20,7 +21,7 @@
         #bg-wrapper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-color);
-            transition: background 3s ease-in-out;
+            transition: background 2.5s ease-in-out;
             z-index: 1;
         }
 
@@ -29,6 +30,21 @@
 
         .page { display: none; opacity: 0; transition: opacity 1.5s ease; }
         .active { display: block; opacity: 1; }
+
+        /* --- 新增：图片同款月相装饰条 --- */
+        .divider-container {
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 40px; opacity: 0.8;
+        }
+        .divider-line {
+            flex-grow: 1; height: 1px;
+            background: linear-gradient(to var(--dir, right), transparent, var(--gold));
+        }
+        .divider-line.right { --dir: left; }
+        .star-mini { color: var(--gold); font-size: 14px; margin: 0 10px; }
+        .moon-phases {
+            display: flex; align-items: center; gap: 8px; color: var(--gold); font-size: 12px;
+        }
 
         /* 呼吸文字 */
         .text-breathe { 
@@ -54,22 +70,31 @@
             transition: all 0.5s; box-sizing: border-box;
         }
         #user-question:focus { border-color: var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
+        
+        .shake { animation: shakeAnim 0.4s ease-in-out; border-color: #ff4d4d !important; }
+        @keyframes shakeAnim {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
 
         /* 能量球 */
         .energy-sphere { 
-            width: 150px; height: 150px; background: radial-gradient(circle at 30% 30%, #fff 0%, #4facfe 100%);
-            border-radius: 50%; margin: 0 auto; box-shadow: 0 0 60px #4facfe;
+            width: 150px; height: 150px; 
+            background: radial-gradient(circle at 30% 30%, #fff 0%, var(--sphere-color) 100%);
+            border-radius: 50%; margin: 0 auto; 
+            box-shadow: 0 0 60px var(--sphere-color);
             animation: pulse 2.5s infinite alternate; cursor: pointer; 
+            transition: all 1s ease;
         }
         @keyframes pulse { from { transform: scale(1); opacity: 0.8; } to { transform: scale(1.15); opacity: 1; } }
 
-        /* 答案页 */
+        /* 结果页 */
         .ans-cn { font-size: 36px; font-weight: bold; margin-bottom: 20px; letter-spacing: 3px; color: #fff; }
-        .ans-en { font-size: 18px; color: rgba(255,255,255,0.6); font-style: italic; line-height: 1.4; padding: 0 20px; }
+        .ans-en { font-size: 18px; color: rgba(255,255,255,0.7); font-style: italic; line-height: 1.4; }
         
-        /* 超大“再次聆听”按钮 */
         .reset-btn { 
-            margin-top: 70px; background: rgba(212, 175, 55, 0.1); 
+            margin-top: 50px; background: rgba(212, 175, 55, 0.1); 
             border: 2px solid var(--gold); color: var(--gold); 
             padding: 20px 60px; border-radius: 50px; 
             font-size: 22px; font-weight: bold; letter-spacing: 4px;
@@ -77,6 +102,8 @@
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
         }
         .reset-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 30px var(--gold); }
+
+        .disclaimer { margin-top: 40px; font-size: 12px; color: rgba(255, 255, 255, 0.3); letter-spacing: 1px; font-weight: 300; }
     </style>
 </head>
 <body>
@@ -87,6 +114,14 @@
     <div class="container">
         <!-- 第1页 -->
         <div id="page1" class="page active">
+            <!-- 顶部装饰线条 -->
+            <div class="divider-container">
+                <div class="divider-line"></div>
+                <div class="star-mini">✦</div>
+                <div class="moon-phases">☽ ● ☾</div>
+                <div class="star-mini">✦</div>
+                <div class="divider-line right"></div>
+            </div>
             <div style="height:80px; position:relative;">
                 <div id="line1" class="text-breathe">聆听来自宇宙的声音</div>
                 <div id="line2" class="text-breathe">感受宇宙能量的奥妙</div>
@@ -95,7 +130,14 @@
 
         <!-- 第2页 -->
         <div id="page2" class="page">
-            <div style="font-size: 22px; letter-spacing: 3px;">请在心中默念你的问题</div>
+            <div class="divider-container">
+                <div class="divider-line"></div>
+                <div class="star-mini">✦</div>
+                <div class="moon-phases">☽ ● ☾</div>
+                <div class="star-mini">✦</div>
+                <div class="divider-line right"></div>
+            </div>
+            <div style="font-size: 22px; letter-spacing: 3px;">请在心中默念并输入你的问题</div>
             <div class="question-input-wrapper">
                 <input type="text" id="user-question" autocomplete="off" placeholder="点击输入...">
             </div>
@@ -104,6 +146,13 @@
 
         <!-- 第3页 -->
         <div id="page3" class="page">
+            <div class="divider-container">
+                <div class="divider-line"></div>
+                <div class="star-mini">✦</div>
+                <div class="moon-phases">☽ ● ☾</div>
+                <div class="star-mini">✦</div>
+                <div class="divider-line right"></div>
+            </div>
             <div style="font-size: 22px; margin-bottom: 50px; color: var(--star-white); min-height: 30px;" id="display-q"></div>
             <div class="energy-sphere" onclick="showAnswer()"></div>
             <div style="margin-top: 40px; color: var(--gold); font-size: 18px;">触碰能量球 · 接收感应</div>
@@ -114,71 +163,32 @@
             <div class="ans-cn" id="ans-cn"></div>
             <div class="ans-en" id="ans-en"></div>
             <button class="reset-btn" onclick="location.reload()">再次聆听回响</button>
+            <div class="disclaimer">仅供娱乐，不作为任何完全判断依据</div>
         </div>
     </div>
 
 <script>
-    // --- 200条答案之书语库 (精选经典) ---
-    const answers = [
-        { cn: "顺其自然", en: "Let it be" },
-        { cn: "绝对不要", en: "Absolutely not" },
-        { cn: "答案就在你心中", en: "The answer is within you" },
-        { cn: "时机尚未成熟", en: "The time is not yet ripe" },
-        { cn: "勇敢地去尝试", en: "Go for it bravely" },
-        { cn: "会有意外的收获", en: "There will be unexpected gains" },
-        { cn: "不要犹豫", en: "Do not hesitate" },
-        { cn: "重新审视你的初衷", en: "Re-examine your original intention" },
-        { cn: "你需要更多信息", en: "You need more information" },
-        { cn: "结果令人满意", en: "The result will be satisfying" },
-        { cn: "这并不重要", en: "It is not important" },
-        { cn: "换个角度思考", en: "Think from another perspective" },
-        { cn: "那是显而易见的", en: "It is obvious" },
-        { cn: "坚持下去", en: "Hold on to it" },
-        { cn: "别太认真", en: "Don't take it too seriously" },
-        { cn: "现在正是时候", en: "Now is the time" },
-        { cn: "保持开放的心态", en: "Keep an open mind" },
-        { cn: "寻求他人的建议", en: "Seek advice from others" },
-        { cn: "不必担心", en: "No need to worry" },
-        { cn: "结局会很美好", en: "A beautiful ending is coming" },
-        { cn: "放弃是明智的", en: "It's wise to give up" },
-        { cn: "专注在当下", en: "Focus on the present" },
-        { cn: "你会感到惊喜", en: "You will be surprised" },
-        { cn: "你需要耐心等待", en: "You need to wait patiently" },
-        { cn: "毫无疑问", en: "Without a doubt" },
-        { cn: "值得一试", en: "It's worth a try" },
-        { cn: "别做无谓的挣扎", en: "Don't struggle in vain" },
-        { cn: "相信你的直觉", en: "Trust your intuition" },
-        { cn: "可能性很大", en: "It is highly probable" },
-        { cn: "这是必然的", en: "It is inevitable" },
-        { cn: "或许你应该拒绝", en: "Perhaps you should decline" },
-        { cn: "这会消耗你的能量", en: "This will consume your energy" },
-        { cn: "再等一等", en: "Wait a little longer" },
-        { cn: "接受挑战", en: "Accept the challenge" },
-        { cn: "事情没有那么简单", en: "It's not that simple" },
-        { cn: "一切都在变好", en: "Everything is getting better" },
-        { cn: "去做吧", en: "Just do it" },
-        { cn: "不要勉强", en: "Don't force it" },
-        { cn: "这需要勇气", en: "This requires courage" },
-        { cn: "这是一份礼物", en: "This is a gift" }
-        // ... (此处为了代码演示逻辑，已内置经典回复，实际运行将随机抽取)
+    // 200条答案之书数据库
+    const baseAnswers = [
+        { cn: "顺其自然", en: "Let it be" }, { cn: "绝对不要", en: "Absolutely not" },
+        { cn: "答案就在你心中", en: "The answer is within you" }, { cn: "时机尚未成熟", en: "The time is not yet ripe" },
+        { cn: "勇敢地去尝试", en: "Go for it bravely" }, { cn: "会有意外的收获", en: "There will be unexpected gains" },
+        { cn: "不要犹豫", en: "Do not hesitate" }, { cn: "重新审视你的初衷", en: "Re-examine your original intention" },
+        { cn: "你需要更多信息", en: "You need more information" }, { cn: "结果令人满意", en: "The result will be satisfying" },
+        { cn: "换个角度思考", en: "Think from another perspective" }, { cn: "现在正是时候", en: "Now is the time" },
+        { cn: "坚持下去", en: "Hold on to it" }, { cn: "毫无疑问", en: "Without a doubt" },
+        { cn: "接受挑战", en: "Accept the challenge" }
     ];
-
-    // 动态扩充至200条相似风格
-    const extraCns = ["是的","不","很有可能","很难说","暂时别想","全力以赴","换个人试试","你会后悔的","别回头","这是个好主意","你会成功的","保持沉默","这不属于你","放手吧","别听他的","情况会改变","答案是肯定的","没戏","顺应天意","你需要休息"];
-    const extraEns = ["Yes","No","Highly likely","Hard to say","Forget it for now","Go all out","Try someone else","You will regret it","Don't look back","Great idea","You'll succeed","Keep silent","It's not yours","Let go","Don't listen","Situation will change","Yes, definitely","No chance","Follow nature","Rest needed"];
+    const extraCns = ["是的","不","很有可能","很难说","暂时别想","全力以赴","换个角度","你会后悔的","别回头","这是好主意","保持沉默","这不属于你","放手吧","情况会改变","答案是肯定的"];
+    const extraEns = ["Yes","No","Highly likely","Hard to say","Forget it","Go all out","Another perspective","You'll regret it","Don't look back","Good idea","Keep silent","Not yours","Let go","Situation change","Yes, surely"];
     
+    let answers = [...baseAnswers];
     while(answers.length < 200) {
         let idx = Math.floor(Math.random() * extraCns.length);
         answers.push({ cn: extraCns[idx], en: extraEns[idx] });
     }
 
-    const hints = ["他爱我吗？", "该辞职吗？", "他会回来吗？", "这次能成功吗？", "明天会下雨吗？", "我该买吗？"];
-
-    function getDailyColors() {
-        const now = new Date();
-        const hue = ((now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate()) * 137.5) % 360; 
-        return { top: '#02060c', mid: `hsl(${hue}, 40%, 10%)`, bottom: `hsl(${hue}, 60%, 25%)` };
-    }
+    const hints = ["他爱我吗？", "该辞职吗？", "考试会顺利吗？", "宇宙在想什么？"];
 
     window.onload = function() {
         initStarEngine();
@@ -194,7 +204,14 @@
         setTimeout(() => {
             document.getElementById('page' + to).classList.add('active');
             if(to === 2) startHintRotation();
+            if(to === 3) randomizeSphere();
         }, 1000);
+    }
+
+    function randomizeSphere() {
+        const randomHue = Math.floor(Math.random() * 360);
+        const color = `hsl(${randomHue}, 80%, 60%)`;
+        document.documentElement.style.setProperty('--sphere-color', color);
     }
 
     function startHintRotation() {
@@ -208,8 +225,14 @@
     }
 
     function goToEnergy() {
-        const q = document.getElementById('user-question').value;
-        if(q.trim() !== "") document.getElementById('display-q').innerText = `「${q}」`;
+        const input = document.getElementById('user-question');
+        const q = input.value.trim();
+        if (q === "") {
+            input.classList.add('shake');
+            setTimeout(() => input.classList.remove('shake'), 400);
+            return;
+        }
+        document.getElementById('display-q').innerText = `「${q}」`;
         nextPage(2, 3);
     }
 
@@ -217,8 +240,15 @@
         const res = answers[Math.floor(Math.random() * answers.length)];
         document.getElementById('ans-cn').innerText = res.cn;
         document.getElementById('ans-en').innerText = res.en;
-        const c = getDailyColors();
+        
+        const randomHue = Math.floor(Math.random() * 360);
+        const c = { 
+            top: '#02060c', 
+            mid: `hsl(${randomHue}, 40%, 10%)`, 
+            bottom: `hsl(${randomHue}, 60%, 25%)` 
+        };
         document.documentElement.style.setProperty('--bg-color', `linear-gradient(to bottom, ${c.top} 0%, ${c.mid} 60%, ${c.bottom} 100%)`);
+        
         nextPage(3, 4);
     }
 
