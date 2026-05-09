@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>来自宇宙的声音</title>
+    <title>来自宇宙的声音 - 答案之书版</title>
     <style>
         :root {
             --gold: #d4af37;
@@ -33,10 +33,10 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        /* --- 顶部固定装饰线条（位置上调） --- */
+        /* --- 1. 顶部固定装饰线条 (高度设为 5%) --- */
         .divider-fixed {
             position: fixed;
-            top: 15vh; /* 显著上移 */
+            top: 5%; /* 屏幕最上方 */
             left: 50%;
             transform: translateX(-50%);
             width: 85%;
@@ -57,7 +57,8 @@
         .page { display: none; opacity: 0; transition: opacity 1.5s ease; width: 90%; text-align: center; }
         .active { display: block; opacity: 1; }
 
-        .content-body { margin-top: 12vh; }
+        /* 主体内容上边距，防止与顶部线条重叠 */
+        .content-body { margin-top: 15vh; }
 
         /* 呼吸文字 */
         .text-breathe { 
@@ -72,18 +73,35 @@
             100% { opacity: 0; transform: scale(1.1); }
         }
 
-        /* 数字输入框 */
-        #user-number {
-            width: 220px; background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 40px; padding: 18px 0;
-            color: white; font-size: 28px; text-align: center;
-            outline: none; backdrop-filter: blur(10px);
-            letter-spacing: 15px; text-indent: 15px; /* 数字间隔 */
-            transition: all 0.3s;
+        /* --- 2. 仪式感数字提问页布局 --- */
+        /* 问题提示轮播 */
+        .question-rotator { 
+            font-size: 22px; color: #fff; margin-bottom: 5vh; 
+            font-weight: 300; letter-spacing: 1px; 
+            transition: opacity 0.5s ease;
         }
-        #user-number:focus { border-color: var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
-        
+
+        /* 参考图片布局：三个独立的白色方形输入框 */
+        .input-num-group {
+            display: flex; gap: 20px; justify-content: center; margin-bottom: 5vh;
+        }
+        .num-box {
+            width: 80px; height: 100px; /* 方形比例 */
+            background: #fff; /* 白色背景 */
+            border-radius: 8px; /* 轻微圆角 */
+            color: #000; font-size: 40px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            border: none; outline: none;
+            text-align: center;
+        }
+
+        /* 操作指引（仪式感文字） */
+        .guide-text {
+            color: rgba(255, 255, 255, 0.4); font-size: 14px; 
+            line-height: 1.8; letter-spacing: 1.5px;
+        }
+
+        /* 错误抖动 */
         .shake { animation: shakeAnim 0.4s ease-in-out; border-color: #ff4d4d !important; }
         @keyframes shakeAnim {
             0%, 100% { transform: translateX(0); }
@@ -101,7 +119,7 @@
         }
         @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
 
-        /* 结果页文字大小优化 */
+        /* 结果页 */
         .ans-cn { font-size: 38px; font-weight: bold; margin-bottom: 25px; letter-spacing: 4px; color: #fff; }
         .ans-en { font-size: 22px; color: rgba(255,255,255,0.75); font-style: italic; line-height: 1.5; padding: 0 20px; }
         
@@ -140,13 +158,23 @@
             </div>
         </div>
 
-        <!-- 第2页：输入3位数字 -->
+        <!-- 第2页：灵感数字输入页 -->
         <div id="page2" class="page">
             <div class="content-body">
-                <div style="font-size: 20px; letter-spacing: 3px; margin-bottom: 40px;">请输入3位灵感数字</div>
-                <input type="tel" id="user-number" maxlength="3" autocomplete="off" placeholder="···">
-                <div style="margin-top: 30px;">
-                    <button class="reset-btn" style="padding:10px 40px; font-size:16px;" onclick="goToEnergy()">同步能量</button>
+                <!-- 轮播提示问题 -->
+                <div id="question-text" class="question-rotator">我该换工作吗？</div>
+                
+                <!-- 还原图片：三个独立的白色方形输入框 -->
+                <div class="input-num-group">
+                    <input type="tel" maxlength="1" class="num-box" id="num1" autocomplete="off">
+                    <input type="tel" maxlength="1" class="num-box" id="num2" autocomplete="off">
+                    <input type="tel" maxlength="1" class="num-box" id="num3" autocomplete="off">
+                </div>
+
+                <!-- 仪式感操作指引文字 -->
+                <div class="guide-text">
+                    1、默念你最想问的问题；<br>
+                    2、输入心中的3个数字
                 </div>
             </div>
         </div>
@@ -154,7 +182,7 @@
         <!-- 第3页 -->
         <div id="page3" class="page">
             <div class="content-body">
-                <div style="font-size: 24px; margin-bottom: 50px; color: var(--star-white); min-height: 30px;" id="display-num"></div>
+                <div style="font-size: 24px; margin-bottom: 50px; color: var(--star-white); min-height: 30px; letter-spacing: 2px;" id="display-num"></div>
                 <div class="energy-sphere" onclick="showAnswer()"></div>
                 <div style="margin-top: 40px; color: var(--gold); font-size: 18px;">触碰能量球 · 接收感应</div>
             </div>
@@ -188,6 +216,9 @@
         answers.push({ cn: extraCns[idx], en: extraEns[idx] });
     }
 
+    // 仪式感轮播问题
+    const hints = ["我该换工作吗？", "他爱我吗？", "考试会顺利吗？", "未来会变好吗？", "坚持还是放弃？"];
+
     window.onload = function() {
         initStarEngine();
         const l1 = document.getElementById('line1');
@@ -201,6 +232,10 @@
         document.getElementById('page' + from).classList.remove('active');
         setTimeout(() => {
             document.getElementById('page' + to).classList.add('active');
+            if(to === 2) {
+                startInputSetup(); // 设置独立数字输入框逻辑
+                startHintRotation();
+            }
             if(to === 3) randomizeSphere();
             if(to === 4) {
                 document.getElementById('top-divider').style.display = 'none';
@@ -209,16 +244,55 @@
         }, 1000);
     }
 
+    // --- 3. 独立数字输入逻辑 (自动跳转) ---
+    function startInputSetup() {
+        const num1 = document.getElementById('num1');
+        const num2 = document.getElementById('num2');
+        const num3 = document.getElementById('num3');
+
+        function setupInput(currentInput, nextInput) {
+            currentInput.addEventListener('input', () => {
+                if (currentInput.value.length === 1 && nextInput) {
+                    nextInput.focus();
+                } else if (currentInput.value.length === 1 && !nextInput) {
+                    // 输满3个数字，执行跳转感应
+                    setTimeout(() => goToEnergy(), 200);
+                }
+            });
+        }
+        setupInput(num1, num2);
+        setupInput(num2, num3);
+        setupInput(num3, null); // 最后一个输入框
+        num1.focus(); // 自动聚焦第一个
+    }
+
+    // 校验与跳转
     function goToEnergy() {
-        const input = document.getElementById('user-number');
-        const val = input.value.trim();
+        const n1 = document.getElementById('num1').value;
+        const n2 = document.getElementById('num2').value;
+        const n3 = document.getElementById('num3').value;
+        const val = n1 + n2 + n3;
+        
         if (val.length < 3) {
-            input.classList.add('shake');
-            setTimeout(() => input.classList.remove('shake'), 400);
+            // 校验失败逻辑（正常通过自动跳转拦截）
             return;
         }
         document.getElementById('display-num').innerText = `数字感应：${val}`;
         nextPage(2, 3);
+    }
+
+    // 问题提示轮播
+    function startHintRotation() {
+        const qEl = document.getElementById('question-text');
+        let i = 0;
+        setInterval(() => {
+            qEl.style.opacity = 0; // 淡出
+            setTimeout(() => {
+                i = (i + 1) % hints.length;
+                qEl.innerText = hints[i];
+                qEl.style.opacity = 1; // 淡入
+            }, 500);
+        }, 3500);
     }
 
     function randomizeSphere() {
