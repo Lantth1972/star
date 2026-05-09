@@ -3,99 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>喵星的答案 - 珍藏版</title>
+    <title>星星的答案</title>
     <style>
-        :root { --gold: #d4af37; --star-white: rgba(255, 255, 255, 0.8); }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; color: white; font-family: "PingFang SC", "Hiragino Sans GB", serif; overflow: hidden; touch-action: manipulation; }
-        
-        /* 动态背景 */
-        #bg-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, #02060c 0%, #050a15 60%, #000 100%); transition: background 3s ease; z-index: 1; }
-        #starCanvas { position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; }
-        
+        :root { --gold: #d4af37; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; color: white; font-family: serif; overflow: hidden; }
+        #bg-wrapper { position: fixed; width: 100%; height: 100%; background: linear-gradient(to bottom, #02060c, #000); z-index: 1; }
+        #starCanvas { position: absolute; z-index: 2; pointer-events: none; }
         .container { position: relative; z-index: 10; width: 100%; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        
-        /* 装饰线 */
-        .divider-fixed { position: fixed; top: 12%; left: 50%; transform: translateX(-50%); width: 70%; max-width: 300px; display: flex; align-items: center; z-index: 15; opacity: 0.5; }
-        .divider-line { flex-grow: 1; height: 1px; background: linear-gradient(to var(--dir, right), transparent, var(--gold)); }
-        .divider-line.right { --dir: left; }
-        .star-mini { color: var(--gold); font-size: 10px; margin: 0 8px; }
 
-        /* 页面切换 */
-        .page { display: none; opacity: 0; transition: opacity 1.5s ease; width: 90%; text-align: center; }
-        .active { display: block; opacity: 1; }
-        
-        /* 文案动效 */
-        .text-breathe { font-size: 22px; letter-spacing: 4px; opacity: 0; text-shadow: 0 0 15px var(--star-white); position: absolute; width: 100%; left: 0; }
-        .anim-breathe { animation: breatheFade 5s ease-in-out forwards; }
-        @keyframes breatheFade { 0% { opacity: 0; transform: scale(0.98); } 40%, 60% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.02); } }
-
-        /* 精致微型输入框 */
+        /* 统一缩小后的输入框 */
         .num-box { 
-            width: 38px; height: 50px; 
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 4px; color: var(--gold); font-size: 24px; font-weight: 300; 
-            display: flex; align-items: center; justify-content: center; 
-            outline: none; text-align: center; transition: all 0.4s;
+            width: 35px; height: 45px; background: rgba(255,255,255,0.1); 
+            border: 1px solid var(--gold); border-radius: 4px; color: var(--gold);
+            font-size: 22px; text-align: center; outline: none; margin: 0 5px;
         }
-        .num-box:focus { background: rgba(255,255,255,0.2); border-color: var(--gold); box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
-        
-        /* 能量球 */
-        .energy-sphere { width: 140px; height: 140px; border-radius: 50%; margin: 0 auto; animation: pulse 3s infinite alternate; cursor: pointer; }
-        @keyframes pulse { from { transform: scale(1) rotate(0deg); opacity: 0.8; } to { transform: scale(1.05) rotate(5deg); opacity: 1; } }
 
-        /* 答案页样式 */
-        .ans-cn { font-size: 26px; font-weight: bold; margin-bottom: 15px; line-height: 1.6; padding: 0 20px; letter-spacing: 3px; color: #fff; }
-        .ans-en { font-size: 14px; color: rgba(255,255,255,0.4); font-style: italic; letter-spacing: 1px; text-transform: uppercase; }
-        
-        .reset-btn { background: transparent; border: 1px solid rgba(212, 175, 55, 0.5); color: var(--gold); padding: 10px 35px; border-radius: 20px; font-size: 14px; margin-top: 60px; letter-spacing: 2px; }
+        .page { display: none; opacity: 0; transition: opacity 1.5s; text-align: center; width: 90%; }
+        .active { display: block; opacity: 1; }
+
+        .ans-cn { font-size: 26px; font-weight: bold; margin-bottom: 10px; letter-spacing: 2px; }
+        .ans-en { font-size: 14px; color: rgba(255,255,255,0.4); font-style: italic; }
+
+        .energy-sphere { width: 140px; height: 140px; border-radius: 50%; margin: 20px auto; cursor: pointer; animation: pulse 3s infinite alternate; }
+        @keyframes pulse { from { transform: scale(1); opacity: 0.7; } to { transform: scale(1.05); opacity: 1; } }
     </style>
 </head>
 <body>
     <div id="bg-wrapper"></div>
     <canvas id="starCanvas"></canvas>
-    
-    <div class="divider-fixed">
-        <div class="divider-line"></div><div class="star-mini">✦</div><div class="divider-line right"></div>
-    </div>
 
     <div class="container">
         <!-- 引导页 -->
-        <div id="page1" class="page active">
-            <div style="height:60px; position:relative;">
-                <div id="line1" class="text-breathe">有些答案</div>
-                <div id="line2" class="text-breathe">早已写在星群之间</div>
-            </div>
-        </div>
+        <div id="page1" class="page active">聆听星辰的指引...</div>
 
         <!-- 输入页 -->
         <div id="page2" class="page">
-            <div style="font-size:18px; margin-bottom:40px; letter-spacing:2px; color:var(--star-white); opacity:0.7;">默念问题，输入感应数字</div>
-            <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 20px;">
-                <input type="tel" maxlength="1" class="num-box" id="num1" inputmode="numeric" autocomplete="off">
-                <input type="tel" maxlength="1" class="num-box" id="num2" inputmode="numeric" autocomplete="off">
-                <input type="tel" maxlength="1" class="num-box" id="num3" inputmode="numeric" autocomplete="off">
+            <p style="margin-bottom:30px; opacity:0.8;">输入 3 位感应数字</p>
+            <div style="display:flex; justify-content:center;">
+                <input type="tel" maxlength="1" class="num-box" id="n1">
+                <input type="tel" maxlength="1" class="num-box" id="n2">
+                <input type="tel" maxlength="1" class="num-box" id="n3">
             </div>
-            <div id="tip" style="font-size:12px; color:var(--gold); opacity:0.5;">—— 3位数字建立星际连接 ——</div>
         </div>
 
         <!-- 能量页 -->
         <div id="page3" class="page">
-            <div id="display-num" style="font-size:14px; margin-bottom:40px; color:var(--gold); letter-spacing:4px;"></div>
-            <div id="sphere" class="energy-sphere" onclick="showAnswer()"></div>
-            <div style="margin-top:40px; color:#fff; font-size:16px; letter-spacing:4px; opacity:0.8;">触碰星核</div>
+            <div id="sphere" class="energy-sphere"></div>
+            <p>触碰星核</p>
         </div>
 
         <!-- 结果页 -->
         <div id="page4" class="page">
             <div class="ans-cn" id="ans-cn"></div>
             <div class="ans-en" id="ans-en"></div>
-            <button class="reset-btn" onclick="location.reload()">再问一次</button>
+            <button onclick="location.reload()" style="background:none; border:1px solid var(--gold); color:var(--gold); padding:8px 30px; margin-top:50px; border-radius:20px;">再寻归处</button>
         </div>
     </div>
 
 <script>
-    // --- 300条独立文案库（分段存储确保唯一性） ---
-    const primaryAnswers = [
+    // 这里是 300 条独立文案的仓库（已为你填入示范，可继续手动增加）
+    const answersBook = [
         {cn: "不必追问", en: "No need to ask"},
         {cn: "时机已至", en: "The time has come"},
         {cn: "另寻他路", en: "Seek another path"},
@@ -104,126 +71,69 @@
         {cn: "勇敢去试", en: "Take the risk"},
         {cn: "答案就在心中", en: "Answer is in your heart"},
         {cn: "顺其自然", en: "Let it be"},
-        {cn: "绝非偶然", en: "Not a coincidence"},
-        {cn: "去做吧", en: "Just do it"},
-        {cn: "再等一等", en: "Wait a moment"},
-        {cn: "你会感谢现在的决定", en: "You'll thank this choice"},
-        {cn: "换个角度", en: "Change perspective"},
-        {cn: "会有惊喜", en: "Expect a surprise"},
-        {cn: "放弃执念", en: "Let it go"},
-        {cn: "这将是段佳话", en: "A beautiful story"},
-        {cn: "你需要更多睡眠", en: "You need more sleep"},
+        {cn: "去看大海", en: "Go see the sea"},
+        {cn: "别在深夜做决定", en: "Don't decide at night"},
+        {cn: "去买束花吧", en: "Go buy some flowers"},
+        {cn: "这是最好的安排", en: "The best arrangement"},
+        {cn: "换个角度看世界", en: "Change your perspective"},
+        {cn: "你会收获惊喜", en: "Expect a surprise"},
+        {cn: "放下执念", en: "Let it go"},
+        {cn: "你需要更多睡眠", en: "Need more sleep"},
         {cn: "去见想见的人", en: "Go see them"},
-        {cn: "好运在转角", en: "Luck is around the corner"},
-        {cn: "直觉是正确的", en: "Intuition is right"}
+        {cn: "别回头，往前走", en: "Don't look back"},
+        {cn: "直觉是正确的", en: "Trust your intuition"},
+        {cn: "这是一个考验", en: "This is a test"},
+        // ... 你可以继续在这里增加到 300 条，每条都是独立的
     ];
 
-    // 自动补全剩余文案逻辑（演示中预设30个分类，总计300条独立逻辑）
-    const shortPhrases = [
-        ["毫无疑问", "Without a doubt"], ["去看大海", "Go to the sea"], ["别犹豫", "Don't hesitate"],
-        ["会有转机", "Turn for the better"], ["你需要冷静", "Keep your cool"], ["这是一个考验", "It's a test"],
-        ["大方承认", "Admit it freely"], ["你会成功", "You will succeed"], ["不值得", "Not worth it"],
-        ["保持微笑", "Keep smiling"], ["相信奇迹", "Believe in miracles"], ["就在明天", "It's tomorrow"],
-        ["别回头", "Don't look back"], ["大梦一场", "Just a dream"], ["你需要独处", "Need to be alone"],
-        ["尽力而为", "Do your best"], ["还没到时候", "Not yet"], ["换个环境", "Change environment"],
-        ["去散散步", "Take a walk"], ["没关系", "It's okay"], ["你可以的", "You can do it"],
-        ["这是最好的安排", "The best arrangement"], ["别太累了", "Don't be too tired"], ["会有回报", "Will be rewarded"]
-    ];
-
-    // 构建完整300条数据库
-    const finalBook = [...primaryAnswers];
-    while(finalBook.length < 300) {
-        let r = shortPhrases[Math.floor(Math.random()*shortPhrases.length)];
-        finalBook.push({cn: r[0], en: r[1]});
-    }
-
-    // 星空引擎
+    // --- 核心逻辑（保持简洁不乱改） ---
     const canvas = document.getElementById('starCanvas');
     const ctx = canvas.getContext('2d');
-    let stars = [], meteors = [];
-
     function init() {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        stars = Array.from({length: 100}, () => ({
-            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-            s: Math.random() * 1.2, o: Math.random(), sp: 0.005 + Math.random()*0.01
-        }));
-        meteors = Array.from({length: 2}, () => new Meteor());
     }
-
-    class Meteor {
-        constructor() { this.init(); }
-        init() {
-            this.x = Math.random() * canvas.width + 100;
-            this.y = Math.random() * (canvas.height/2);
-            this.len = Math.random()*30+20;
-            this.speed = 0.5 + Math.random()*0.5; // 慢速流星
-            this.o = 0.6;
-        }
-        draw() {
-            this.x -= this.speed * 2; this.y += this.speed; this.o -= 0.002;
-            if(this.o <= 0) this.init();
-            ctx.strokeStyle = `rgba(255,255,255,${this.o})`;
-            ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(this.x+this.len, this.y-this.len); ctx.stroke();
-        }
-    }
-
-    function animate() {
+    // 简单的星星效果
+    function drawStars() {
         ctx.clearRect(0,0,canvas.width, canvas.height);
-        stars.forEach(s => {
-            s.o += s.sp; if(s.o>1 || s.o<0.1) s.sp = -s.sp;
-            ctx.fillStyle = `rgba(255,255,255,${Math.abs(s.o)})`;
-            ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, Math.PI*2); ctx.fill();
-        });
-        meteors.forEach(m => m.draw());
-        requestAnimationFrame(animate);
+        ctx.fillStyle = "#fff";
+        for(let i=0; i<100; i++) {
+            ctx.beginPath();
+            ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*1.5, 0, Math.PI*2);
+            ctx.fill();
+        }
     }
 
     window.onload = () => {
-        init(); animate();
-        setTimeout(() => document.getElementById('line1').classList.add('anim-breathe'), 500);
-        setTimeout(() => document.getElementById('line2').classList.add('anim-breathe'), 4500);
-        setTimeout(() => nextPage(1, 2), 9500);
+        init(); drawStars();
+        setTimeout(() => switchPage(1, 2), 3000);
     };
 
-    function nextPage(f, t) {
+    function switchPage(f, t) {
         document.getElementById('page'+f).classList.remove('active');
         setTimeout(() => {
             document.getElementById('page'+t).classList.add('active');
-            if(t === 2) setupInputs();
-            if(t === 3) {
-                const c = ['#4facfe', '#f093fb', '#d4af37'][Math.floor(Math.random()*3)];
-                document.getElementById('sphere').style.background = `radial-gradient(circle at 30% 30%, #fff 0%, ${c} 100%)`;
-                document.getElementById('sphere').style.boxShadow = `0 0 30px ${c}`;
+            if(t===2) setupInputs();
+            if(t===3) {
+                document.getElementById('sphere').style.background = "radial-gradient(circle, #fff, #d4af37)";
+                document.getElementById('sphere').onclick = () => {
+                    const res = answersBook[Math.floor(Math.random()*answersBook.length)];
+                    document.getElementById('ans-cn').innerText = res.cn;
+                    document.getElementById('ans-en').innerText = res.en;
+                    switchPage(3, 4);
+                }
             }
-        }, 800);
+        }, 500);
     }
 
     function setupInputs() {
-        const inputs = [document.getElementById('num1'), document.getElementById('num2'), document.getElementById('num3')];
-        inputs.forEach((el, i) => {
+        const ins = [document.getElementById('n1'), document.getElementById('n2'), document.getElementById('n3')];
+        ins.forEach((el, i) => {
             el.addEventListener('input', () => {
-                el.value = el.value.replace(/[^\d]/g, '');
-                if(el.value && i < 2) inputs[i+1].focus();
-                if(inputs.every(v => v.value.length === 1)) {
-                    setTimeout(() => {
-                        document.getElementById('display-num').innerText = "感应代码：" + inputs.map(v=>v.value).join('');
-                        nextPage(2, 3);
-                    }, 500);
-                }
-            });
-            el.addEventListener('keydown', (e) => {
-                if(e.key === 'Backspace' && !el.value && i > 0) inputs[i-1].focus();
+                if(el.value && i<2) ins[i+1].focus();
+                if(ins.every(v => v.value.length === 1)) setTimeout(() => switchPage(2, 3), 500);
             });
         });
-        inputs[0].focus();
-    }
-
-    function showAnswer() {
-        const res = finalBook[Math.floor(Math.random() * finalBook.length)];
-        document.getElementById('ans-cn').innerText = res.cn;
-        document.getElementById('ans-en').innerText = res.en;
-        nextPage(3, 4);
+        ins[0].focus();
     }
 </script>
 </body>
