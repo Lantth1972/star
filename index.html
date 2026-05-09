@@ -42,7 +42,6 @@
         
         .page { display: none; opacity: 0; transition: opacity 1.2s ease; width: 90%; text-align: center; }
         .active { display: block; opacity: 1; }
-        .content-body { margin-top: -5vh; }
         
         .text-breathe {
             font-size: 26px; letter-spacing: 6px; opacity: 0;
@@ -56,11 +55,11 @@
             100% { opacity: 0; transform: scale(1.05); }
         }
         
-        /* 轮播提示语样式 */
+        /* 加快提示语淡入淡出的速度 */
         .hint-question { 
             font-size: 17px; color: var(--star-white); 
-            margin-bottom: 8px; height: 25px; 
-            transition: opacity 0.8s ease; 
+            margin-bottom: 12px; height: 25px; 
+            transition: opacity 0.3s ease; 
             opacity: 0.6;
         }
         
@@ -97,7 +96,6 @@
 <body>
     <div id="bg-wrapper"></div>
     <canvas id="starCanvas"></canvas>
-    
     <div id="top-divider" class="divider-fixed">
         <div class="divider-line"></div>
         <div class="star-mini"> ✦ </div>
@@ -116,7 +114,6 @@
 
         <div id="page2" class="page">
             <div class="content-body">
-                <!-- 提示语轮播区域 -->
                 <div id="q-hint" class="hint-question">她/他是否在意我？</div>
                 <div class="guide-main">默念你想问的问题</div>
                 <div class="input-num-group">
@@ -125,7 +122,7 @@
                     <input type="tel" maxlength="1" class="num-box" id="num3" inputmode="numeric">
                 </div>
                 <div id="alert-text">需要输入 3 位数字以建立连接</div>
-                <div class="guide-sub" style="font-size: 18px; color: var(--gold);">请输入当下浮现在心中的数字</div>
+                <div style="font-size: 18px; color: var(--gold);">请输入浮现在心中的数字</div>
             </div>
         </div>
 
@@ -155,9 +152,9 @@
             { sphere: '#f6d365', bg: 'linear-gradient(to bottom, #1a1a00 0%, #4d4d00 60%, #000 100%)' }
         ];
 
-        // 轮播提示语数组
+        // 固定的 5 个随机轮播提示语
         const rotateHints = ["她/他是否在意我？", "是否适合换工作？", "这个决定正确吗？", "会有转机出现吗？", "明天的面试顺利吗？"];
-        let currentHintIdx = 0;
+        let lastHintIdx = 0;
 
         const answers = [
             { cn: "顺其自然", en: "Let it flow naturally" }, { cn: "绝非偶然", en: "It is not by chance" },
@@ -210,16 +207,11 @@
         class Star {
             constructor() { this.reset(); }
             reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.5;
-                this.opacity = Math.random();
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5; this.opacity = Math.random();
                 this.speed = 0.01 + Math.random() * 0.015;
             }
-            update() {
-                this.opacity += this.speed;
-                if (this.opacity > 1 || this.opacity < 0.1) this.speed = -this.speed;
-            }
+            update() { this.opacity += this.speed; if (this.opacity > 1 || this.opacity < 0.1) this.speed = -this.speed; }
             draw() {
                 ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(this.opacity)})`;
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
@@ -231,14 +223,10 @@
             init() {
                 this.x = Math.random() * canvas.width + 100;
                 this.y = Math.random() * (canvas.height / 2) - 100;
-                this.len = Math.random() * 70 + 40;
-                this.speed = Math.random() * 1.5 + 1.2;
-                this.opacity = 0.7;
+                this.len = Math.random() * 70 + 40; this.speed = Math.random() * 1.5 + 1.2; this.opacity = 0.7;
             }
             update() {
-                this.x -= this.speed * 1.8;
-                this.y += this.speed;
-                this.opacity -= 0.004;
+                this.x -= this.speed * 1.8; this.y += this.speed; this.opacity -= 0.004;
                 if (this.opacity <= 0 || this.x < -100) this.init();
             }
             draw() {
@@ -253,8 +241,7 @@
         }
 
         function initEngine() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             stars = Array.from({length: 120}, () => new Star());
             meteors = Array.from({length: 2}, () => new Meteor());
         }
@@ -269,23 +256,23 @@
         window.onload = () => {
             initEngine(); animate();
             document.getElementById('line1').classList.add('anim-breathe');
-            setTimeout(() => {
-                const l2 = document.getElementById('line2');
-                if(l2) l2.classList.add('anim-breathe');
-            }, 4000);
+            setTimeout(() => { document.getElementById('line2').classList.add('anim-breathe'); }, 4000);
             setTimeout(() => nextPage(1, 2), 9000);
         };
 
+        // 快速随机切换提示语
         function startHintRotation() {
             const hintEl = document.getElementById('q-hint');
             setInterval(() => {
                 hintEl.style.opacity = 0;
                 setTimeout(() => {
-                    currentHintIdx = (currentHintIdx + 1) % rotateHints.length;
-                    hintEl.innerText = rotateHints[currentHintIdx];
+                    let nextIdx;
+                    do { nextIdx = Math.floor(Math.random() * rotateHints.length); } while (nextIdx === lastHintIdx);
+                    lastHintIdx = nextIdx;
+                    hintEl.innerText = rotateHints[nextIdx];
                     hintEl.style.opacity = 0.6;
-                }, 800);
-            }, 3500);
+                }, 300); // 切换停顿时间
+            }, 1800); // 切换总频率：1.8秒
         }
 
         function nextPage(from, to) {
@@ -298,27 +285,18 @@
                     t.style.display = 'block';
                     setTimeout(() => t.classList.add('active'), 50);
                 }
-                if(to === 2) {
-                    setupInputLogic();
-                    startHintRotation(); // 开启轮播
-                }
+                if(to === 2) { setupInputLogic(); startHintRotation(); }
                 if(to === 3) setSphereStyle();
-                if(to === 4) {
-                    allowMeteors = false;
-                    document.getElementById('top-divider').style.display = 'none';
-                    document.getElementById('bottom-disclaimer').style.display = 'block';
-                }
+                if(to === 4) { allowMeteors = false; document.getElementById('top-divider').style.display = 'none'; document.getElementById('bottom-disclaimer').style.display = 'block'; }
             }, 800);
         }
 
         function setupInputLogic() {
             const boxes = [document.getElementById('num1'), document.getElementById('num2'), document.getElementById('num3')];
-            const alertText = document.getElementById('alert-text');
             boxes.forEach((box, i) => {
                 box.addEventListener('input', () => {
                     box.value = box.value.replace(/[^\d]/g, '');
                     if (box.value) {
-                        alertText.style.opacity = 0;
                         if (i < 2) boxes[i+1].focus();
                         else {
                             const code = boxes.map(b => b.value).join('');
@@ -355,7 +333,6 @@
             document.getElementById('ans-en').innerText = res.en;
             nextPage(3, 4);
         }
-
         window.onresize = initEngine;
     </script>
 </body>
