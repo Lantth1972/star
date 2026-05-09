@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>喵星的答案 - 珍藏版</title>
+    <title>星星的答案 - 珍藏版</title>
     <style>
         :root {
             --gold: #d4af37;
@@ -14,7 +14,6 @@
             background-color: #000; color: white; font-family: "PingFang SC", "STHeiti", serif;
             overflow: hidden; touch-action: manipulation;
         }
-        /* 动态背景层 */
         #bg-wrapper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, #02060c 0%, #050a15 60%, #000 100%);
@@ -27,7 +26,6 @@
             width: 100%; height: 100vh;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        /* 顶部装饰 */
         .divider-fixed {
             position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
             width: 85%; max-width: 400px;
@@ -42,12 +40,10 @@
         .star-mini { color: var(--gold); font-size: 14px; margin: 0 10px; }
         .moon-phases { display: flex; align-items: center; gap: 8px; color: var(--gold); font-size: 12px; }
         
-        /* 页面切换 */
         .page { display: none; opacity: 0; transition: opacity 1.2s ease; width: 90%; text-align: center; }
         .active { display: block; opacity: 1; }
         .content-body { margin-top: -5vh; }
         
-        /* 呼吸文案动画 */
         .text-breathe {
             font-size: 26px; letter-spacing: 6px; opacity: 0;
             text-shadow: 0 0 25px var(--star-white);
@@ -60,8 +56,14 @@
             100% { opacity: 0; transform: scale(1.05); }
         }
         
-        /* 输入组件 */
-        .hint-question { font-size: 17px; color: var(--star-white); margin-bottom: 8px; height: 25px; transition: opacity 0.5s; opacity: 0.6; }
+        /* 轮播提示语样式 */
+        .hint-question { 
+            font-size: 17px; color: var(--star-white); 
+            margin-bottom: 8px; height: 25px; 
+            transition: opacity 0.8s ease; 
+            opacity: 0.6;
+        }
+        
         .guide-main { font-size: 22px; font-weight: bold; margin-bottom: 35px; letter-spacing: 2px; }
         .input-num-group { display: flex; gap: 15px; justify-content: center; margin-bottom: 10px; }
         .num-box {
@@ -76,14 +78,12 @@
             opacity: 0; transition: opacity 0.3s; margin-bottom: 20px;
         }
         
-        /* 能量球脉冲 */
         .energy-sphere {
             width: 175px; height: 175px; border-radius: 50%; margin: 0 auto;
             animation: pulse 2.5s infinite alternate; cursor: pointer;
         }
         @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.08); } }
         
-        /* 结果展示 */
         .ans-cn { font-size: 40px; font-weight: bold; margin-bottom: 25px; text-shadow: 0 0 15px rgba(0,0,0,0.5); }
         .ans-en { font-size: 22px; color: rgba(255,255,255,0.7); font-style: italic; letter-spacing: 1px; }
         .reset-btn {
@@ -107,7 +107,6 @@
     </div>
 
     <div class="container">
-        <!-- P1: 序幕 -->
         <div id="page1" class="page active">
             <div class="content-body" style="height:100px; position:relative;">
                 <div id="line1" class="text-breathe">聆听来自宇宙的声音</div>
@@ -115,10 +114,10 @@
             </div>
         </div>
 
-        <!-- P2: 输入 -->
         <div id="page2" class="page">
             <div class="content-body">
-                <div id="q-hint" class="hint-question">适合换工作吗？</div>
+                <!-- 提示语轮播区域 -->
+                <div id="q-hint" class="hint-question">她/他是否在意我？</div>
                 <div class="guide-main">默念你想问的问题</div>
                 <div class="input-num-group">
                     <input type="tel" maxlength="1" class="num-box" id="num1" inputmode="numeric">
@@ -126,11 +125,10 @@
                     <input type="tel" maxlength="1" class="num-box" id="num3" inputmode="numeric">
                 </div>
                 <div id="alert-text">需要输入 3 位数字以建立连接</div>
-                <div class="guide-sub" style="font-size: 18px; color: var(--gold);">请输入 3 位数字开启感应</div>
+                <div class="guide-sub" style="font-size: 18px; color: var(--gold);">输入当下浮现在心中的数字</div>
             </div>
         </div>
 
-        <!-- P3: 感应（文案已改） -->
         <div id="page3" class="page">
             <div class="content-body">
                 <div style="font-size: 22px; margin-bottom: 45px; color: #fff; letter-spacing: 3px;" id="display-num"></div>
@@ -139,7 +137,6 @@
             </div>
         </div>
 
-        <!-- P4: 答案 -->
         <div id="page4" class="page">
             <div class="ans-cn" id="ans-cn"></div>
             <div class="ans-en" id="ans-en"></div>
@@ -157,6 +154,10 @@
             { sphere: '#fa709a', bg: 'linear-gradient(to bottom, #2a0a0a 0%, #641e1e 60%, #000 100%)' },
             { sphere: '#f6d365', bg: 'linear-gradient(to bottom, #1a1a00 0%, #4d4d00 60%, #000 100%)' }
         ];
+
+        // 轮播提示语数组
+        const rotateHints = ["她/他是否在意我？", "是否适合换工作？", "这个决定正确吗？", "会有转机出现吗？", "明天的面试顺利吗？"];
+        let currentHintIdx = 0;
 
         const answers = [
             { cn: "顺其自然", en: "Let it flow naturally" }, { cn: "绝非偶然", en: "It is not by chance" },
@@ -275,6 +276,18 @@
             setTimeout(() => nextPage(1, 2), 9000);
         };
 
+        function startHintRotation() {
+            const hintEl = document.getElementById('q-hint');
+            setInterval(() => {
+                hintEl.style.opacity = 0;
+                setTimeout(() => {
+                    currentHintIdx = (currentHintIdx + 1) % rotateHints.length;
+                    hintEl.innerText = rotateHints[currentHintIdx];
+                    hintEl.style.opacity = 0.6;
+                }, 800);
+            }, 3500);
+        }
+
         function nextPage(from, to) {
             const f = document.getElementById('page' + from);
             const t = document.getElementById('page' + to);
@@ -285,7 +298,10 @@
                     t.style.display = 'block';
                     setTimeout(() => t.classList.add('active'), 50);
                 }
-                if(to === 2) setupInputLogic();
+                if(to === 2) {
+                    setupInputLogic();
+                    startHintRotation(); // 开启轮播
+                }
                 if(to === 3) setSphereStyle();
                 if(to === 4) {
                     allowMeteors = false;
@@ -308,7 +324,6 @@
                             const code = boxes.map(b => b.value).join('');
                             if(code.length === 3) {
                                 setTimeout(() => {
-                                    // 修正文案为：你的感应数字
                                     document.getElementById('display-num').innerText = `你的感应数字：${code}`;
                                     nextPage(2, 3);
                                 }, 300);
@@ -318,9 +333,6 @@
                 });
                 box.addEventListener('keydown', (e) => {
                     if (e.key === "Backspace" && !box.value && i > 0) boxes[i-1].focus();
-                    if (e.key === "Enter") {
-                        if(boxes.map(b => b.value).join('').length < 3) alertText.style.opacity = 1;
-                    }
                 });
             });
             boxes[0].focus();
