@@ -15,7 +15,7 @@
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background: #000; color: white; font-family: "PingFang SC", "STHeiti", serif;
-            overflow: hidden; display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
         }
 
         #bg-wrapper {
@@ -26,15 +26,19 @@
         }
 
         #star-canvas { position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; }
-        .container { position: relative; z-index: 10; width: 90%; max-width: 600px; text-align: center; }
 
-        .page { display: none; opacity: 0; transition: opacity 1.5s ease; }
-        .active { display: block; opacity: 1; }
+        .container { 
+            position: relative; z-index: 10; 
+            width: 100%; height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
 
-        /* --- 新增：图片同款月相装饰条 --- */
-        .divider-container {
+        /* 顶部固定装饰线 */
+        .divider-fixed {
+            position: fixed; top: 22vh; left: 50%; transform: translateX(-50%);
+            width: 85%; max-width: 400px;
             display: flex; align-items: center; justify-content: center;
-            margin-bottom: 40px; opacity: 0.8;
+            z-index: 15; opacity: 0.8; pointer-events: none;
         }
         .divider-line {
             flex-grow: 1; height: 1px;
@@ -42,9 +46,12 @@
         }
         .divider-line.right { --dir: left; }
         .star-mini { color: var(--gold); font-size: 14px; margin: 0 10px; }
-        .moon-phases {
-            display: flex; align-items: center; gap: 8px; color: var(--gold); font-size: 12px;
-        }
+        .moon-phases { display: flex; align-items: center; gap: 8px; color: var(--gold); font-size: 12px; }
+
+        .page { display: none; opacity: 0; transition: opacity 1.5s ease; width: 90%; text-align: center; }
+        .active { display: block; opacity: 1; }
+
+        .content-body { margin-top: 10vh; }
 
         /* 呼吸文字 */
         .text-breathe { 
@@ -59,19 +66,24 @@
             100% { opacity: 0; transform: scale(1.1); }
         }
 
-        /* 提问框 */
-        .question-input-wrapper { margin: 50px 0; }
+        /* 提问框区域 */
+        .input-group { position: relative; width: 100%; margin-bottom: 20px; }
         #user-question {
             width: 100%; background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 40px; padding: 18px 30px;
-            color: white; font-size: 20px; text-align: center;
+            color: white; font-size: 18px; text-align: center;
             outline: none; backdrop-filter: blur(10px);
-            transition: all 0.5s; box-sizing: border-box;
+            box-sizing: border-box; transition: all 0.3s;
         }
-        #user-question:focus { border-color: var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
+        #user-question:focus { border-color: var(--gold); }
         
-        .shake { animation: shakeAnim 0.4s ease-in-out; border-color: #ff4d4d !important; }
+        /* 校验失败样式 */
+        #user-question.invalid { border-color: #ff4d4d; box-shadow: 0 0 15px rgba(255, 77, 77, 0.3); }
+        .error-hint { color: #ff4d4d; font-size: 12px; margin-top: 10px; opacity: 0; transition: 0.3s; }
+        .error-hint.show { opacity: 1; }
+
+        .shake { animation: shakeAnim 0.4s ease-in-out; }
         @keyframes shakeAnim {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-8px); }
@@ -80,30 +92,25 @@
 
         /* 能量球 */
         .energy-sphere { 
-            width: 150px; height: 150px; 
+            width: 160px; height: 160px; 
             background: radial-gradient(circle at 30% 30%, #fff 0%, var(--sphere-color) 100%);
             border-radius: 50%; margin: 0 auto; 
             box-shadow: 0 0 60px var(--sphere-color);
             animation: pulse 2.5s infinite alternate; cursor: pointer; 
-            transition: all 1s ease;
         }
-        @keyframes pulse { from { transform: scale(1); opacity: 0.8; } to { transform: scale(1.15); opacity: 1; } }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
 
-        /* 结果页 */
-        .ans-cn { font-size: 36px; font-weight: bold; margin-bottom: 20px; letter-spacing: 3px; color: #fff; }
-        .ans-en { font-size: 18px; color: rgba(255,255,255,0.7); font-style: italic; line-height: 1.4; }
-        
         .reset-btn { 
-            margin-top: 50px; background: rgba(212, 175, 55, 0.1); 
-            border: 2px solid var(--gold); color: var(--gold); 
-            padding: 20px 60px; border-radius: 50px; 
-            font-size: 22px; font-weight: bold; letter-spacing: 4px;
-            cursor: pointer; transition: all 0.4s;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+            background: rgba(212, 175, 55, 0.1); border: 2px solid var(--gold); color: var(--gold); 
+            padding: 15px 50px; border-radius: 50px; font-size: 20px; font-weight: bold;
+            cursor: pointer; transition: 0.4s; margin-top: 10px;
         }
-        .reset-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 30px var(--gold); }
 
-        .disclaimer { margin-top: 40px; font-size: 12px; color: rgba(255, 255, 255, 0.3); letter-spacing: 1px; font-weight: 300; }
+        /* 底部固定免责声明 */
+        .disclaimer-fixed { 
+            position: fixed; bottom: 5vh; left: 0; width: 100%; text-align: center;
+            font-size: 12px; color: rgba(255, 255, 255, 0.25); z-index: 15; pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -111,84 +118,76 @@
     <div id="bg-wrapper"></div>
     <canvas id="star-canvas"></canvas>
 
+    <div id="top-divider" class="divider-fixed">
+        <div class="divider-line"></div>
+        <div class="star-mini">✦</div>
+        <div class="moon-phases">☽ ● ☾</div>
+        <div class="star-mini">✦</div>
+        <div class="divider-line right"></div>
+    </div>
+
     <div class="container">
         <!-- 第1页 -->
         <div id="page1" class="page active">
-            <!-- 顶部装饰线条 -->
-            <div class="divider-container">
-                <div class="divider-line"></div>
-                <div class="star-mini">✦</div>
-                <div class="moon-phases">☽ ● ☾</div>
-                <div class="star-mini">✦</div>
-                <div class="divider-line right"></div>
-            </div>
-            <div style="height:80px; position:relative;">
+            <div class="content-body" style="height:80px; position:relative;">
                 <div id="line1" class="text-breathe">聆听来自宇宙的声音</div>
                 <div id="line2" class="text-breathe">感受宇宙能量的奥妙</div>
             </div>
         </div>
 
-        <!-- 第2页 -->
+        <!-- 第2页：输入页 -->
         <div id="page2" class="page">
-            <div class="divider-container">
-                <div class="divider-line"></div>
-                <div class="star-mini">✦</div>
-                <div class="moon-phases">☽ ● ☾</div>
-                <div class="star-mini">✦</div>
-                <div class="divider-line right"></div>
+            <div class="content-body">
+                <div style="font-size: 18px; letter-spacing: 2px; margin-bottom: 30px; color: var(--star-white);">请在心中默念并描述你的困惑</div>
+                <div class="input-group">
+                    <input type="text" id="user-question" maxlength="20" autocomplete="off" placeholder="点击输入问题...">
+                    <div id="error-msg" class="error-hint">宇宙需要更明确的感应（请输入至少4个字）</div>
+                </div>
+                <button class="reset-btn" style="padding:10px 40px; font-size:16px;" onclick="goToEnergy()">同步能量</button>
             </div>
-            <div style="font-size: 22px; letter-spacing: 3px;">请在心中默念并输入你的问题</div>
-            <div class="question-input-wrapper">
-                <input type="text" id="user-question" autocomplete="off" placeholder="点击输入...">
-            </div>
-            <button class="reset-btn" style="margin-top:0; padding:12px 40px; font-size:16px;" onclick="goToEnergy()">同步能量</button>
         </div>
 
         <!-- 第3页 -->
         <div id="page3" class="page">
-            <div class="divider-container">
-                <div class="divider-line"></div>
-                <div class="star-mini">✦</div>
-                <div class="moon-phases">☽ ● ☾</div>
-                <div class="star-mini">✦</div>
-                <div class="divider-line right"></div>
+            <div class="content-body">
+                <div style="font-size: 20px; margin-bottom: 50px; color: var(--star-white); min-height: 30px; font-style: italic;" id="display-q"></div>
+                <div class="energy-sphere" onclick="showAnswer()"></div>
+                <div style="margin-top: 40px; color: var(--gold); font-size: 16px; letter-spacing: 2px;">触碰能量球 · 接收回响</div>
             </div>
-            <div style="font-size: 22px; margin-bottom: 50px; color: var(--star-white); min-height: 30px;" id="display-q"></div>
-            <div class="energy-sphere" onclick="showAnswer()"></div>
-            <div style="margin-top: 40px; color: var(--gold); font-size: 18px;">触碰能量球 · 接收感应</div>
         </div>
 
         <!-- 第4页 -->
         <div id="page4" class="page">
-            <div class="ans-cn" id="ans-cn"></div>
-            <div class="ans-en" id="ans-en"></div>
-            <button class="reset-btn" onclick="location.reload()">再次聆听回响</button>
-            <div class="disclaimer">仅供娱乐，不作为任何完全判断依据</div>
+            <div id="ans-cn" style="font-size: 32px; margin-bottom: 20px; font-weight: bold;"></div>
+            <div id="ans-en" style="font-size: 16px; color: rgba(255,255,255,0.6); margin-bottom: 40px;"></div>
+            <button class="reset-btn" onclick="location.reload()">再次聆听</button>
         </div>
     </div>
 
+    <div id="bottom-disclaimer" class="disclaimer-fixed" style="display:none;">
+        仅供娱乐，不作为任何完全判断依据
+    </div>
+
 <script>
-    // 200条答案之书数据库
+    // 基础配置
+    const MIN_CHAR_COUNT = 4; // 最小字数限制
+
     const baseAnswers = [
         { cn: "顺其自然", en: "Let it be" }, { cn: "绝对不要", en: "Absolutely not" },
         { cn: "答案就在你心中", en: "The answer is within you" }, { cn: "时机尚未成熟", en: "The time is not yet ripe" },
-        { cn: "勇敢地去尝试", en: "Go for it bravely" }, { cn: "会有意外的收获", en: "There will be unexpected gains" },
-        { cn: "不要犹豫", en: "Do not hesitate" }, { cn: "重新审视你的初衷", en: "Re-examine your original intention" },
-        { cn: "你需要更多信息", en: "You need more information" }, { cn: "结果令人满意", en: "The result will be satisfying" },
-        { cn: "换个角度思考", en: "Think from another perspective" }, { cn: "现在正是时候", en: "Now is the time" },
-        { cn: "坚持下去", en: "Hold on to it" }, { cn: "毫无疑问", en: "Without a doubt" },
-        { cn: "接受挑战", en: "Accept the challenge" }
+        { cn: "勇敢地去尝试", en: "Go for it bravely" }, { cn: "会有意外的收获", en: "Unexpected gains await" },
+        { cn: "不要犹豫", en: "Do not hesitate" }, { cn: "重新审视初衷", en: "Re-examine your intention" },
+        { cn: "结果令人满意", en: "Satisfying results" }, { cn: "现在正是时候", en: "Now is the time" }
     ];
-    const extraCns = ["是的","不","很有可能","很难说","暂时别想","全力以赴","换个角度","你会后悔的","别回头","这是好主意","保持沉默","这不属于你","放手吧","情况会改变","答案是肯定的"];
-    const extraEns = ["Yes","No","Highly likely","Hard to say","Forget it","Go all out","Another perspective","You'll regret it","Don't look back","Good idea","Keep silent","Not yours","Let go","Situation change","Yes, surely"];
-    
     let answers = [...baseAnswers];
+    const extraCns = ["是的","不","很有可能","很难说","暂时别想","全力以赴","换个角度","你会后悔的","别回头","这是好主意"];
+    const extraEns = ["Yes","No","Highly likely","Hard to say","Forget it","Go all out","Another perspective","Regretful","Don't look back","Good idea"];
     while(answers.length < 200) {
         let idx = Math.floor(Math.random() * extraCns.length);
         answers.push({ cn: extraCns[idx], en: extraEns[idx] });
     }
 
-    const hints = ["他爱我吗？", "该辞职吗？", "考试会顺利吗？", "宇宙在想什么？"];
+    const hints = ["他爱我吗？", "该换工作吗？", "未来会变好吗？", "坚持还是放弃？"];
 
     window.onload = function() {
         initStarEngine();
@@ -205,13 +204,38 @@
             document.getElementById('page' + to).classList.add('active');
             if(to === 2) startHintRotation();
             if(to === 3) randomizeSphere();
+            if(to === 4) {
+                document.getElementById('top-divider').style.display = 'none';
+                document.getElementById('bottom-disclaimer').style.display = 'block';
+            }
         }, 1000);
+    }
+
+    // 关键校验逻辑
+    function goToEnergy() {
+        const input = document.getElementById('user-question');
+        const errorMsg = document.getElementById('error-msg');
+        const q = input.value.trim();
+        
+        if (q.length < MIN_CHAR_COUNT) {
+            input.classList.add('shake', 'invalid');
+            errorMsg.classList.add('show');
+            setTimeout(() => {
+                input.classList.remove('shake');
+            }, 400);
+            return;
+        }
+
+        // 校验通过
+        input.classList.remove('invalid');
+        errorMsg.classList.remove('show');
+        document.getElementById('display-q').innerText = `「 ${q} 」`;
+        nextPage(2, 3);
     }
 
     function randomizeSphere() {
         const randomHue = Math.floor(Math.random() * 360);
-        const color = `hsl(${randomHue}, 80%, 60%)`;
-        document.documentElement.style.setProperty('--sphere-color', color);
+        document.documentElement.style.setProperty('--sphere-color', `hsl(${randomHue}, 80%, 60%)`);
     }
 
     function startHintRotation() {
@@ -222,33 +246,19 @@
             input.placeholder = hints[i];
         }, 3000);
         input.addEventListener('keypress', (e) => { if (e.key === 'Enter') goToEnergy(); });
-    }
-
-    function goToEnergy() {
-        const input = document.getElementById('user-question');
-        const q = input.value.trim();
-        if (q === "") {
-            input.classList.add('shake');
-            setTimeout(() => input.classList.remove('shake'), 400);
-            return;
-        }
-        document.getElementById('display-q').innerText = `「${q}」`;
-        nextPage(2, 3);
+        // 输入时自动清除错误样式
+        input.addEventListener('input', () => {
+            input.classList.remove('invalid');
+            document.getElementById('error-msg').classList.remove('show');
+        });
     }
 
     function showAnswer() {
         const res = answers[Math.floor(Math.random() * answers.length)];
         document.getElementById('ans-cn').innerText = res.cn;
         document.getElementById('ans-en').innerText = res.en;
-        
         const randomHue = Math.floor(Math.random() * 360);
-        const c = { 
-            top: '#02060c', 
-            mid: `hsl(${randomHue}, 40%, 10%)`, 
-            bottom: `hsl(${randomHue}, 60%, 25%)` 
-        };
-        document.documentElement.style.setProperty('--bg-color', `linear-gradient(to bottom, ${c.top} 0%, ${c.mid} 60%, ${c.bottom} 100%)`);
-        
+        document.documentElement.style.setProperty('--bg-color', `linear-gradient(to bottom, #02060c 0%, hsl(${randomHue}, 40%, 10%) 60%, hsl(${randomHue}, 60%, 25%) 100%)`);
         nextPage(3, 4);
     }
 
@@ -257,12 +267,11 @@
         const ctx = canvas.getContext('2d');
         let w = canvas.width = window.innerWidth;
         let h = canvas.height = window.innerHeight;
-        const stars = Array.from({length: 200}, () => ({
+        const stars = Array.from({length: 150}, () => ({
             x: Math.random() * w, y: Math.random() * h,
-            size: Math.random() * 1.5, opacity: Math.random(),
-            speed: 0.01 + Math.random() * 0.03
+            size: Math.random() * 1.2, opacity: Math.random(),
+            speed: 0.01 + Math.random() * 0.02
         }));
-        let meteors = [];
         function draw() {
             ctx.clearRect(0, 0, w, h);
             stars.forEach(s => {
@@ -270,13 +279,6 @@
                 if (s.opacity > 1 || s.opacity < 0.1) s.speed = -s.speed;
                 ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
                 ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
-            });
-            if (Math.random() > 0.985) meteors.push({x: Math.random()*w, y: Math.random()*h/2, len: Math.random()*100+50, speed: Math.random()*12+8, o: 1});
-            meteors.forEach((m, i) => {
-                ctx.strokeStyle = `rgba(255, 255, 255, ${m.o})`;
-                ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(m.x-m.len, m.y+m.len); ctx.stroke();
-                m.x -= m.speed; m.y += m.speed; m.o -= 0.02;
-                if(m.o <= 0) meteors.splice(i, 1);
             });
             requestAnimationFrame(draw);
         }
