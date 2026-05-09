@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>宇宙的回响</title>
+    <title>星星的答案</title>
     <style>
         :root {
             --gold: #d4af37;
@@ -33,18 +33,12 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        /* --- 1. 装饰线条：稍微下移至 10% --- */
+        /* 顶部装饰线 */
         .divider-fixed {
-            position: fixed;
-            top: 10%; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 85%;
-            max-width: 400px;
+            position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
+            width: 85%; max-width: 400px;
             display: flex; align-items: center; justify-content: center;
-            z-index: 15;
-            opacity: 0.8;
-            pointer-events: none;
+            z-index: 15; opacity: 0.8;
         }
         .divider-line {
             flex-grow: 1; height: 1px;
@@ -57,13 +51,11 @@
         .page { display: none; opacity: 0; transition: opacity 1.5s ease; width: 90%; text-align: center; }
         .active { display: block; opacity: 1; }
 
-        /* --- 2. 内容区域：整体上移 --- */
-        .content-body { margin-top: -10vh; } 
+        .content-body { margin-top: -8vh; } 
 
-        /* 第一页文字加大 */
+        /* 呼吸文字 */
         .text-breathe { 
-            font-size: 28px; /* 增大字号 */
-            letter-spacing: 6px; opacity: 0; 
+            font-size: 28px; letter-spacing: 6px; opacity: 0; 
             text-shadow: 0 0 25px var(--star-white);
             position: absolute; width: 100%; left: 0;
         }
@@ -74,56 +66,44 @@
             100% { opacity: 0; transform: scale(1.05); }
         }
 
-        /* 第二页引导文字加大 */
-        .guide-title {
-            font-size: 24px; color: #fff; margin-bottom: 40px; 
-            font-weight: 400; letter-spacing: 2px;
+        /* 第二页：提问逻辑 */
+        .hint-question {
+            font-size: 24px; color: var(--star-white); margin-bottom: 10px;
+            height: 30px; transition: opacity 0.5s;
         }
+        .guide-main { font-size: 26px; font-weight: bold; margin-bottom: 40px; letter-spacing: 2px; }
 
-        /* 数字输入框容器 */
-        .input-num-group {
-            display: flex; gap: 15px; justify-content: center; margin-bottom: 35px;
-        }
+        .input-num-group { display: flex; gap: 15px; justify-content: center; margin-bottom: 40px; }
         .num-box {
-            width: 85px; height: 110px; 
-            background: #fff; 
-            border-radius: 10px; 
-            color: #000; font-size: 45px; font-weight: bold;
+            width: 85px; height: 110px; background: #fff; border-radius: 12px; 
+            color: #000; font-size: 48px; font-weight: bold;
             display: flex; align-items: center; justify-content: center;
-            border: none; outline: none;
-            text-align: center;
-            -webkit-appearance: none; /* 移除手机端默认阴影 */
+            border: none; outline: none; text-align: center;
         }
 
-        .guide-detail {
-            color: rgba(255, 255, 255, 0.5); font-size: 16px; 
-            line-height: 2; letter-spacing: 1px;
-        }
+        .guide-sub { font-size: 20px; color: var(--gold); letter-spacing: 1px; }
 
         /* 能量球 */
         .energy-sphere { 
-            width: 170px; height: 170px; 
+            width: 180px; height: 180px; 
             background: radial-gradient(circle at 30% 30%, #fff 0%, var(--sphere-color) 100%);
             border-radius: 50%; margin: 0 auto; 
-            box-shadow: 0 0 70px var(--sphere-color);
+            box-shadow: 0 0 80px var(--sphere-color);
             animation: pulse 2.5s infinite alternate; cursor: pointer; 
         }
         @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
 
         /* 结果页 */
-        .ans-cn { font-size: 38px; font-weight: bold; margin-bottom: 25px; letter-spacing: 4px; color: #fff; }
-        .ans-en { font-size: 22px; color: rgba(255,255,255,0.75); font-style: italic; line-height: 1.5; padding: 0 20px; }
+        .ans-cn { font-size: 42px; font-weight: bold; margin-bottom: 25px; }
+        .ans-en { font-size: 24px; color: rgba(255,255,255,0.7); font-style: italic; }
         
         .reset-btn { 
             background: rgba(212, 175, 55, 0.1); border: 2px solid var(--gold); color: var(--gold); 
-            padding: 15px 50px; border-radius: 50px; font-size: 20px; font-weight: bold;
-            cursor: pointer; transition: 0.4s; margin-top: 50px;
+            padding: 16px 60px; border-radius: 50px; font-size: 22px; font-weight: bold;
+            cursor: pointer; margin-top: 60px;
         }
 
-        .disclaimer-fixed { 
-            position: fixed; bottom: 5vh; left: 0; width: 100%; text-align: center;
-            font-size: 12px; color: rgba(255, 255, 255, 0.25); z-index: 15; pointer-events: none;
-        }
+        .disclaimer { position: fixed; bottom: 5vh; width: 100%; text-align: center; font-size: 12px; color: rgba(255,255,255,0.2); }
     </style>
 </head>
 <body>
@@ -140,7 +120,7 @@
     </div>
 
     <div class="container">
-        <!-- 第1页 -->
+        <!-- P1: 欢迎 -->
         <div id="page1" class="page active">
             <div class="content-body" style="height:100px; position:relative;">
                 <div id="line1" class="text-breathe">聆听来自宇宙的声音</div>
@@ -148,67 +128,54 @@
             </div>
         </div>
 
-        <!-- 第2页：数字输入 -->
+        <!-- P2: 输入 -->
         <div id="page2" class="page">
             <div class="content-body">
-                <div class="guide-title">默念你想问的问题</div>
+                <div id="q-hint" class="hint-question">适合换工作吗？</div>
+                <div class="guide-main">默念你想问的问题</div>
                 
                 <div class="input-num-group">
-                    <!-- 只允许数字输入：inputmode="numeric" -->
-                    <input type="tel" maxlength="1" class="num-box" id="num1" autocomplete="off" inputmode="numeric" pattern="[0-9]*">
-                    <input type="tel" maxlength="1" class="num-box" id="num2" autocomplete="off" inputmode="numeric" pattern="[0-9]*">
-                    <input type="tel" maxlength="1" class="num-box" id="num3" autocomplete="off" inputmode="numeric" pattern="[0-9]*">
+                    <input type="tel" maxlength="1" class="num-box" id="num1" inputmode="numeric" pattern="[0-9]*">
+                    <input type="tel" maxlength="1" class="num-box" id="num2" inputmode="numeric" pattern="[0-9]*">
+                    <input type="tel" maxlength="1" class="num-box" id="num3" inputmode="numeric" pattern="[0-9]*">
                 </div>
 
-                <div class="guide-detail">
-                    输入心目中的数字
-                </div>
+                <div class="guide-sub">输入心目中的数字</div>
             </div>
         </div>
 
-        <!-- 第3页 -->
+        <!-- P3: 感应 -->
         <div id="page3" class="page">
             <div class="content-body">
-                <div style="font-size: 24px; margin-bottom: 50px; color: var(--star-white); letter-spacing: 2px;" id="display-num"></div>
+                <div style="font-size: 22px; margin-bottom: 50px; color: #fff; letter-spacing: 3px;" id="display-num"></div>
                 <div class="energy-sphere" onclick="showAnswer()"></div>
-                <div style="margin-top: 40px; color: var(--gold); font-size: 18px;">触碰能量球 · 接收感应</div>
+                <div style="margin-top: 50px; color: var(--gold); font-size: 22px; font-weight: bold; letter-spacing: 2px;">触碰能量球 · 聆听回应</div>
             </div>
         </div>
 
-        <!-- 第4页 -->
+        <!-- P4: 结果 -->
         <div id="page4" class="page">
             <div class="ans-cn" id="ans-cn"></div>
             <div class="ans-en" id="ans-en"></div>
-            <button class="reset-btn" onclick="location.reload()">再次聆听</button>
+            <button class="reset-btn" onclick="location.reload()">再次聆听回响</button>
         </div>
     </div>
 
-    <div id="bottom-disclaimer" class="disclaimer-fixed" style="display:none;">
-        仅供娱乐，不作为任何完全判断依据
-    </div>
+    <div class="disclaimer" id="bottom-disclaimer" style="display:none;">仅供娱乐，不作为判断依据</div>
 
 <script>
+    const hints = ["适合换工作吗？", "他/她还在意我吗？", "这笔投资可行吗？", "该坚持还是放弃？", "明天会更顺利吗？"];
     const baseAnswers = [
         { cn: "顺其自然", en: "Let it be" }, { cn: "绝对不要", en: "Absolutely not" },
-        { cn: "答案就在你心中", en: "The answer is within you" }, { cn: "时机尚未成熟", en: "The time is not yet ripe" },
-        { cn: "勇敢地去尝试", en: "Go for it bravely" }, { cn: "会有意外收获", en: "Unexpected gains" },
-        { cn: "不要犹豫", en: "Do not hesitate" }, { cn: "重新审视初衷", en: "Re-examine your intention" },
-        { cn: "结果令人满意", en: "Satisfying results" }, { cn: "现在正是时候", en: "Now is the time" }
+        { cn: "答案就在心中", en: "Answer is within you" }, { cn: "时机尚未成熟", en: "Time is not ripe" },
+        { cn: "勇敢尝试", en: "Go for it" }, { cn: "意外的收获", en: "Unexpected gains" },
+        { cn: "不要犹豫", en: "Do not hesitate" }, { cn: "会有转机", en: "Things will change" }
     ];
-    let answers = [...baseAnswers];
-    const extraCns = ["是的","不","很有可能","很难说","暂时别想","全力以赴","换个角度","你会后悔的","别回头","这是好主意"];
-    const extraEns = ["Yes","No","Highly likely","Hard to say","Forget it","Go all out","Another perspective","Regretful","Don't look back","Good idea"];
-    while(answers.length < 200) {
-        let idx = Math.floor(Math.random() * extraCns.length);
-        answers.push({ cn: extraCns[idx], en: extraEns[idx] });
-    }
 
     window.onload = function() {
         initStarEngine();
-        const l1 = document.getElementById('line1');
-        const l2 = document.getElementById('line2');
-        l1.classList.add('anim-breathe');
-        setTimeout(() => l2.classList.add('anim-breathe'), 4500);
+        document.getElementById('line1').classList.add('anim-breathe');
+        setTimeout(() => document.getElementById('line2').classList.add('anim-breathe'), 4500);
         setTimeout(() => nextPage(1, 2), 9500);
     };
 
@@ -216,58 +183,48 @@
         document.getElementById('page' + from).classList.remove('active');
         setTimeout(() => {
             document.getElementById('page' + to).classList.add('active');
-            if(to === 2) startInputSetup();
-            if(to === 3) randomizeSphere();
-            if(to === 4) {
+            if(to === 2) { setupInputLogic(); startHintRotation(); }
+            if(to === 4) { 
                 document.getElementById('top-divider').style.display = 'none';
                 document.getElementById('bottom-disclaimer').style.display = 'block';
             }
         }, 1000);
     }
 
-    // --- 严格数字输入逻辑 ---
-    function startInputSetup() {
+    function setupInputLogic() {
         const boxes = [document.getElementById('num1'), document.getElementById('num2'), document.getElementById('num3')];
-
-        boxes.forEach((box, index) => {
-            // 过滤非数字输入
-            box.addEventListener('input', (e) => {
-                box.value = box.value.replace(/[^\d]/g, ''); // 仅保留数字
-                if (box.value.length === 1 && index < 2) {
-                    boxes[index + 1].focus();
-                } else if (box.value.length === 1 && index === 2) {
-                    setTimeout(() => goToEnergy(), 200);
-                }
-            });
-
-            // 处理删除键回退
-            box.addEventListener('keydown', (e) => {
-                if (e.key === "Backspace" && box.value === "" && index > 0) {
-                    boxes[index - 1].focus();
+        boxes.forEach((box, i) => {
+            box.addEventListener('input', () => {
+                box.value = box.value.replace(/[^\d]/g, '');
+                if (box.value && i < 2) boxes[i+1].focus();
+                else if (box.value && i === 2) {
+                    setTimeout(() => {
+                        document.getElementById('display-num').innerText = `数字感应：${boxes[0].value}${boxes[1].value}${boxes[2].value}`;
+                        nextPage(2, 3);
+                    }, 300);
                 }
             });
         });
         boxes[0].focus();
     }
 
-    function goToEnergy() {
-        const val = document.getElementById('num1').value + document.getElementById('num2').value + document.getElementById('num3').value;
-        if (val.length < 3) return;
-        document.getElementById('display-num').innerText = `数字感应：${val}`;
-        nextPage(2, 3);
-    }
-
-    function randomizeSphere() {
-        const randomHue = Math.floor(Math.random() * 360);
-        document.documentElement.style.setProperty('--sphere-color', `hsl(${randomHue}, 80%, 60%)`);
+    function startHintRotation() {
+        const hEl = document.getElementById('q-hint');
+        let idx = 0;
+        setInterval(() => {
+            hEl.style.opacity = 0;
+            setTimeout(() => {
+                idx = (idx + 1) % hints.length;
+                hEl.innerText = hints[idx];
+                hEl.style.opacity = 0.6;
+            }, 500);
+        }, 3000);
     }
 
     function showAnswer() {
-        const res = answers[Math.floor(Math.random() * answers.length)];
+        const res = baseAnswers[Math.floor(Math.random() * baseAnswers.length)];
         document.getElementById('ans-cn').innerText = res.cn;
         document.getElementById('ans-en').innerText = res.en;
-        const randomHue = Math.floor(Math.random() * 360);
-        document.documentElement.style.setProperty('--bg-color', `linear-gradient(to bottom, #02060c 0%, hsl(${randomHue}, 40%, 10%) 60%, hsl(${randomHue}, 60%, 25%) 100%)`);
         nextPage(3, 4);
     }
 
@@ -276,7 +233,7 @@
         const ctx = canvas.getContext('2d');
         let w = canvas.width = window.innerWidth;
         let h = canvas.height = window.innerHeight;
-        const stars = Array.from({length: 180}, () => ({
+        const stars = Array.from({length: 150}, () => ({
             x: Math.random() * w, y: Math.random() * h,
             size: Math.random() * 1.5, opacity: Math.random(),
             speed: 0.01 + Math.random() * 0.02
