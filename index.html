@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态深邃星空</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            /* 1:1 复刻你图片中的渐变背景 */
+            background: linear-gradient(to bottom, #02060c 0%, #051930 60%, #004d7a 100%);
+        }
+
+        #starCanvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="starCanvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('starCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let stars = [];
+    const starCount = 350; // 星星数量，可按需增减
+
+    // 自适应屏幕大小
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    // 创建星星类
+    class Star {
+        constructor() {
+            this.init();
+        }
+
+        init() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 1.5; // 星星大小
+            this.speed = Math.random() * 0.2 + 0.05; // 向下流动的速度
+            this.opacity = Math.random(); // 初始透明度
+            this.blinkSpeed = Math.random() * 0.02 + 0.005; // 闪烁速度
+            this.direction = Math.random() > 0.5 ? 1 : -1; // 闪烁方向
+        }
+
+        // 更新状态
+        update() {
+            // 1. 位置移动（缓慢向下流动）
+            this.y += this.speed;
+            if (this.y > canvas.height) {
+                this.y = -10;
+                this.x = Math.random() * canvas.width;
+            }
+
+            // 2. 呼吸闪烁逻辑
+            this.opacity += this.blinkSpeed * this.direction;
+            if (this.opacity > 1 || this.opacity < 0.1) {
+                this.direction *= -1;
+            }
+        }
+
+        // 绘制
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            ctx.fill();
+        }
+    }
+
+    // 初始化星星阵列
+    function createStars() {
+        for (let i = 0; i < starCount; i++) {
+            stars.push(new Star());
+        }
+    }
+
+    // 动画循环
+    function animate() {
+        // 清屏
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        stars.forEach(star => {
+            star.update();
+            star.draw();
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    createStars();
+    animate();
+</script>
+
+</body>
+</html>
