@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>课文望远镜 · 跨学科拓展 + 作文锦囊</title>
+    <title>课文望远镜 · 分类拓展卡片</title>
     <style>
         * {
             margin: 0;
@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
         body {
-            background: #f0f7f0;
+            background: #eef5e8;
             font-family: system-ui, 'Segoe UI', 'Noto Sans', sans-serif;
             padding: 1.5rem;
             min-height: 100vh;
@@ -26,6 +26,7 @@
             display: flex;
             flex-wrap: wrap;
         }
+        /* 左侧课文栏 */
         .sidebar {
             width: 260px;
             background: #fef9e6;
@@ -65,6 +66,7 @@
         .topic-btn:hover:not(.active) {
             background: #eaf4e6;
         }
+        /* 右侧内容区 */
         .main {
             flex: 1;
             padding: 1.5rem 2rem;
@@ -82,17 +84,48 @@
             border-bottom: 2px solid #e2f0e2;
             padding-bottom: 0.5rem;
         }
-        .cards-grid {
+        /* 分类按钮组（类似图片中的样式） */
+        .category-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1.8rem;
+            border-bottom: 1px solid #e2e8d5;
+            padding-bottom: 1rem;
+        }
+        .cat-btn {
+            background: #f0f4ea;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #2d4a33;
+        }
+        .cat-btn.active {
+            background: #2d6a4f;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .cat-btn:hover:not(.active) {
+            background: #e2e9da;
+        }
+        /* 拓展卡片列表 */
+        .cards-list {
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
         }
         .ext-card {
             background: #fefef7;
             border-radius: 1.2rem;
             border: 1px solid #e6efdf;
             transition: 0.1s;
-            overflow: hidden;
         }
         .card-header {
             display: flex;
@@ -104,27 +137,16 @@
             font-weight: 600;
             font-size: 1rem;
         }
-        .card-header .tag {
-            background: #e9f0e3;
-            padding: 0.2rem 0.7rem;
-            border-radius: 2rem;
-            font-size: 0.7rem;
-            font-weight: normal;
-            color: #3a6b47;
-        }
         .card-body {
             padding: 1rem 1.2rem;
             line-height: 1.5;
             color: #2c3e2f;
             font-size: 0.95rem;
         }
-        .card-body p {
-            margin-bottom: 0.5rem;
-        }
         .icon {
             font-size: 1.2rem;
         }
-        .essay-tip {
+        .essay-card {
             background: #fff7e8;
             border-left: 4px solid #e6b422;
         }
@@ -148,7 +170,7 @@
         }
         footer {
             text-align: center;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             font-size: 0.7rem;
             color: #7c8f7a;
         }
@@ -164,60 +186,116 @@
             <button class="topic-btn" data-topic="月是故乡明">🌙 月是故乡明</button>
         </div>
         <div style="margin-top: 1.5rem; font-size: 0.75rem; color: #6c8b6e; padding-left: 0.5rem;">
-            💡 每个卡片都是一个拓展点<br>🔍 科学 · 人文 · 时事 · 英文 · 作文锦囊
+            💡 选择分类 → 查看对应拓展
         </div>
     </div>
     <div class="main" id="mainContent">
         <div style="text-align: center; padding: 3rem;">加载中…</div>
     </div>
 </div>
-<footer>✨ 跨学科望远镜 | 时事·科学·人文·英文 | 作文锦囊（大纲+片段）仅作参考</footer>
+<footer>✨ 跨学科望远镜 | 点击分类按钮，探索科学·人文·时事·英文·作文</footer>
 
 <script>
-    // ---------- 拓展知识库 (含作文锦囊：极简大纲+范文片段) ----------
+    // ---------- 拓展知识库（按课文+分类组织）----------
     const knowledgeBase = {
-        "祖父的园子": [
-            { type: "深圳时事", icon: "🏙️", title: "光明欢乐田园", content: "深圳光明区“欢乐田园”占地约3.8平方公里，孩子们可以下田插秧、摘黄瓜，体验课文里“想做什么就做什么”的园子。还有稻田画、向日葵花海，是周末亲近泥土的好去处。" },
-            { type: "深圳时事", icon: "🏙️", title: "南山区“昆虫旅馆”", content: "深圳大学附近的大沙河公园里，有一座用木头、竹筒、瓦片搭成的“昆虫旅馆”，专门为瓢虫、独居蜂、蜻蜓提供栖息地。园子里的蜻蜓和蜜蜂，在这里找到了城市里的家。" },
-            { type: "全国时事", icon: "🇨🇳", title: "北京楼顶“天空农场”", content: "北京史家小学在教学楼顶开辟了“天空农场”，每个班分一块菜地，种黄瓜、西红柿、南瓜。他们把《祖父的园子》搬上了天空，收获的蔬菜还给食堂做午餐。" },
-            { type: "国际时事", icon: "🌍", title: "荷兰漂浮农场", content: "荷兰鹿特丹有世界上第一座海上漂浮农场，里面养着40头奶牛，屋顶收集雨水，底层种植牧草。像不像祖父的园子漂在了水上？这里的牛每天都能看到过往船只。" },
-            { type: "科学拓展", icon: "🔬", title: "倭瓜（南瓜）的环球旅行", content: "南瓜原产美洲，明朝时跟着西班牙商船来到中国。它耐旱、产量高，曾是欧洲和中国的“救命粮”。课文里的倭瓜，其实是一位环游世界的旅行家。🎃" },
-            { type: "科学拓展", icon: "🔬", title: "蜻蜓的复眼与飞行", content: "蜻蜓有两万八千只小眼睛组成的复眼，可以同时看前、后、上、下。它的四片翅膀可以独立转动，因此能悬停、倒飞、急转弯。你在深圳湾公园经常能看到它们。" },
-            { type: "科学拓展", icon: "🔬", title: "呼兰河的冬天", content: "呼兰河在黑龙江，冬天温度低至零下30度，河面结冰厚度超过1米。孩子们在冰上打陀螺、坐冰车。而在深圳，冬天还能穿短袖——这就是中国南北的奇妙差异。" },
-            { type: "人文历史", icon: "📜", title: "萧红与祖父：一生中最暖的光", content: "萧红（1911-1942），民国女作家。她童年时母亲早逝，父亲冷漠，只有祖父张维祯给她讲故事、教她背诗。祖父的园子是她整个童年的乐园。后来她病逝于香港，临终前依然在回忆那片园子。" },
-            { type: "人文历史", icon: "📜", title: "东南亚华人记忆中的“园子”", content: "马来西亚槟城、新加坡的华人家庭，常常在屋后保留一片“小园子”，种番薯、木瓜、香茅。老一辈华人下南洋时，也把故乡的菜园记忆带到了热带。那是他们心里的“祖父的园子”。" },
-            { type: "人文历史", icon: "📜", title: "呼兰河与萧红故居", content: "黑龙江呼兰区至今保留着萧红故居，院落里有泥墙、倭瓜架、一口老井。每年有东南亚华人组团去参观，寻找《呼兰河传》里的气息。园子虽小，却牵动着全球华人的乡愁。" },
-            { type: "英文小站", icon: "🇬🇧", title: "单词与句子", content: "garden (园子) , pumpkin (倭瓜/南瓜) , dragonfly (蜻蜓) , freedom (自由)\n📝 *In my grandfather's garden, even the pumpkins seem to laugh.*" },
-            { type: "作文锦囊", icon: "✍️", title: "《我心中的园子》写作锦囊", content: "【极简大纲】\n1. 开头：点出“园子”在哪里（可以是老家院子、小区花园或想象的地方）。\n2. 中间：写2-3种事物（比如倭瓜、蜻蜓、昆虫旅馆），用上拟人手法。\n3. 结尾：表达情感——自由、快乐或对自然的爱。\n\n【范文片段】\n  如果我有一座园子，我不会种名贵的花，只种几架倭瓜和黄瓜。倭瓜胖墩墩的，像一个个小太阳趴在地上；黄瓜则调皮地爬满竹架，开出黄灿灿的花。园子里一定要有一座昆虫旅馆——用竹筒和木块搭成。蜻蜓停在旅馆的阳台上，歪着复眼打量我，好像在说：“这是你的地盘，也是我的。”风来时，倭瓜叶拍着巴掌，黄瓜花轻轻落下。我躺在草地上想：自由，大概就是这个味道吧。" }
-        ],
-        "古诗三首": [
-            { type: "深圳时事", icon: "🏙️", title: "深圳儿童公园的冰趣", content: "虽然深圳不下雪，但罗湖儿童公园冬天会举办“冰雪节”，人造冰场让孩子们体验《稚子弄冰》的快乐。公园还复原了古代冰戏的玩法，敲冰、穿冰钏。" },
-            { type: "全国时事", icon: "🇨🇳", title: "哈尔滨冰雪大世界", content: "每年冬天，哈尔滨冰雪大世界吸引百万游客。小学生可以在这里看到冰雕、冰滑梯，体验杨万里诗中“敲成玉磬穿林响”的乐趣。冰雪文化成为北方孩子的童年记忆。" },
-            { type: "国际时事", icon: "🌍", title: "日本·冬日“冰镜”游戏", content: "在日本长野，孩子们冬天会把水冻成薄冰片，穿绳挂起来当镜子玩，和《稚子弄冰》几乎一模一样。东亚文化里的冰雪游戏，千年前就相通。" },
-            { type: "科学拓展", icon: "🔬", title: "冰为什么会发声？", content: "敲击冰块时，振动频率不同会发出不同音调。温度越低，冰越硬，声音越清脆。《稚子弄冰》里的“玉磬”声，科学上就是冰晶的谐振。" },
-            { type: "科学拓展", icon: "🔬", title: "宋代农具“秧马”", content: "《四时田园杂兴》里提到“儿童未解供耕织”，宋代有一种插秧工具叫“秧马”，人骑在上面插秧，腰不酸。江南水田至今仍有类似改良工具。" },
-            { type: "人文历史", icon: "📜", title: "杨万里：写童趣的大诗人", content: "杨万里（1127-1206），南宋“中兴四大诗人”之一。他一生写了两万多首诗，最喜欢观察儿童。他的诗里孩子们玩冰、捉蝴蝶、追黄蝶，被称为“儿童诗人”。" },
-            { type: "人文历史", icon: "📜", title: "东南亚华人童谣里的冰", content: "在泰国、马来西亚，华人后代传唱一首《冰条歌》：“敲冰条，叮当响，阿嬷买来一人半。”虽然热带没有冰，但祖先对冰的记忆通过童谣保留了下来。" },
-            { type: "人文历史", icon: "📜", title: "《村晚》与越南水乡", content: "雷震《村晚》“牧童归去横牛背，短笛无腔信口吹”。在越南湄公河三角洲，至今能看见水牛背上的牧童吹笛，和古诗里一模一样。这是中华文化在东南亚的活态传承。" },
-            { type: "英文小站", icon: "🇬🇧", title: "单词与句子", content: "ice (冰) , child (儿童) , flute (笛子) , ancient poem (古诗)\n📝 *Children knocking ice make sounds like ringing jade.*" },
-            { type: "作文锦囊", icon: "✍️", title: "《我穿越到古诗里》写作锦囊", content: "【极简大纲】\n1. 开头：选择一首古诗，想象自己穿越到那个场景。\n2. 中间：描写所见所闻（冰块、笛声、村庄），加入自己的互动。\n3. 结尾：回到现实，写出对古诗的新感受。\n\n【范文片段】\n  一阵眩晕后，我发现自己站在南宋的村庄里。一个小孩蹲在盆边，正从冰块上敲下一块圆冰，中间凿了个小洞，穿上彩线提在手里，当银钲敲。我凑过去，他用冰锤轻轻一敲——“叮！”声音清亮得像玉磬，穿过竹林。我也试着敲了一下，冰块震得我的手发麻。忽然冰块碎了，小孩咯咯笑起来。我醒了，手里还握着那首诗。原来，快乐古今都一样。" }
-        ],
-        "月是故乡明": [
-            { type: "深圳时事", icon: "🏙️", title: "深圳湾中秋赏月", content: "每年中秋，深圳湾公园沿海数万人赏月。海上生明月，天涯共此时。季羡林说“月是故乡明”，在深圳打拼的人，也会抬头望月，想念老家。" },
-            { type: "全国时事", icon: "🇨🇳", title: "中国探月工程", content: "嫦娥六号从月球背面采样返回，带回1.9公斤月壤。我们离月亮越来越近，但心里最明的还是故乡的那一轮。" },
-            { type: "国际时事", icon: "🌍", title: "全球华人·中秋同一个月亮", content: "从旧金山到悉尼，从伦敦到新加坡，全球华人共庆中秋。马来西亚槟城的“中秋园游会”有提灯游行，和国内一样热闹。月亮连接着五千万海外华人的乡愁。" },
-            { type: "科学拓展", icon: "🔬", title: "月亮为什么不发光", content: "月亮反射太阳光。我们看到的月光，其实是8分钟前太阳照射到月球再反射到地球。地月距离约38万公里，光走1.28秒。" },
-            { type: "科学拓展", icon: "🔬", title: "超级月亮与故乡记忆", content: "每年有2-4次“超级月亮”，月亮比平时大14%。但其实大小没变，只是心理感受。季羡林说“故乡的月亮格外亮”，也正是这种情感放大效应。" },
-            { type: "人文历史", icon: "📜", title: "季羡林与德国思乡", content: "季羡林1935-1945年留学德国哥廷根，十一年间每到中秋就站在小山上望东方。后来将思乡写成《月是故乡明》，文中月亮是贯穿全文的意象。" },
-            { type: "人文历史", icon: "📜", title: "东南亚华人的“月娘节”", content: "新加坡、马来西亚华人称中秋节为“月娘节”。孩子们提灯笼、吃榴莲月饼，依然背诵“举头望明月，低头思故乡”。他们把故乡的月亮带到了南洋。" },
-            { type: "人文历史", icon: "📜", title: "杜甫与月夜忆舍弟", content: "“露从今夜白，月是故乡明”是杜甫的诗句。季羡林借用这句诗为题，表达战乱中的家国之思。从杜甫到季羡林，再到今天的异乡人，月亮永远承载着思念。" },
-            { type: "英文小站", icon: "🇬🇧", title: "单词与句子", content: "moon (月亮) , hometown (故乡) , bright (明亮) , miss (思念)\n📝 *No matter where I go, the moon always makes me think of home.*" },
-            { type: "作文锦囊", icon: "✍️", title: "《不一样的月亮》写作锦囊", content: "【极简大纲】\n1. 开头：引用“月是故乡明”或描写你看到的月亮。\n2. 中间：写两个不同地方的月亮（比如深圳湾和老家院子），对比景象和心情。\n3. 结尾：点出“月亮相同，思念不同”。\n\n【范文片段】\n  去年中秋，我在深圳湾公园看月亮。月亮又大又圆，倒映在海面上，被海浪揉成碎银。周围人很多，大家举着手机拍照，热闹极了。可我心里总觉得缺了点什么。今年我回了老家，晚上搬个小凳坐在院子里。月亮从枣树梢升起来，月光把青瓦照得发亮，蟋蟀在墙角叫。奶奶端出月饼，咬一口，是熟悉的味道。我忽然懂了：月亮是一样的月亮，只是看月亮的地方不同，心里的温度也不一样。" }
-        ]
+        "祖父的园子": {
+            "深圳时事": [
+                { title: "光明欢乐田园", content: "深圳光明区“欢乐田园”占地约3.8平方公里，孩子们可以下田插秧、摘黄瓜，体验课文里“想做什么就做什么”的园子。还有稻田画、向日葵花海，是周末亲近泥土的好去处。" },
+                { title: "南山区“昆虫旅馆”", content: "深圳大学附近的大沙河公园里，有一座用木头、竹筒、瓦片搭成的“昆虫旅馆”，专门为瓢虫、独居蜂、蜻蜓提供栖息地。园子里的蜻蜓和蜜蜂，在这里找到了城市里的家。" }
+            ],
+            "全国时事": [
+                { title: "北京楼顶“天空农场”", content: "北京史家小学在教学楼顶开辟了“天空农场”，每个班分一块菜地，种黄瓜、西红柿、南瓜。他们把《祖父的园子》搬上了天空，收获的蔬菜还给食堂做午餐。" }
+            ],
+            "国际时事": [
+                { title: "荷兰漂浮农场", content: "荷兰鹿特丹有世界上第一座海上漂浮农场，里面养着40头奶牛，屋顶收集雨水，底层种植牧草。像不像祖父的园子漂在了水上？这里的牛每天都能看到过往船只。" }
+            ],
+            "科学拓展": [
+                { title: "倭瓜（南瓜）的环球旅行", content: "南瓜原产美洲，明朝时跟着西班牙商船来到中国。它耐旱、产量高，曾是欧洲和中国的“救命粮”。课文里的倭瓜，其实是一位环游世界的旅行家。🎃" },
+                { title: "蜻蜓的复眼与飞行", content: "蜻蜓有两万八千只小眼睛组成的复眼，可以同时看前、后、上、下。它的四片翅膀可以独立转动，因此能悬停、倒飞、急转弯。你在深圳湾公园经常能看到它们。" },
+                { title: "呼兰河的冬天", content: "呼兰河在黑龙江，冬天温度低至零下30度，河面结冰厚度超过1米。孩子们在冰上打陀螺、坐冰车。而在深圳，冬天还能穿短袖——这就是中国南北的奇妙差异。" }
+            ],
+            "人文历史": [
+                { title: "萧红与祖父：一生中最暖的光", content: "萧红（1911-1942），民国女作家。她童年时母亲早逝，父亲冷漠，只有祖父张维祯给她讲故事、教她背诗。祖父的园子是她整个童年的乐园。后来她病逝于香港，临终前依然在回忆那片园子。" },
+                { title: "东南亚华人记忆中的“园子”", content: "马来西亚槟城、新加坡的华人家庭，常常在屋后保留一片“小园子”，种番薯、木瓜、香茅。老一辈华人下南洋时，也把故乡的菜园记忆带到了热带。那是他们心里的“祖父的园子”。" },
+                { title: "呼兰河与萧红故居", content: "黑龙江呼兰区至今保留着萧红故居，院落里有泥墙、倭瓜架、一口老井。每年有东南亚华人组团去参观，寻找《呼兰河传》里的气息。园子虽小，却牵动着全球华人的乡愁。" }
+            ],
+            "英文小站": [
+                { title: "单词与句子", content: "garden (园子) , pumpkin (倭瓜/南瓜) , dragonfly (蜻蜓) , freedom (自由)<br>📝 *In my grandfather's garden, even the pumpkins seem to laugh.*" }
+            ],
+            "作文锦囊": [
+                { title: "《我心中的园子》写作锦囊", content: "【极简大纲】<br>1. 开头：点出“园子”在哪里（可以是老家院子、小区花园或想象的地方）。<br>2. 中间：写2-3种事物（比如倭瓜、蜻蜓、昆虫旅馆），用上拟人手法。<br>3. 结尾：表达情感——自由、快乐或对自然的爱。<br><br>【范文片段】<br>  如果我有一座园子，我不会种名贵的花，只种几架倭瓜和黄瓜。倭瓜胖墩墩的，像一个个小太阳趴在地上；黄瓜则调皮地爬满竹架，开出黄灿灿的花。园子里一定要有一座昆虫旅馆——用竹筒和木块搭成。蜻蜓停在旅馆的阳台上，歪着复眼打量我，好像在说：“这是你的地盘，也是我的。”风来时，倭瓜叶拍着巴掌，黄瓜花轻轻落下。我躺在草地上想：自由，大概就是这个味道吧。" }
+            ]
+        },
+        "古诗三首": {
+            "深圳时事": [
+                { title: "深圳儿童公园的冰趣", content: "虽然深圳不下雪，但罗湖儿童公园冬天会举办“冰雪节”，人造冰场让孩子们体验《稚子弄冰》的快乐。公园还复原了古代冰戏的玩法，敲冰、穿冰钏。" }
+            ],
+            "全国时事": [
+                { title: "哈尔滨冰雪大世界", content: "每年冬天，哈尔滨冰雪大世界吸引百万游客。小学生可以在这里看到冰雕、冰滑梯，体验杨万里诗中“敲成玉磬穿林响”的乐趣。冰雪文化成为北方孩子的童年记忆。" }
+            ],
+            "国际时事": [
+                { title: "日本·冬日“冰镜”游戏", content: "在日本长野，孩子们冬天会把水冻成薄冰片，穿绳挂起来当镜子玩，和《稚子弄冰》几乎一模一样。东亚文化里的冰雪游戏，千年前就相通。" }
+            ],
+            "科学拓展": [
+                { title: "冰为什么会发声？", content: "敲击冰块时，振动频率不同会发出不同音调。温度越低，冰越硬，声音越清脆。《稚子弄冰》里的“玉磬”声，科学上就是冰晶的谐振。" },
+                { title: "宋代农具“秧马”", content: "《四时田园杂兴》里提到“儿童未解供耕织”，宋代有一种插秧工具叫“秧马”，人骑在上面插秧，腰不酸。江南水田至今仍有类似改良工具。" }
+            ],
+            "人文历史": [
+                { title: "杨万里：写童趣的大诗人", content: "杨万里（1127-1206），南宋“中兴四大诗人”之一。他一生写了两万多首诗，最喜欢观察儿童。他的诗里孩子们玩冰、捉蝴蝶、追黄蝶，被称为“儿童诗人”。" },
+                { title: "东南亚华人童谣里的冰", content: "在泰国、马来西亚，华人后代传唱一首《冰条歌》：“敲冰条，叮当响，阿嬷买来一人半。”虽然热带没有冰，但祖先对冰的记忆通过童谣保留了下来。" },
+                { title: "《村晚》与越南水乡", content: "雷震《村晚》“牧童归去横牛背，短笛无腔信口吹”。在越南湄公河三角洲，至今能看见水牛背上的牧童吹笛，和古诗里一模一样。这是中华文化在东南亚的活态传承。" }
+            ],
+            "英文小站": [
+                { title: "单词与句子", content: "ice (冰) , child (儿童) , flute (笛子) , ancient poem (古诗)<br>📝 *Children knocking ice make sounds like ringing jade.*" }
+            ],
+            "作文锦囊": [
+                { title: "《我穿越到古诗里》写作锦囊", content: "【极简大纲】<br>1. 开头：选择一首古诗，想象自己穿越到那个场景。<br>2. 中间：描写所见所闻（冰块、笛声、村庄），加入自己的互动。<br>3. 结尾：回到现实，写出对古诗的新感受。<br><br>【范文片段】<br>  一阵眩晕后，我发现自己站在南宋的村庄里。一个小孩蹲在盆边，正从冰块上敲下一块圆冰，中间凿了个小洞，穿上彩线提在手里，当银钲敲。我凑过去，他用冰锤轻轻一敲——“叮！”声音清亮得像玉磬，穿过竹林。我也试着敲了一下，冰块震得我的手发麻。忽然冰块碎了，小孩咯咯笑起来。我醒了，手里还握着那首诗。原来，快乐古今都一样。" }
+            ]
+        },
+        "月是故乡明": {
+            "深圳时事": [
+                { title: "深圳湾中秋赏月", content: "每年中秋，深圳湾公园沿海数万人赏月。海上生明月，天涯共此时。季羡林说“月是故乡明”，在深圳打拼的人，也会抬头望月，想念老家。" }
+            ],
+            "全国时事": [
+                { title: "中国探月工程", content: "嫦娥六号从月球背面采样返回，带回1.9公斤月壤。我们离月亮越来越近，但心里最明的还是故乡的那一轮。" }
+            ],
+            "国际时事": [
+                { title: "全球华人·中秋同一个月亮", content: "从旧金山到悉尼，从伦敦到新加坡，全球华人共庆中秋。马来西亚槟城的“中秋园游会”有提灯游行，和国内一样热闹。月亮连接着五千万海外华人的乡愁。" }
+            ],
+            "科学拓展": [
+                { title: "月亮为什么不发光", content: "月亮反射太阳光。我们看到的月光，其实是8分钟前太阳照射到月球再反射到地球。地月距离约38万公里，光走1.28秒。" },
+                { title: "超级月亮与故乡记忆", content: "每年有2-4次“超级月亮”，月亮比平时大14%。但其实大小没变，只是心理感受。季羡林说“故乡的月亮格外亮”，也正是这种情感放大效应。" }
+            ],
+            "人文历史": [
+                { title: "季羡林与德国思乡", content: "季羡林1935-1945年留学德国哥廷根，十一年间每到中秋就站在小山上望东方。后来将思乡写成《月是故乡明》，文中月亮是贯穿全文的意象。" },
+                { title: "东南亚华人的“月娘节”", content: "新加坡、马来西亚华人称中秋节为“月娘节”。孩子们提灯笼、吃榴莲月饼，依然背诵“举头望明月，低头思故乡”。他们把故乡的月亮带到了南洋。" },
+                { title: "杜甫与月夜忆舍弟", content: "“露从今夜白，月是故乡明”是杜甫的诗句。季羡林借用这句诗为题，表达战乱中的家国之思。从杜甫到季羡林，再到今天的异乡人，月亮永远承载着思念。" }
+            ],
+            "英文小站": [
+                { title: "单词与句子", content: "moon (月亮) , hometown (故乡) , bright (明亮) , miss (思念)<br>📝 *No matter where I go, the moon always makes me think of home.*" }
+            ],
+            "作文锦囊": [
+                { title: "《不一样的月亮》写作锦囊", content: "【极简大纲】<br>1. 开头：引用“月是故乡明”或描写你看到的月亮。<br>2. 中间：写两个不同地方的月亮（比如深圳湾和老家院子），对比景象和心情。<br>3. 结尾：点出“月亮相同，思念不同”。<br><br>【范文片段】<br>  去年中秋，我在深圳湾公园看月亮。月亮又大又圆，倒映在海面上，被海浪揉成碎银。周围人很多，大家举着手机拍照，热闹极了。可我心里总觉得缺了点什么。今年我回了老家，晚上搬个小凳坐在院子里。月亮从枣树梢升起来，月光把青瓦照得发亮，蟋蟀在墙角叫。奶奶端出月饼，咬一口，是熟悉的味道。我忽然懂了：月亮是一样的月亮，只是看月亮的地方不同，心里的温度也不一样。" }
+            ]
+        }
     };
 
-    // 辅助渲染函数
-    function renderTopic(topicKey) {
+    // 分类顺序与显示名称（对应图片中的按钮风格）
+    const categories = [
+        { key: "深圳时事", label: "🏙️ 深圳时事", icon: "🏙️" },
+        { key: "全国时事", label: "🇨🇳 全国时事", icon: "🇨🇳" },
+        { key: "国际时事", label: "🌍 国际时事", icon: "🌍" },
+        { key: "科学拓展", label: "🔬 科学拓展", icon: "🔬" },
+        { key: "人文历史", label: "📜 人文历史", icon: "📜" },
+        { key: "英文小站", label: "🇬🇧 英文小站", icon: "🇬🇧" },
+        { key: "作文锦囊", label: "✍️ 作文锦囊", icon: "✍️" }
+    ];
+
+    let currentTopicKey = "祖父的园子";
+    let currentCategoryKey = "深圳时事";
+
+    // 渲染右侧区域：标题 + 分类按钮 + 当前分类下的卡片
+    function renderMain() {
         const mainDiv = document.getElementById('mainContent');
         const topicTitleMap = {
             "祖父的园子": "祖父的园子",
@@ -229,58 +307,87 @@
             "古诗三首": "杨万里·雷震·范成大 | 童趣与田园",
             "月是故乡明": "季羡林 | 月是故乡明"
         };
-        const cards = knowledgeBase[topicKey];
-        if (!cards || cards.length === 0) {
-            mainDiv.innerHTML = `<div style="padding:2rem;text-align:center">📭 暂无拓展内容，待补充</div>`;
-            return;
+
+        // 生成分类按钮HTML
+        let buttonsHtml = '';
+        for (let cat of categories) {
+            const activeClass = (cat.key === currentCategoryKey) ? 'active' : '';
+            buttonsHtml += `<button class="cat-btn ${activeClass}" data-cat="${cat.key}">${cat.label}</button>`;
         }
 
-        let html = `
-            <div class="current-topic-title">📖 ${topicTitleMap[topicKey]}</div>
-            <div class="topic-sub">${subtitleMap[topicKey]}</div>
-            <div class="cards-grid">
-        `;
-        for (let card of cards) {
-            let extraClass = (card.type === "作文锦囊") ? "essay-tip" : "";
-            html += `
-                <div class="ext-card ${extraClass}">
-                    <div class="card-header">
-                        <span class="icon">${card.icon}</span>
-                        <span>${card.title}</span>
-                        <span class="tag">${card.type}</span>
+        // 获取当前分类下的卡片数据
+        const topicData = knowledgeBase[currentTopicKey];
+        const cards = topicData && topicData[currentCategoryKey] ? topicData[currentCategoryKey] : [];
+        let cardsHtml = '';
+        if (cards.length === 0) {
+            cardsHtml = '<div style="padding: 1rem; text-align: center; color: #7c8f7a;">✨ 暂无拓展内容，待补充</div>';
+        } else {
+            for (let card of cards) {
+                const isEssay = (currentCategoryKey === "作文锦囊");
+                cardsHtml += `
+                    <div class="ext-card ${isEssay ? 'essay-card' : ''}">
+                        <div class="card-header">
+                            <span class="icon">${categories.find(c => c.key === currentCategoryKey)?.icon || '📌'}</span>
+                            <span>${card.title}</span>
+                        </div>
+                        <div class="card-body">
+                            ${card.content.replace(/\n/g, '<br>')}
+                        </div>
                     </div>
-                    <div class="card-body">
-                        ${card.content.replace(/\n/g, '<br>')}
-                    </div>
-                </div>
-            `;
+                `;
+            }
         }
-        html += `</div>`;
+
+        const html = `
+            <div class="current-topic-title">📖 ${topicTitleMap[currentTopicKey]}</div>
+            <div class="topic-sub">${subtitleMap[currentTopicKey]}</div>
+            <div class="category-bar">
+                ${buttonsHtml}
+            </div>
+            <div class="cards-list">
+                ${cardsHtml}
+            </div>
+        `;
         mainDiv.innerHTML = html;
+
+        // 绑定分类按钮点击事件
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const catKey = btn.getAttribute('data-cat');
+                if (catKey) {
+                    currentCategoryKey = catKey;
+                    renderMain();
+                }
+            });
+        });
     }
 
-    // 切换课文与高亮
-    const btns = document.querySelectorAll('.topic-btn');
-    function setActiveTopic(topic) {
-        btns.forEach(btn => {
-            if (btn.getAttribute('data-topic') === topic) {
+    // 切换课文
+    function setTopic(topicKey) {
+        currentTopicKey = topicKey;
+        // 重置分类到第一个（深圳时事）
+        currentCategoryKey = "深圳时事";
+        renderMain();
+        // 更新左侧按钮高亮
+        document.querySelectorAll('.topic-btn').forEach(btn => {
+            if (btn.getAttribute('data-topic') === topicKey) {
                 btn.classList.add('active');
             } else {
                 btn.classList.remove('active');
             }
         });
-        renderTopic(topic);
     }
 
-    btns.forEach(btn => {
+    // 绑定左侧课文按钮
+    document.querySelectorAll('.topic-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const topic = btn.getAttribute('data-topic');
-            setActiveTopic(topic);
+            if (topic) setTopic(topic);
         });
     });
 
-    // 默认加载第一个课文
-    setActiveTopic('祖父的园子');
+    // 初始化
+    setTopic("祖父的园子");
 </script>
 </body>
 </html>
