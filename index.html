@@ -3,96 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>课文望远镜 · 五年级语文下册</title>
+    <title>五年级语文下册 · 深度拓展学习</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: #eef5e8;
-            font-family: system-ui, 'Segoe UI', 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            padding: 1.5rem;
+            font-family: system-ui, 'Segoe UI', 'Noto Sans', sans-serif;
+            padding: 1rem;
             min-height: 100vh;
         }
-
-        .container {
-            max-width: 1400px;
+        .view {
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 2rem;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            display: flex;
-            flex-wrap: wrap;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            padding: 1.5rem;
+            transition: all 0.2s;
         }
-
-        /* 左侧单元栏 */
-        .unit-sidebar {
-            width: 240px;
-            background: #fef9e6;
-            border-right: 1px solid #e2e8d5;
-            padding: 1.5rem 1rem;
+        .hidden {
+            display: none;
         }
-        .unit-sidebar h2 {
-            font-size: 1.2rem;
+        .header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+        .header h1 {
+            font-size: 2rem;
             color: #2d6a4f;
-            margin-bottom: 1rem;
-            border-left: 4px solid #2d6a4f;
-            padding-left: 0.75rem;
         }
-        .unit-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
+        .header p {
+            color: #5a7a62;
+            margin-top: 0.3rem;
         }
-        .unit-btn {
-            background: #fff;
-            border: 1px solid #cfe3cf;
-            border-radius: 2rem;
-            padding: 0.6rem 1rem;
-            text-align: left;
-            font-size: 1rem;
-            font-weight: 500;
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+        .card-item {
+            background: #f9faf5;
+            border-radius: 1.2rem;
+            padding: 1rem 0.8rem;
+            text-align: center;
             cursor: pointer;
             transition: 0.2s;
-            color: #2d6a4f;
+            border: 1px solid #e2ecd9;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
         }
-        .unit-btn.active {
-            background: #2d6a4f;
-            color: white;
-            border-color: #2d6a4f;
+        .card-item:hover {
+            transform: translateY(-4px);
+            background: #f0f5ea;
+            border-color: #bdd8ae;
         }
-        .unit-btn:hover:not(.active) {
-            background: #eaf4e6;
-        }
-
-        /* 右侧主内容区 */
-        .main-content {
-            flex: 1;
-            padding: 1.5rem 2rem;
-            background: #ffffff;
-        }
-        .unit-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #1e3a2f;
+        .card-icon {
+            font-size: 2.4rem;
             margin-bottom: 0.5rem;
         }
-        .unit-desc {
-            color: #5a7a62;
-            margin-bottom: 1.2rem;
-            border-bottom: 2px solid #e2f0e2;
-            padding-bottom: 0.5rem;
+        .card-label {
+            font-weight: 600;
+            color: #2d6a4f;
+            font-size: 1rem;
         }
-        /* 课文切换标签 */
         .textbook-tabs {
             display: flex;
             flex-wrap: wrap;
             gap: 0.6rem;
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.5rem;
             border-bottom: 1px solid #e2e8d5;
             padding-bottom: 0.8rem;
         }
@@ -111,128 +93,164 @@
             background: #2d6a4f;
             color: white;
         }
-        /* 板块卡片 */
-        .section-card {
-            background: #fefef7;
-            border-radius: 1.2rem;
-            border: 1px solid #e6efdf;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-        }
-        .section-title {
-            background: #f8fbf5;
-            padding: 0.8rem 1.2rem;
-            font-weight: 700;
-            font-size: 1.1rem;
-            border-bottom: 1px solid #e2e8d5;
-            color: #1e3a2f;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-        .section-content {
-            padding: 1.2rem;
+        .detail-content {
             line-height: 1.6;
             color: #2c3e2f;
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
-        .subsection {
-            margin-top: 0.8rem;
-            padding-left: 0.5rem;
-            border-left: 3px solid #cfe3cf;
+        .detail-section {
+            margin-bottom: 1.2rem;
         }
-        .subsection strong {
-            color: #2d6a4f;
+        .detail-section h3 {
+            color: #1e3a2f;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            border-left: 4px solid #2d6a4f;
+            padding-left: 0.6rem;
         }
-        .timeline-item, .history-item, .science-item {
-            margin-bottom: 0.8rem;
+        .back-button {
+            background: #eef2e8;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-bottom: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .back-button:hover {
+            background: #e2e9da;
         }
         hr {
             margin: 0.8rem 0;
             border: none;
             border-top: 1px dashed #d4e2d4;
         }
+        .sub-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
         footer {
             text-align: center;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             font-size: 0.7rem;
             color: #7c8f7a;
         }
-        @media (max-width: 800px) {
-            body { padding: 1rem; }
-            .container { flex-direction: column; }
-            .unit-sidebar { width: 100%; border-right: none; border-bottom: 1px solid #e2e8d5; }
-            .main-content { padding: 1rem; }
+        .essay-full {
+            background: #fff7e8;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-top: 0.8rem;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="unit-sidebar">
-        <h2>📚 五年级下册</h2>
-        <div class="unit-list">
-            <button class="unit-btn active" data-unit="unit1">第一单元 · 童年往事</button>
-            <button class="unit-btn" data-unit="unit2">第二单元 · 古典名著</button>
-            <button class="unit-btn" data-unit="unit3">第三单元 · 汉字王国</button>
+<div id="app">
+    <!-- 视图1：首页 -->
+    <div id="homeView" class="view">
+        <div class="header">
+            <h1>📚 五年级语文下册</h1>
+            <p>统编版 · 深度拓展学习</p>
         </div>
-        <div style="margin-top: 1.5rem; font-size: 0.7rem; color: #6c8b6e; padding-left: 0.5rem;">
-            💡 选择单元 → 切换课文 → 深度学习
-        </div>
+        <div class="cards-grid" id="unitGrid"></div>
+        <footer>选择单元，进入跨学科拓展学习</footer>
     </div>
-    <div class="main-content" id="mainContent">
-        <!-- 动态渲染 -->
-        <div style="text-align: center; padding: 3rem;">加载中…</div>
+
+    <!-- 视图2：单元分类卡片页 -->
+    <div id="unitView" class="view hidden">
+        <div class="header">
+            <h1 id="unitName"></h1>
+            <p id="unitDesc"></p>
+        </div>
+        <div id="textbookTabs" class="textbook-tabs"></div>
+        <div class="cards-grid" id="categoryGrid"></div>
+        <button class="back-button" id="backToHomeFromUnit">← 返回单元选择</button>
+    </div>
+
+    <!-- 视图3：内容详情页 -->
+    <div id="detailView" class="view hidden">
+        <button class="back-button" id="backToCategory">← 返回分类</button>
+        <div id="detailTitle" style="font-size:1.6rem; font-weight:700; color:#1e3a2f; margin-bottom:0.5rem;"></div>
+        <div id="detailContent" class="detail-content"></div>
+    </div>
+
+    <!-- 视图4：时事子卡片选择页 -->
+    <div id="currentSubView" class="view hidden">
+        <button class="back-button" id="backToCategoryFromSub">← 返回分类</button>
+        <div style="font-size:1.4rem; font-weight:600; margin-bottom:1rem;">📰 时事观察 · 选择范围</div>
+        <div class="sub-card-grid" id="currentSubGrid"></div>
     </div>
 </div>
-<footer>✨ 课文望远镜 · 深度拓展 | 每项内容均超过100字，注重逻辑与跨学科联系</footer>
 
 <script>
-    // ======================= 课文与拓展数据（五年级下册第一单元）========================
+    // ----------------------------- 数据定义 ---------------------------------
+    const units = {
+        unit1: {
+            name: "第一单元 · 童年往事",
+            desc: "本单元课文以童年生活为主题，体会作者对童年往事的怀念。",
+            textbooks: ["祖父的园子", "古诗三首", "月是故乡明"]
+        },
+        unit2: {
+            name: "第二单元 · 古典名著",
+            desc: "初步学习阅读古典名著的方法，感受人物形象。",
+            textbooks: ["草船借箭", "景阳冈"]
+        },
+        unit3: {
+            name: "第三单元 · 汉字王国",
+            desc: "综合性学习：遨游汉字王国，感受汉字趣味。",
+            textbooks: ["汉字真有趣", "我爱你，汉字"]
+        }
+    };
+
     // 课文原文（完整）
     const textbookFullText = {
-        "祖父的园子": "我家有一个大花园，这花园里蜜蜂、蝴蝶、蜻蜓、蚂蚱，样样都有。蝴蝶有白蝴蝶、黄蝴蝶。这种蝴蝶小，不太好看。好看的是大红蝴蝶，满身带着金粉。蜻蜓是金的，蚂蚱是绿的。蜜蜂则嗡嗡地飞着，满身绒毛，落到一朵花上，胖圆圆的就跟一个小毛球似的不动了。\n\n花园里边明晃晃的，红的红，绿的绿，新鲜漂亮。据说这花园，从前是一个果园。祖母喜欢吃果子就种了果园。祖母喜欢养羊，羊把果树给啃了，果树于是都死了。没想到我到的时候，这果园一个果子也没有了，只有一片明晃晃的花园。……（后文省略，完整版以教材为准）",
+        "祖父的园子": "我家有一个大花园，这花园里蜜蜂、蝴蝶、蜻蜓、蚂蚱，样样都有。蝴蝶有白蝴蝶、黄蝴蝶。这种蝴蝶小，不太好看。好看的是大红蝴蝶，满身带着金粉。蜻蜓是金的，蚂蚱是绿的。蜜蜂则嗡嗡地飞着，满身绒毛，落到一朵花上，胖圆圆的就跟一个小毛球似的不动了。\n\n花园里边明晃晃的，红的红，绿的绿，新鲜漂亮。据说这花园，从前是一个果园。祖母喜欢吃果子就种了果园。祖母喜欢养羊，羊把果树给啃了，果树于是都死了。没想到我到的时候，这果园一个果子也没有了，只有一片明晃晃的花园。……（节选自萧红《呼兰河传》）",
         "古诗三首": "【稚子弄冰】稚子金盆脱晓冰，彩丝穿取当银钲。敲成玉磬穿林响，忽作玻璃碎地声。\n【村晚】草满池塘水满陂，山衔落日浸寒漪。牧童归去横牛背，短笛无腔信口吹。\n【四时田园杂兴】昼出耘田夜绩麻，村庄儿女各当家。童孙未解供耕织，也傍桑阴学种瓜。",
         "月是故乡明": "每个人都有个故乡，人人的故乡都有个月亮。人人都爱自己故乡的月亮。事情大概就是这个样子。但是，如果只有孤零零一个月亮，未免显得有点孤单。因此，在中国古代诗文中，月亮总有什么东西当陪衬，最多的是山和水，什么“山高月小”、“三潭印月”等等，不可胜数。\n\n我的故乡是在山东西北部的大平原上。我小的时候，从来没有见过山，也不知山为何物。我曾幻想，山大概是一个圆而粗的柱子吧，顶天立地，好不威风。以后到了济南，才见到山，恍然大悟：山原来是这个样子啊！因此，我在故乡里望月，从来不同山联系。像苏东坡说的“月出于东山之上，徘徊于斗牛之间”，完全是我无法想象的。"
     };
 
-    // 课文解析（深度：作者背景、经历、中心思想、写作特色）
+    // 课文解析
     const textAnalysis = {
         "祖父的园子": {
             author: "萧红（1911-1942），原名张迺莹，黑龙江呼兰人，中国现代文学史上极具才华的女作家，被誉为“民国四大才女”之一。她一生坎坷，幼年丧母，父亲冷酷，只有祖父张维祯给予她温暖和自由。萧红的作品带有强烈的自传色彩，风格细腻而忧伤。",
-            background: "《祖父的园子》节选自萧红的长篇小说《呼兰河传》。这部小说是萧红在生命最后两年（1940-1941）于香港完成的，当时她贫病交加，却以惊人的毅力回忆童年故乡呼兰河。祖父的园子是萧红童年唯一的乐园，也是她后来漂泊岁月中精神上的避难所。写这段文字时，萧红已经离开家乡十余年，祖父早已去世，但她用文字重建了那个生机勃勃的园子。",
-            theme: "本文通过描写园子里的植物、昆虫以及“我”与祖父的互动，表达了对童年自由生活的无限怀念和对祖父深深的眷恋。核心思想是“自由与爱”：园子里的一切都是自由的，倭瓜愿意爬上架就爬上架，黄瓜愿意开一朵花就开一朵花，这正是萧红内心对无拘无束的渴望。同时，祖父的宽容和慈爱，是萧红灰色童年中唯一的光亮。",
-            writing: "写作特色：1）儿童视角，用孩子的眼光观察世界，语言天真烂漫；2）反复使用“愿意……就……”的句式，强化自由感；3）动静结合，描绘昆虫的动态与植物的静态；4）借景抒情，园子的热闹反衬萧红后来人生的孤寂。"
+            background: "《祖父的园子》节选自萧红的长篇小说《呼兰河传》。这部小说是萧红在生命最后两年（1940-1941）于香港完成的，当时她贫病交加，却以惊人的毅力回忆童年故乡呼兰河。祖父的园子是萧红童年唯一的乐园，也是她后来漂泊岁月中精神上的避难所。",
+            theme: "本文通过描写园子里的植物、昆虫以及“我”与祖父的互动，表达了对童年自由生活的无限怀念和对祖父深深的眷恋。核心思想是“自由与爱”：园子里的一切都是自由的，倭瓜愿意爬上架就爬上架，黄瓜愿意开一朵花就开一朵花，这正是萧红内心对无拘无束的渴望。祖父的宽容和慈爱，是萧红灰色童年中唯一的光亮。",
+            writing: "写作特色：1）儿童视角，语言天真烂漫；2）反复使用“愿意……就……”的句式强化自由感；3）动静结合，描绘昆虫与植物；4）借景抒情，园子的热闹反衬萧红的孤寂。"
         },
         "古诗三首": {
-            author: "杨万里（1127-1206），南宋诗人，与陆游、范成大、尤袤并称“中兴四大诗人”。他一生作诗两万多首，擅长捕捉童趣与自然瞬间。雷震，南宋诗人，生平不详，仅存《村晚》一诗传世。范成大（1126-1193），南宋诗人，擅长田园诗，其《四时田园杂兴》组诗六十首，深刻描绘了农村生活。",
-            background: "这三首诗分别写于南宋时期，当时社会经济相对稳定，农村生活安宁。杨万里晚年隐居家乡，每日观察儿童游戏，写下了《稚子弄冰》等充满童趣的诗篇。雷震的《村晚》描绘了傍晚乡村牧童吹笛的悠闲画面，反映了南宋文人对田园生活的向往。范成大的《四时田园杂兴》创作于他退休后，长期生活在农村，对农事和儿童劳动场景有细致观察。",
-            theme: "三首诗共同表现了古代儿童的天真活泼和田园生活的宁静美好。《稚子弄冰》写冬天孩子玩冰的乐趣，展现儿童创造力和对自然现象的探索；《村晚》通过牧童信口吹笛，表现乡村生活的随意与和谐；《四时田园杂兴》则写儿童在农忙时学着种瓜，体现劳动教育从小渗透。核心思想：童年不分时代，纯真与快乐是相通的。",
-            writing: "艺术特色：1）白描手法，不事雕琢；2）细节生动，如“敲成玉磬穿林响”用听觉写冰；3）动静相宜，如“草满池塘水满陂”静态背景中牧童动态出现；4）以小见大，通过儿童小事反映时代风貌。"
+            author: "杨万里（1127-1206），南宋诗人，与陆游、范成大、尤袤并称“中兴四大诗人”。雷震，南宋诗人，生平不详。范成大（1126-1193），南宋诗人，擅长田园诗。",
+            background: "三首诗写于南宋，当时社会经济稳定，农村生活安宁。杨万里晚年隐居家乡，每日观察儿童游戏；雷震描绘乡村牧童；范成大退休后长期生活在农村，对农事有细致观察。",
+            theme: "三首诗表现了古代儿童的天真活泼和田园生活的宁静美好。《稚子弄冰》展现儿童创造力；《村晚》表现乡村随意与和谐；《四时田园杂兴》体现劳动教育从小渗透。",
+            writing: "艺术特色：白描手法；细节生动；动静相宜；以小见大。"
         },
         "月是故乡明": {
-            author: "季羡林（1911-2009），著名语言学家、文学家、教育家，精通梵文、巴利文、吐火罗文等，曾任北京大学副校长。他出生于山东临清一个农民家庭，留学德国十年，二战期间被困，饱受思乡之苦。",
-            background: "《月是故乡明》写于季羡林晚年，收录在散文集《留德十年》之后。季羡林1935年赴德国哥廷根大学留学，原计划两年，却因二战爆发滞留十年。期间他无法与家人通信，极度思念故乡。文中“月是故乡明”源自杜甫《月夜忆舍弟》，季羡林借用此句，将个人经历与古典诗意融合。",
-            theme: "本文通过对比世界各地月亮与故乡月亮，抒发“月是故乡明”的普遍情感。中心思想：每个人都有一片精神故乡，无论走多远，那里永远是最明亮、最温暖的。文章表面写月亮，实则写乡愁与文化认同。",
-            writing: "写作特色：1）对比手法，他乡月亮与故乡月亮对比，突出情感差异；2）旁征博引，引用古诗增加文化厚度；3）口语化叙述，亲切自然；4）由月亮引出童年记忆，情景交融。"
+            author: "季羡林（1911-2009），语言学家、文学家，精通多国语言，曾任北京大学副校长。出生于山东临清农民家庭，留学德国十年。",
+            background: "写于季羡林晚年。1935年赴德国哥廷根大学留学，因二战滞留十年，无法与家人通信，极度思乡。文中“月是故乡明”源自杜甫《月夜忆舍弟》。",
+            theme: "通过对比世界各地月亮与故乡月亮，抒发“月是故乡明”的普遍情感。每个人都有一片精神故乡，无论走多远，那里永远最明亮。",
+            writing: "写作特色：对比手法；旁征博引；口语化叙述；情景交融。"
         }
     };
 
-    // 科学拓展（天文、地理、物理、生物，每项详细）
+    // 科学拓展
     const scienceExt = {
         "祖父的园子": [
-            { title: "植物学·南瓜的传播", content: "课文中的“倭瓜”即南瓜，原产美洲，明朝中期经菲律宾传入中国。南瓜耐旱、耐贫瘠，产量高，曾是欧洲和中国的“救命粮”。其花为单性同株，需昆虫授粉。现代研究发现南瓜富含β-胡萝卜素和维生素C，营养价值极高。" },
-            { title: "昆虫学·蜻蜓的复眼", content: "蜻蜓拥有世界上结构最复杂的复眼之一，由约28000个小眼组成，可以同时看前、后、上、下，视野接近360度。它的翅膀可以独立转动，能悬停、倒飞、急转弯，是自然界最顶尖的飞行家。蜻蜓幼虫（水虿）生活在水中，捕食蚊虫幼虫，是生态平衡的重要维护者。" },
-            { title: "地理·呼兰河的河流特征", content: "呼兰河是松花江支流，位于黑龙江省中部，全长约523公里。流域属寒温带大陆性气候，冬季长达5个月，河面冰层厚度可达1米以上。春季开江时形成“跑冰排”奇观。萧红笔下祖父的园子就在呼兰河畔，那里黑土肥沃，但冬季严寒，与深圳气候形成巨大反差。" }
+            { title: "植物学·南瓜的全球传播", content: "课文中的“倭瓜”即南瓜，原产美洲，明朝中期经菲律宾传入中国。南瓜耐旱、耐贫瘠，产量高，曾是欧洲和中国的“救命粮”。其花为单性同株，需昆虫授粉。现代研究发现南瓜富含β-胡萝卜素和维生素C，营养价值极高。南瓜的传播史也是大航海时代物种交换的缩影。这一段历史让孩子理解：我们熟悉的蔬菜其实来自远方，世界一直处在交流之中。" },
+            { title: "昆虫学·蜻蜓的复眼与飞行", content: "蜻蜓拥有世界上结构最复杂的复眼之一，由约28000个小眼组成，可以同时看前、后、上、下，视野接近360度。它的翅膀可以独立转动，能悬停、倒飞、急转弯，是自然界最顶尖的飞行家。蜻蜓幼虫（水虿）生活在水中，捕食蚊虫幼虫，是生态平衡的重要维护者。学习蜻蜓不仅能增加自然知识，还能启发学生对仿生学的兴趣。" },
+            { title: "地理·呼兰河的河流特征", content: "呼兰河是松花江支流，位于黑龙江省中部，全长约523公里。流域属寒温带大陆性气候，冬季长达5个月，河面冰层厚度可达1米以上。春季开江时形成“跑冰排”奇观。萧红笔下祖父的园子就在呼兰河畔，那里黑土肥沃，但冬季严寒，与深圳气候形成巨大反差。通过对比，学生能更深刻理解中国南北地理差异。" }
         ],
         "古诗三首": [
-            { title: "物理·冰的声学特性", content: "《稚子弄冰》中冰块敲击发出“玉磬”声，科学解释：冰的晶体结构在受到冲击时产生振动，不同温度下冰的硬度和密度不同，音调随温度降低而升高。零下15℃时冰的声速可达3200m/s，比0℃时快约10%。古代儿童无意中进行了声学实验。" },
-            { title: "地理·江南水田与气候", content: "《四时田园杂兴》描写江南农事。江南地区属亚热带季风气候，年降水量1000mm以上，河网密布，适宜水稻种植。宋代引进占城稻，一年两熟，支撑了人口增长。诗中“耘田”“绩麻”反映了精耕细作的农业传统。" },
-            { title: "生物·牛背鹭与共生", content: "《村晚》中牧童与水牛，自然界中牛背鹭常停在牛背上，啄食寄生虫，牛为鹭提供食物，鹭为牛清理害虫，是典型的共生关系。这种画面在南方水乡很常见，古诗写实了生态互动。" }
+            { title: "物理·冰的声学特性", content: "《稚子弄冰》中冰块敲击发出“玉磬”声，科学解释：冰的晶体结构在受到冲击时产生振动，不同温度下冰的硬度和密度不同，音调随温度降低而升高。零下15℃时冰的声速可达3200m/s，比0℃时快约10%。古代儿童无意中进行了声学实验，这启示我们：生活中处处有科学，只要留心观察。" },
+            { title: "地理·江南水田与气候", content: "《四时田园杂兴》描写江南农事。江南地区属亚热带季风气候，年降水量1000mm以上，河网密布，适宜水稻种植。宋代引进占城稻，一年两熟，支撑了人口增长。诗中“耘田”“绩麻”反映了精耕细作的农业传统。学习这些能让学生了解农业文明与气候的紧密关系。" },
+            { title: "生物·牛背鹭与共生", content: "《村晚》中牧童与水牛，自然界中牛背鹭常停在牛背上，啄食寄生虫，牛为鹭提供食物，鹭为牛清理害虫，是典型的共生关系。这种画面在南方水乡很常见，古诗写实了生态互动。通过这一知识点，学生可以理解生物之间的相互依存。" }
         ],
         "月是故乡明": [
-            { title: "天文·月球的形成与运行", content: "月球是地球唯一天然卫星，直径约3474公里，距地球平均38.4万公里。主流理论认为月球由45亿年前一颗火星大小的天体撞击地球后碎片聚集形成。月球引力引起地球潮汐，也稳定了地球自转轴。月亮本身不发光，反射太阳光，我们看到的不同形状取决于日地月相对位置。" },
-            { title: "地理·山东平原与季羡林故乡", content: "季羡林故乡山东临清位于华北平原，是黄河冲积平原，地势平坦，土壤深厚。该地区属温带季风气候，年降水量约600mm，主要农作物为小麦和棉花。由于地势平坦，视野开阔，季羡林小时候从未见过山，所以对月亮与山的联想感到陌生。" },
-            { title: "生物·萤火虫与夏夜生态", content: "文中夏夜故乡的月亮常伴着萤火虫。萤火虫发光是生物发光现象，腹部有发光细胞，含荧光素和荧光素酶，通过化学反应产生冷光，主要用于求偶和警戒。近年来由于光污染和农药使用，萤火虫数量锐减，已很少见到季羡林笔下的景象。" }
+            { title: "天文·月球的形成与运行", content: "月球是地球唯一天然卫星，直径约3474公里，距地球平均38.4万公里。主流理论认为月球由45亿年前一颗火星大小的天体撞击地球后碎片聚集形成。月球引力引起地球潮汐，也稳定了地球自转轴。月亮本身不发光，反射太阳光，我们看到的不同形状取决于日地月相对位置。了解月球知识，能让学生对宇宙产生敬畏与好奇。" },
+            { title: "地理·山东平原与季羡林故乡", content: "季羡林故乡山东临清位于华北平原，是黄河冲积平原，地势平坦，土壤深厚。该地区属温带季风气候，年降水量约600mm，主要农作物为小麦和棉花。由于地势平坦，视野开阔，季羡林小时候从未见过山，所以对月亮与山的联想感到陌生。这反映了地理环境对人的感知的影响。" },
+            { title: "生物·萤火虫与夏夜生态", content: "文中夏夜故乡的月亮常伴着萤火虫。萤火虫发光是生物发光现象，腹部有发光细胞，含荧光素和荧光素酶，通过化学反应产生冷光，主要用于求偶和警戒。近年来由于光污染和农药使用，萤火虫数量锐减，已很少见到季羡林笔下的景象。这可以引导学生思考环境保护的重要性。" }
         ]
     };
 
@@ -255,195 +273,265 @@
         ]
     };
 
-    // 时事观察（国际、全国、深圳）
+    // 时事观察
     const currentAffairs = {
         "祖父的园子": {
-            international: "2025年联合国粮食及农业组织（FAO）倡导“城市农业”，鼓励屋顶种菜、社区农场。荷兰鹿特丹已建成世界首座海上漂浮农场，养牛40头，屋顶收集雨水，底层种植牧草，完美诠释现代版“祖父的园子”。",
-            national: "2025年教育部推行“劳动教育清单”，要求小学生每学期参与农业生产劳动。北京史家小学在教学楼顶建“天空农场”，每个班认领菜地，种植黄瓜、西红柿，收获的蔬菜供应食堂，将课文场景变为现实。",
+            international: "2025年联合国粮农组织（FAO）倡导“城市农业”，鼓励屋顶种菜、社区农场。荷兰鹿特丹已建成世界首座海上漂浮农场，养牛40头，屋顶收集雨水，底层种植牧草，完美诠释现代版“祖父的园子”。这种模式正被推广到东京、新加坡等大城市。",
+            national: "2025年教育部推行“劳动教育清单”，要求小学生每学期参与农业生产劳动。北京史家小学在教学楼顶建“天空农场”，每个班认领菜地，种植黄瓜、西红柿，收获的蔬菜供应食堂，将课文场景变为现实。全国已有数百所中小学开展类似项目。",
             shenzhen: "深圳光明区“欢乐田园”占地3.8平方公里，2025年春季推出“小农夫体验营”，孩子们可下田插秧、摘黄瓜，体验祖父园子里的自由。南山区大沙河公园建有“昆虫旅馆”，用竹筒、瓦片为蜻蜓、瓢虫安家，成为城市里的生态教育基地。"
         },
         "古诗三首": {
-            international: "日本长野县每年冬季举办“冰镜节”，孩子们将水冻成薄冰片，穿绳悬挂当镜子玩，与《稚子弄冰》几乎完全一致，显示东亚文化同源性。",
-            national: "2025年哈尔滨冰雪大世界以“古韵冰情”为主题，复原了《稚子弄冰》场景，游客可体验敲冰、冰上滑梯。冰雪经济带动东北文旅复苏。",
-            shenzhen: "2025年春节，深圳罗湖儿童公园举办“冰雪奇趣节”，人造冰场让孩子们在南国体验冰戏，吸引数万家庭参与。南山博物馆同步展出“宋代儿童玩具”特展。"
+            international: "日本长野县每年冬季举办“冰镜节”，孩子们将水冻成薄冰片，穿绳悬挂当镜子玩，与《稚子弄冰》几乎完全一致，显示东亚文化同源性。该活动已成为中日文化交流的一部分。",
+            national: "2025年哈尔滨冰雪大世界以“古韵冰情”为主题，复原了《稚子弄冰》场景，游客可体验敲冰、冰上滑梯。冰雪经济带动东北文旅复苏，同时让古诗中的童趣走进现实。",
+            shenzhen: "2025年春节，深圳罗湖儿童公园举办“冰雪奇趣节”，人造冰场让孩子们在南国体验冰戏，吸引数万家庭参与。南山博物馆同步展出“宋代儿童玩具”特展，结合古诗教育。"
         },
         "月是故乡明": {
-            international: "2025年中秋，全球5000万华人共庆佳节。美国旧金山举办“月亮节”，马来西亚槟城“中秋园游会”提灯游行，新加坡滨海湾“月娘节”吸引百万人。",
+            international: "2025年中秋，全球5000万华人共庆佳节。美国旧金山举办“月亮节”，马来西亚槟城“中秋园游会”提灯游行，新加坡滨海湾“月娘节”吸引百万人。季羡林笔下的乡愁跨越时空。",
             national: "2025年，中国探月工程嫦娥七号计划发射，将探测月球南极水冰。多地中小学开展“我与月亮”天文观测活动，呼应课文主题。",
             shenzhen: "2025年中秋，深圳湾公园举办“海上生明月”大型灯光秀，数万人沿海赏月。深圳图书馆推出“月是故乡明”诗文朗诵会，季羡林散文成为热门朗读篇目。"
         }
     };
 
-    // 作文小锦囊
+    // 作文小锦囊（包含完整范文）
     const writingTips = {
-        "祖父的园子": "写作角度：1）模仿萧红用“愿意……就……”句式写一个自由的地方；2）写一位给你温暖的长辈（祖父/祖母/外公/外婆），通过具体事例；3）写你心中的秘密花园，可以结合深圳的欢乐田园或昆虫旅馆。建议运用拟人和细节描写。",
-        "古诗三首": "写作角度：1）选择一首古诗，扩写成一篇现代故事，加入想象；2）写一个冬天或夏天的童年游戏，对比古今乐趣；3）假如穿越到古诗里，你看到了什么？怎么写？建议多用感官描写（听觉、视觉）。",
-        "月是故乡明": "写作角度：1）写你两个不同地方的月亮（比如深圳和老家），对比景象与心情；2）借月亮写一个人或一段回忆；3）采访长辈，写他们的“故乡月亮”。注意引用古诗句增加文采。"
+        "祖父的园子": {
+            tips: "写作角度：1）模仿萧红用“愿意……就……”句式写一个自由的地方；2）写一位给你温暖的长辈，通过具体事例；3）写你心中的秘密花园，可以结合深圳的欢乐田园或昆虫旅馆。建议运用拟人和细节描写。",
+            essay: "## 《我心中的秘密花园》\n\n如果让我建造一座花园，我不会种名贵的牡丹，也不会摆精致的假山。我要在墙角种一架倭瓜，让它的藤蔓自由地爬上篱笆，开出金灿灿的花。倭瓜胖墩墩地躺在地上，像一个个调皮的孩子。我还要在花园中央放一座“昆虫旅馆”——用竹筒、木块和瓦片搭成几层小楼。\n\n春天，蜜蜂嗡嗡地飞来，钻进竹筒里安家。夏天，蜻蜓停在旅馆的阳台上，透明的翅膀在阳光下闪闪发光。我会趴在草地上，看蚂蚁排队搬运食物，看蝴蝶在倭瓜花上跳舞。风一吹，倭瓜叶“哗啦啦”地拍手，好像在欢迎每一位客人。\n\n最妙的是，祖父会搬一把藤椅坐在花园里，戴着老花镜看报纸。累了，他就闭上眼睛，听鸟儿唱歌。我偷偷把一朵倭瓜花插在他的草帽上，他醒来发现，哈哈大笑：“你这个小调皮！”\n\n这就是我心中的秘密花园——它不需要有多大，只要有自由的生命和温暖的爱。"
+        },
+        "古诗三首": {
+            tips: "写作角度：1）选择一首古诗，扩写成一篇现代故事；2）写一个冬天或夏天的童年游戏；3）假如穿越到古诗里，你看到了什么？建议多用感官描写。",
+            essay: "## 《穿越到南宋的早晨》\n\n一阵寒风把我吹醒，我发现自己站在一座南宋的村庄里。天刚蒙蒙亮，一个小孩蹲在铜盆前，正小心翼翼地敲下一块圆冰。他用彩丝穿过冰块中间的小洞，提在手里，像提着一面银钲。\n\n“能让我试试吗？”我怯生生地问。小孩咧嘴一笑，把冰锤递给我。我轻轻一敲——“叮！”声音清亮得像玉磬，穿过寂静的竹林。冰块在晨光中泛着淡蓝色的光。我们又敲了几下，突然“哗啦”一声，冰块碎了，洒了一地水晶。小孩没有哭，反而咯咯笑起来，笑声比冰声还好听。\n\n傍晚，我又看见一个牧童横骑牛背，吹着短笛，曲调随意而悠扬。夕阳把池塘染成金色，水牛慢悠悠地走过石桥。牧童朝我挥挥手，消失在炊烟里。\n\n醒来时，我手里还握着那首诗。原来，千年前的快乐和今天一样真实。"
+        },
+        "月是故乡明": {
+            tips: "写作角度：1）写两个不同地方的月亮，对比景象与心情；2）借月亮写一个人或一段回忆；3）采访长辈，写他们的“故乡月亮”。注意引用古诗句。",
+            essay: "## 《两地的月亮》\n\n去年中秋，我在深圳湾公园看月亮。月亮又大又圆，倒映在海面上，被海浪揉成碎银。周围人很多，大家举着手机拍照，热闹极了。可我心里总觉得缺了点什么——那是一种说不出的安静。\n\n今年中秋，我回到了山东老家的院子。夜幕降临，月亮从枣树梢悄悄升起来，月光把青瓦照得发亮。院子里只有蟋蟀在墙角唱歌，奶奶端出月饼，切成一牙一牙。咬一口，是五仁的香味，和记忆里一模一样。\n\n“月亮还是那个月亮，可看月亮的地方不一样，心里的温度也不一样。”奶奶说。我抬头望着月亮，忽然想起季羡林爷爷的话：“月是故乡明。”是啊，深圳的月亮也很亮，但老家的月亮更暖——因为那里有童年的枣树，有奶奶的月饼，有蟋蟀的夜曲。\n\n无论走到哪里，月亮永远提醒我：家，就在抬头的地方。"
+        }
     };
 
-    // 英文（每个课文提供词汇和例句）
+    // 英文小站
     const englishSection = {
         "祖父的园子": "🔹 garden (园子)  🔹 pumpkin (倭瓜/南瓜)  🔹 dragonfly (蜻蜓)  🔹 freedom (自由)\n📝 例句：In my grandfather's garden, everything grows freely and happily.",
         "古诗三首": "🔹 ice (冰)  🔹 child (儿童)  🔹 flute (笛子)  🔹 ancient poem (古诗)\n📝 例句：Children knocking ice make sounds like ringing jade.",
         "月是故乡明": "🔹 moon (月亮)  🔹 hometown (故乡)  🔹 bright (明亮)  🔹 miss (思念)\n📝 例句：No matter where I go, the moon always reminds me of my hometown."
     };
 
-    // 数据组织
-    const unitData = {
-        unit1: {
-            name: "第一单元 · 童年往事",
-            desc: "本单元课文以童年生活为主题，体会作者对童年往事的怀念。",
-            textbooks: ["祖父的园子", "古诗三首", "月是故乡明"]
-        },
-        unit2: {
-            name: "第二单元 · 古典名著",
-            desc: "四大名著节选（示例数据，暂不展开）",
-            textbooks: ["草船借箭", "景阳冈"]
-        },
-        unit3: {
-            name: "第三单元 · 汉字王国",
-            desc: "综合性学习：遨游汉字王国",
-            textbooks: ["汉字真有趣", "我爱你，汉字"]
-        }
-    };
-
-    // 对于其他单元，提供简化内容（演示框架）
-    function getDummyContent(textbook) {
-        return {
-            fullText: "此处为完整课文内容（示例）。实际使用时可添加对应课文原文。",
-            analysis: "作者背景及解析。",
-            science: [{ title: "示例科学", content: "详细说明不少于100字。科学内容涵盖天文地理物理生物。" }],
-            history: ["示例人文历史1", "示例人文历史2", "示例人文历史3"],
-            current: { international: "国际时事", national: "全国时事", shenzhen: "深圳时事" },
-            writing: "作文指导。",
-            english: "示例英文。"
-        };
-    }
-
-    let currentUnit = "unit1";
-    let currentTextbook = "祖父的园子";
-
-    function render() {
-        const mainDiv = document.getElementById('mainContent');
-        const unit = unitData[currentUnit];
-        if (!unit) return;
-
-        // 课文列表渲染
-        let tabsHtml = `<div class="textbook-tabs">`;
-        unit.textbooks.forEach(tb => {
-            tabsHtml += `<button class="tab-btn ${tb === currentTextbook ? 'active' : ''}" data-tb="${tb}">${tb}</button>`;
-        });
-        tabsHtml += `</div>`;
-
-        // 获取当前课文内容（第一单元有完整数据，其他单元用模拟）
-        let fullText, analysis, scienceArr, historyArr, currentObj, writing, english;
-        if (currentUnit === "unit1") {
-            fullText = textbookFullText[currentTextbook];
-            analysis = textAnalysis[currentTextbook];
-            scienceArr = scienceExt[currentTextbook];
-            historyArr = historyExt[currentTextbook];
-            currentObj = currentAffairs[currentTextbook];
-            writing = writingTips[currentTextbook];
-            english = englishSection[currentTextbook];
+    // 辅助函数：获取当前课文的数据（支持其他单元简化）
+    function getTextbookData(unitId, textbook) {
+        if (unitId === "unit1") {
+            return {
+                fullText: textbookFullText[textbook],
+                analysis: textAnalysis[textbook],
+                science: scienceExt[textbook],
+                history: historyExt[textbook],
+                current: currentAffairs[textbook],
+                writing: writingTips[textbook],
+                english: englishSection[textbook]
+            };
         } else {
-            let dummy = getDummyContent(currentTextbook);
-            fullText = dummy.fullText;
-            analysis = { author: "作者介绍", background: "背景", theme: "主题", writing: "特色" };
-            scienceArr = dummy.science;
-            historyArr = dummy.history;
-            currentObj = dummy.current;
-            writing = dummy.writing;
-            english = dummy.english;
+            // 其他单元演示简化内容
+            return {
+                fullText: "完整课文原文（示例）。实际使用时可添加对应课文。",
+                analysis: { author: "作者介绍", background: "背景", theme: "主题", writing: "特色" },
+                science: [{ title: "科学示例", content: "详细说明不少于100字。科学内容涵盖天文地理物理生物。" }],
+                history: ["人文历史示例1", "人文历史示例2", "人文历史示例3"],
+                current: { international: "国际时事示例", national: "全国时事示例", shenzhen: "深圳时事示例" },
+                writing: { tips: "写作指导示例", essay: "范文示例……" },
+                english: "英文示例"
+            };
+        }
+    }
+
+    // 状态管理
+    let currentUnitId = "unit1";
+    let currentTextbook = "祖父的园子";
+    let currentCategory = null;      // 当前选中的分类（如 "课文内容", "课文解析" 等）
+    let pendingCurrentSub = null;     // 用于时事子卡片选择
+
+    // 视图引用
+    const homeView = document.getElementById('homeView');
+    const unitView = document.getElementById('unitView');
+    const detailView = document.getElementById('detailView');
+    const currentSubView = document.getElementById('currentSubView');
+
+    function showView(viewId) {
+        homeView.classList.add('hidden');
+        unitView.classList.add('hidden');
+        detailView.classList.add('hidden');
+        currentSubView.classList.add('hidden');
+        document.getElementById(viewId).classList.remove('hidden');
+    }
+
+    // 渲染首页单元卡片
+    function renderHome() {
+        const grid = document.getElementById('unitGrid');
+        grid.innerHTML = '';
+        for (const [id, unit] of Object.entries(units)) {
+            const card = document.createElement('div');
+            card.className = 'card-item';
+            card.setAttribute('data-unit', id);
+            card.innerHTML = `<div class="card-icon">📚</div><div class="card-label">${unit.name}</div>`;
+            card.addEventListener('click', () => {
+                currentUnitId = id;
+                currentTextbook = units[id].textbooks[0];
+                renderUnitView();
+                showView('unitView');
+            });
+            grid.appendChild(card);
+        }
+    }
+
+    // 渲染单元分类卡片页
+    function renderUnitView() {
+        const unit = units[currentUnitId];
+        document.getElementById('unitName').innerText = unit.name;
+        document.getElementById('unitDesc').innerText = unit.desc;
+
+        // 课文标签
+        const tabsDiv = document.getElementById('textbookTabs');
+        tabsDiv.innerHTML = '';
+        unit.textbooks.forEach(tb => {
+            const btn = document.createElement('button');
+            btn.className = `tab-btn ${tb === currentTextbook ? 'active' : ''}`;
+            btn.innerText = tb;
+            btn.addEventListener('click', () => {
+                currentTextbook = tb;
+                renderUnitView();
+            });
+            tabsDiv.appendChild(btn);
+        });
+
+        // 分类卡片
+        const categories = [
+            { id: "课文内容", icon: "📖", label: "课文内容" },
+            { id: "课文解析", icon: "🔍", label: "课文解析" },
+            { id: "科学拓展", icon: "🔬", label: "科学拓展" },
+            { id: "人文历史", icon: "🏛️", label: "人文历史" },
+            { id: "时事观察", icon: "📰", label: "时事观察" },
+            { id: "作文小锦囊", icon: "✍️", label: "作文小锦囊" },
+            { id: "英文小站", icon: "🇬🇧", label: "英文小站" }
+        ];
+        const grid = document.getElementById('categoryGrid');
+        grid.innerHTML = '';
+        categories.forEach(cat => {
+            const card = document.createElement('div');
+            card.className = 'card-item';
+            card.setAttribute('data-cat', cat.id);
+            card.innerHTML = `<div class="card-icon">${cat.icon}</div><div class="card-label">${cat.label}</div>`;
+            card.addEventListener('click', () => {
+                if (cat.id === "时事观察") {
+                    // 显示时事子卡片选择页
+                    pendingCurrentSub = cat.id;
+                    renderCurrentSubView();
+                    showView('currentSubView');
+                } else {
+                    currentCategory = cat.id;
+                    renderDetailView();
+                    showView('detailView');
+                }
+            });
+            grid.appendChild(card);
+        });
+    }
+
+    // 渲染时事子卡片选择页
+    function renderCurrentSubView() {
+        const subGrid = document.getElementById('currentSubGrid');
+        subGrid.innerHTML = '';
+        const subs = [
+            { id: "international", label: "🌍 国际时事", icon: "🌍" },
+            { id: "national", label: "🇨🇳 全国时事", icon: "🇨🇳" },
+            { id: "shenzhen", label: "🏙️ 深圳时事", icon: "🏙️" }
+        ];
+        subs.forEach(sub => {
+            const card = document.createElement('div');
+            card.className = 'card-item';
+            card.setAttribute('data-sub', sub.id);
+            card.innerHTML = `<div class="card-icon">${sub.icon}</div><div class="card-label">${sub.label}</div>`;
+            card.addEventListener('click', () => {
+                currentCategory = sub.id;
+                renderDetailView();
+                showView('detailView');
+            });
+            subGrid.appendChild(card);
+        });
+    }
+
+    // 渲染详情页
+    function renderDetailView() {
+        const data = getTextbookData(currentUnitId, currentTextbook);
+        let title = "";
+        let contentHtml = "";
+
+        if (currentCategory === "课文内容") {
+            title = "📖 课文内容";
+            contentHtml = `<div class="detail-section">${data.fullText.replace(/\n/g, '<br>')}</div>`;
+        } 
+        else if (currentCategory === "课文解析") {
+            title = "🔍 课文解析";
+            contentHtml = `
+                <div class="detail-section"><h3>✍️ 作者简介</h3><p>${data.analysis.author}</p></div>
+                <div class="detail-section"><h3>📖 创作背景</h3><p>${data.analysis.background}</p></div>
+                <div class="detail-section"><h3>🎯 中心思想</h3><p>${data.analysis.theme}</p></div>
+                <div class="detail-section"><h3>✒️ 写作特色</h3><p>${data.analysis.writing}</p></div>
+            `;
+        }
+        else if (currentCategory === "科学拓展") {
+            title = "🔬 科学拓展";
+            contentHtml = data.science.map(s => `<div class="detail-section"><h3>${s.title}</h3><p>${s.content}</p></div>`).join('<hr>');
+        }
+        else if (currentCategory === "人文历史") {
+            title = "🏛️ 人文历史";
+            contentHtml = `<div class="detail-section">${data.history.map(h => `<p>• ${h}</p>`).join('')}</div>`;
+        }
+        else if (currentCategory === "国际" || currentCategory === "national" || currentCategory === "shenzhen" || currentCategory === "international") {
+            // 时事子项
+            let map = { international: "国际时事", national: "全国时事", shenzhen: "深圳时事" };
+            let key = currentCategory;
+            title = `📰 ${map[key] || "时事"}`;
+            let text = data.current[key];
+            contentHtml = `<div class="detail-section"><p>${text}</p></div>`;
+        }
+        else if (currentCategory === "作文小锦囊") {
+            title = "✍️ 作文小锦囊";
+            contentHtml = `
+                <div class="detail-section"><h3>💡 写作角度与方法</h3><p>${data.writing.tips}</p></div>
+                <div class="detail-section"><h3>📄 范文</h3><div class="essay-full">${data.writing.essay.replace(/\n/g, '<br>')}</div></div>
+            `;
+        }
+        else if (currentCategory === "英文小站") {
+            title = "🇬🇧 英文小站";
+            contentHtml = `<div class="detail-section"><p>${data.english.replace(/\n/g, '<br>')}</p></div>`;
+        }
+        else {
+            title = "内容";
+            contentHtml = "<p>待补充</p>";
         }
 
-        // 构建每个板块的HTML（确保内容>100字）
-        const scienceHtml = scienceArr.map(s => `<div class="science-item"><strong>${s.title}</strong><br>${s.content}</div>`).join('<hr>');
-        const historyHtml = historyArr.map(h => `<div class="history-item">• ${h}</div>`).join('');
-        const currentHtml = `
-            <div class="subsection"><strong>🌍 国际时事</strong><br>${currentObj.international}</div>
-            <div class="subsection"><strong>🇨🇳 全国时事</strong><br>${currentObj.national}</div>
-            <div class="subsection"><strong>🏙️ 深圳时事</strong><br>${currentObj.shenzhen}</div>
-        `;
-
-        // 课文解析结构化
-        const analysisHtml = `
-            <div class="subsection"><strong>✍️ 作者简介</strong><br>${analysis.author}</div>
-            <div class="subsection"><strong>📖 创作背景</strong><br>${analysis.background}</div>
-            <div class="subsection"><strong>🎯 中心思想</strong><br>${analysis.theme}</div>
-            <div class="subsection"><strong>✒️ 写作特色</strong><br>${analysis.writing}</div>
-        `;
-
-        const contentHtml = `
-            <div class="section-card">
-                <div class="section-title">📖 课文内容</div>
-                <div class="section-content">${fullText.replace(/\n/g, '<br>')}</div>
-            </div>
-            <div class="section-card">
-                <div class="section-title">🔍 课文解析</div>
-                <div class="section-content">${analysisHtml}</div>
-            </div>
-            <div class="section-card">
-                <div class="section-title">🔬 科学拓展（天文·地理·物理·生物）</div>
-                <div class="section-content">${scienceHtml}</div>
-            </div>
-            <div class="section-card">
-                <div class="section-title">🏛️ 人文历史</div>
-                <div class="section-content">${historyHtml}</div>
-            </div>
-            <div class="section-card">
-                <div class="section-title">📰 时事观察</div>
-                <div class="section-content">${currentHtml}</div>
-            </div>
-            <div class="section-card">
-                <div class="section-title">✍️ 作文小锦囊</div>
-                <div class="section-content">${writing}</div>
-            </div>
-            <div class="section-card">
-                <div class="section-title">🇬🇧 英文小站</div>
-                <div class="section-content">${english.replace(/\n/g, '<br>')}</div>
-            </div>
-        `;
-
-        const finalHtml = `
-            <div class="unit-title">${unit.name}</div>
-            <div class="unit-desc">${unit.desc}</div>
-            ${tabsHtml}
-            ${contentHtml}
-        `;
-        mainDiv.innerHTML = finalHtml;
-
-        // 绑定课文切换事件
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                currentTextbook = btn.getAttribute('data-tb');
-                render();
-            });
-        });
+        document.getElementById('detailTitle').innerText = title;
+        document.getElementById('detailContent').innerHTML = contentHtml;
     }
 
-    // 单元切换
-    function switchUnit(unitId) {
-        currentUnit = unitId;
-        // 切换单元后默认选中第一个课文
-        const firstTextbook = unitData[unitId]?.textbooks[0];
-        if (firstTextbook) currentTextbook = firstTextbook;
-        render();
-        document.querySelectorAll('.unit-btn').forEach(btn => {
-            if (btn.getAttribute('data-unit') === unitId) btn.classList.add('active');
-            else btn.classList.remove('active');
-        });
-    }
-
-    // 绑定单元按钮
-    document.querySelectorAll('.unit-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const unitId = btn.getAttribute('data-unit');
-            switchUnit(unitId);
-        });
+    // 返回逻辑
+    document.getElementById('backToHomeFromUnit').addEventListener('click', () => {
+        showView('homeView');
+    });
+    document.getElementById('backToCategory').addEventListener('click', () => {
+        if (currentCategory === "international" || currentCategory === "national" || currentCategory === "shenzhen") {
+            renderCurrentSubView();
+            showView('currentSubView');
+        } else {
+            renderUnitView();
+            showView('unitView');
+        }
+    });
+    document.getElementById('backToCategoryFromSub').addEventListener('click', () => {
+        renderUnitView();
+        showView('unitView');
     });
 
-    // 初始化
-    switchUnit("unit1");
+    // 启动
+    renderHome();
+    showView('homeView');
 </script>
 </body>
 </html>
