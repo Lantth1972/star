@@ -3,97 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>知了 · 语文知识拓展小助手</title>
+    <title>知了 · 作文+跨学科+深圳地图</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
-            background: linear-gradient(145deg, #f7f9fc 0%, #eef2f5 100%);
-            font-family: system-ui, 'Segoe UI', 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            padding: 2rem 1rem;
+            background: linear-gradient(145deg, #f0f7f0 0%, #e2ebe2 100%);
+            font-family: system-ui, 'Segoe UI', 'Noto Sans', sans-serif;
+            padding: 1.5rem;
             min-height: 100vh;
         }
-
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
         }
-
-        /* 头部 */
         .hero {
             text-align: center;
             margin-bottom: 2rem;
         }
         .hero h1 {
-            font-size: 2.2rem;
-            background: linear-gradient(135deg, #2b5f8a, #4c9f70);
+            font-size: 2rem;
+            background: linear-gradient(135deg, #2b5f8a, #1e7e34);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            letter-spacing: -0.3px;
         }
         .hero p {
-            color: #3c5a6f;
+            color: #2c5a2e;
             margin-top: 0.5rem;
-            font-size: 1rem;
         }
-
-        /* 输入卡片 */
         .input-card {
             background: white;
             border-radius: 2rem;
             padding: 1.5rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
             margin-bottom: 2rem;
-            transition: box-shadow 0.2s;
         }
         .input-group {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
-            align-items: flex-start;
         }
-        .input-group textarea {
+        textarea {
             flex: 1;
-            padding: 1rem 1.2rem;
-            font-size: 1rem;
-            border: 1px solid #cfdfed;
+            padding: 1rem;
             border-radius: 1.5rem;
+            border: 1px solid #c8ddd0;
             font-family: inherit;
+            font-size: 1rem;
             resize: vertical;
-            background: #fefefe;
-            transition: 0.2s;
-        }
-        .input-group textarea:focus {
-            outline: none;
-            border-color: #4c9f70;
-            box-shadow: 0 0 0 3px rgba(76,159,112,0.2);
         }
         button {
             background: #2b5f8a;
             color: white;
             border: none;
             padding: 0.8rem 2rem;
-            font-size: 1rem;
-            font-weight: 600;
             border-radius: 2rem;
+            font-weight: bold;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
         }
         button:hover {
             background: #1e4668;
             transform: translateY(-2px);
-        }
-        button:active {
-            transform: translateY(1px);
         }
         .example-tags {
             margin-top: 1rem;
@@ -102,23 +77,17 @@
             gap: 0.5rem;
         }
         .example {
-            background: #eef2f7;
-            padding: 0.4rem 1rem;
+            background: #eef2f0;
+            padding: 0.3rem 1rem;
             border-radius: 2rem;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: 0.1s;
         }
-        .example:hover {
-            background: #d4e0e8;
-        }
-
-        /* 输出三栏卡片 */
         .cards {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-top: 1rem;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
         }
         .card {
             flex: 1;
@@ -126,283 +95,240 @@
             background: white;
             border-radius: 1.5rem;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            transition: transform 0.2s;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            transition: 0.2s;
         }
         .card:hover {
             transform: translateY(-4px);
         }
         .card-header {
-            padding: 1rem 1.2rem;
-            font-weight: 700;
-            font-size: 1.2rem;
+            padding: 0.8rem 1.2rem;
+            font-weight: bold;
+            font-size: 1.1rem;
             color: white;
         }
-        .card-header.science { background: #2c6e9e; }
-        .card-header.english { background: #e67e22; }
-        .card-header.trends { background: #27ae60; }
+        .science { background: #2c6e9e; }
+        .english { background: #e67e22; }
+        .trends { background: #1e7e34; }
+        .outline { background: #8e44ad; }
+        .essay { background: #c0392b; }
         .card-content {
             padding: 1.2rem;
-            line-height: 1.5;
-            color: #1f2d3d;
             font-size: 0.95rem;
+            line-height: 1.5;
+            color: #1e2a36;
         }
         .card-content p {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.6rem;
         }
-        .card-content .small-note {
+        .map-link {
+            display: inline-block;
+            background: #eef2f5;
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
             font-size: 0.8rem;
-            color: #6c7a89;
-            border-top: 1px solid #ecf0f1;
+            text-decoration: none;
+            color: #2b5f8a;
+            margin-top: 0.3rem;
+            margin-right: 0.5rem;
+        }
+        .map-link:hover {
+            background: #d0dfe8;
+        }
+        .small-note {
+            font-size: 0.75rem;
+            color: #6c7a6e;
+            border-top: 1px solid #e0e8e0;
             margin-top: 0.8rem;
             padding-top: 0.6rem;
         }
         .loading {
             text-align: center;
-            color: #5f7f9e;
             padding: 2rem;
-            font-style: italic;
+            color: #5f7f6e;
         }
         footer {
             text-align: center;
-            margin-top: 2.5rem;
+            margin-top: 2rem;
             font-size: 0.75rem;
-            color: #7f8c8d;
+            color: #5d6e5d;
         }
-        hr {
-            margin: 1rem 0;
-            border: none;
-            border-top: 1px solid #dce5ec;
-        }
-        .api-note {
-            background: #fff8e7;
-            border-radius: 1rem;
-            padding: 0.8rem 1.2rem;
-            font-size: 0.8rem;
-            margin-top: 1.5rem;
-            border-left: 4px solid #f1c40f;
-        }
-        @media (max-width: 700px) {
-            .input-group {
-                flex-direction: column;
-            }
-            button {
-                align-self: flex-end;
-            }
+        @media (max-width: 800px) {
+            body { padding: 1rem; }
+            .card { min-width: 100%; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="hero">
-        <h1>📖 知了 · 知识小触角</h1>
-        <p>输入一个语文知识点（古诗、课文、词语） → 自动长出科学·英文·时事三个新枝芽</p>
+        <h1>📚 知了 · 作文拓展+跨学科+深圳地图</h1>
+        <p>输入作文题或语文知识点 → 科学·英文·深圳时事·作文大纲·范文 | 点击地图链接查看真实位置</p>
     </div>
-
     <div class="input-card">
         <div class="input-group">
-            <textarea id="knowledgeInput" rows="2" placeholder="例如：望庐山瀑布 李白&#10;也可以写：观潮、赵州桥、揠苗助长、中国结……"></textarea>
-            <button id="expandBtn">✨ 生成拓展</button>
+            <textarea id="knowledgeInput" rows="2" placeholder="例如：假如我是一滴水&#10;也可以输入：深圳的春天、莲花山、爱护环境……"></textarea>
+            <button id="expandBtn">✨ 生成全部</button>
         </div>
         <div class="example-tags">
-            <span class="example" data-text="望庐山瀑布 李白">🌊 望庐山瀑布</span>
-            <span class="example" data-text="赵州桥">🏛️ 赵州桥</span>
-            <span class="example" data-text="揠苗助长">🌾 揠苗助长</span>
-            <span class="example" data-text="中国结">🧧 中国结</span>
-            <span class="example" data-text="观潮">🌊 观潮（钱塘江大潮）</span>
+            <span class="example" data-text="假如我是一滴水">💧 假如我是一滴水</span>
+            <span class="example" data-text="深圳的春天">🌸 深圳的春天</span>
+            <span class="example" data-text="莲花山公园">🏞️ 莲花山公园</span>
+            <span class="example" data-text="保护红树林">🌿 保护红树林</span>
+            <span class="example" data-text="我的理想">⭐ 我的理想</span>
         </div>
     </div>
 
     <div id="cardsContainer" class="cards">
-        <!-- 静态示例卡片，页面加载时展示一个默认内容 -->
-        <div class="card">
-            <div class="card-header science">🔬 科学拓展</div>
-            <div class="card-content">
-                <p>✨ 输入上面的知识点，点击「生成拓展」试试～</p>
-                <div class="small-note">📌 每个知识点都会得到专属的跨学科卡片</div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header english">🇬🇧 英文小站</div>
-            <div class="card-content">
-                <p>💡 包含相关单词 + 一个简单例句</p>
-                <div class="small-note">✏️ 可以模仿句子写进英文日记里</div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header trends">📰 时事透镜</div>
-            <div class="card-content">
-                <p>🌍 最近一年内的新闻或科技进展，和生活有关</p>
-                <div class="small-note">📅 时事每季度更新，帮你了解窗外事</div>
-            </div>
-        </div>
+        <!-- 初始占位 -->
+        <div class="card"><div class="card-header science">🔬 科学</div><div class="card-content">点击上方按钮，生成拓展内容～</div></div>
+        <div class="card"><div class="card-header english">🇬🇧 英文</div><div class="card-content">包含单词和例句</div></div>
+        <div class="card"><div class="card-header trends">📰 时事·深圳</div><div class="card-content">深圳本地新闻 + 地图链接</div></div>
+        <div class="card"><div class="card-header outline">📝 作文大纲</div><div class="card-content">帮你理清思路</div></div>
+        <div class="card"><div class="card-header essay">✍️ 范文（约400字）</div><div class="card-content">可参考学习</div></div>
     </div>
-
-    <div class="api-note">
-        ⚙️ <strong>当前为「模拟演示模式」</strong> —— 展示真实的内容效果。  
-        如需接入真实AI（如千问API、ChatGPT等），只需将下方的 <code>fetchFromMock</code> 替换为真实API调用，并按提示词格式返回JSON即可。  
-        <br>📌 我们已经预留好接口位置（见代码中的 <code>callRealAI()</code> 注释）。
-    </div>
-    <footer>
-        🧠 知了 · 不刷题，只点亮知识之间的连接线
-    </footer>
+    <footer>⭐ 所有内容均为AI模拟生成，点击 🗺️ 地图链接 可查看真实地点位置（跳转百度地图）</footer>
 </div>
 
 <script>
-    // ---------- 模拟数据生成器（完全按照「望庐山瀑布」风格演示，同时也支持其他词条）----------
-    // 实际使用时，你可以把这个 mock 替换成真实的大模型 API 调用。
-    async function mockExpandAPI(userInput) {
-        // 模拟网络延迟
-        await new Promise(resolve => setTimeout(resolve, 600));
-
-        // 为了让演示更生动，针对不同输入返回不一样的内容（简易关键词匹配）
-        // 如果输入内容包含“庐山”或“瀑布”，返回定制内容；否则返回通用模板但依然保证高质量。
-        const lowerInput = userInput.toLowerCase();
-        
-        // 预置一些典型内容的回复 (展示能力)
-        if (lowerInput.includes("庐山") || lowerInput.includes("瀑布") || lowerInput.includes("望庐山瀑布")) {
-            return {
-                science: "💧 **瀑布是怎么形成的？**\n庐山瀑布落差约150米（约50层楼高）。水流撞击岩石产生大量**负离子**，所以瀑布边空气特别清新。\n🔬 **小实验**：用一杯水从高处缓缓倒下，观察水柱越来越细——这就是重力在帮忙！",
-                english: "🏞️ **核心词**：waterfall（瀑布）, mist（水雾）, silver（银色的）\n📝 **仿写短句**：\n*“The waterfall looks like silver thread hanging from the cliff.”*\n（瀑布像银色的丝线挂在悬崖上。）\n下次看到瀑布，试试用英文夸它！",
-                trends: "📅 **2024年7月新闻**：庐山因暴雨后水量大增，重现“飞流直下三千尺”奇观，游客争相打卡。\n🌍 **气候知识**：全球变暖可能导致部分小型瀑布干涸，科学家正用卫星监测瀑布群水量。\n👧 下次旅游时，你也可以观察瀑布水量，做“小公民科学家”。"
-            };
-        } 
-        else if (lowerInput.includes("赵州桥")) {
-            return {
-                science: "🏗️ **桥梁科学**：赵州桥已有1400多年历史，是世界上最古老的敞肩石拱桥。主拱圈由28道独立石拱组成，互相支撑，分散压力。\n💡 思考：为什么拱形比平直的结构更坚固？你可以用一张纸做个实验：平放 vs 弯成拱形，看谁更能承重。",
-                english: "🌉 **bridge**（桥）, **arch**（拱形）, **ancient**（古老的）\n✏️ 句子：*“The Zhaozhou Bridge is a great example of ancient Chinese wisdom.”*\n（赵州桥是中国古代智慧的伟大典范。）",
-                trends: "📰 **2025年文化热点**：数字技术让赵州桥‘活’起来——游客用手机AR就能看到千年建造过程。国家正在推广‘古桥数字化保护’项目，让文物永存在云端。"
-            };
+    // 辅助函数：为文本中的地点自动添加地图链接（简单关键词匹配）
+    function addMapLinks(text) {
+        // 定义地点及其对应的搜索词（百度地图搜索）
+        const places = [
+            { name: "莲花山", keyword: "深圳莲花山公园" },
+            { name: "莲花山公园", keyword: "深圳莲花山公园" },
+            { name: "大沙河", keyword: "深圳大沙河生态长廊" },
+            { name: "深圳湾", keyword: "深圳湾公园" },
+            { name: "红树林", keyword: "福田红树林自然保护区" },
+            { name: "鲲鹏径", keyword: "鲲鹏径 深圳" },
+            { name: "茅洲河", keyword: "茅洲河 深圳" },
+            { name: "前海", keyword: "深圳前海石公园" },
+            { name: "市民中心", keyword: "深圳市民中心" },
+            { name: "邓小平铜像", keyword: "莲花山公园邓小平铜像" }
+        ];
+        let result = text;
+        for (let p of places) {
+            const regex = new RegExp(`(${p.name})`, 'g');
+            const mapLink = `<a href="https://map.baidu.com/search/${encodeURIComponent(p.keyword)}" target="_blank" class="map-link">🗺️ 查看地图</a>`;
+            result = result.replace(regex, `$1 ${mapLink}`);
         }
-        else if (lowerInput.includes("揠苗助长")) {
-            return {
-                science: "🌱 **植物生长原理**：拔苗并不能帮助水稻长高，反而会损伤根系。植物靠根吸收水分和养分，叶绿素利用阳光制造‘食物’。生长需要时间，急躁违反自然规律。\n🧪 小实验：种两颗绿豆，一颗每天轻轻拔一下，另一颗正常浇水，对比生长结果。",
-                english: "🌾 **hasten**（催促）, **seedling**（幼苗）, **growth**（生长）\n📝 谚语：*“Haste makes waste.”*（欲速则不达）\n和“揠苗助长”说的是同一个道理。",
-                trends: "🌍 **农业科技新闻**：2024年中国推广“智慧农田”，用传感器监测土壤湿度和作物长势，农民不再靠“感觉”拔苗助长，而是靠数据科学种植。科技让传统寓言有了新解。"
-            };
+        // 处理“福田红树林”等变体
+        if (result.includes("福田红树林") && !result.includes("map-link")) {
+            result = result.replace(/福田红树林/g, `福田红树林 <a href="https://map.baidu.com/search/福田红树林自然保护区" target="_blank" class="map-link">🗺️ 查看地图</a>`);
+        }
+        return result;
+    }
+
+    // 模拟智能生成器（增强地图链接）
+    async function mockExpandAPI(userInput) {
+        await new Promise(r => setTimeout(r, 700));
+        const lower = userInput.toLowerCase();
+        
+        if (lower.includes("一滴水")) {
+            let science = "💧 **水的奇幻旅程**：水有三种形态——固态(冰)、液态(水)、气态(水蒸气)。一滴水从海洋蒸发，变成云，再化作雨落回大地，这就是水循环。\n🔬 **科学实验**：用塑料袋装水扎紧，放在太阳下，观察袋内小水珠——蒸发和凝结就在眼前。\n🌍 **地理知识**：地球表面71%被水覆盖，但淡水只有2.5%，每一滴水都珍贵。";
+            let english = "💧 **drop** (水滴) , **evaporate** (蒸发) , **condense** (凝结) , **precious** (珍贵的)\n📝 **例句**：*If I were a drop of water, I would travel around the world and help everything grow.*";
+            let trends = "🌊 **深圳时事**：2025年深圳将建成‘千里碧道’，包括大沙河、茅洲河等生态长廊。前海桂湾公园利用雨水花园收集每一滴雨水。\n🏙️ **本地新闻**：深圳‘水文化节’鼓励市民节约用水，小学生可参与‘一滴水的城市之旅’绘画比赛。\n📅 **全国热点**：第34个‘世界水日’主题‘冰川保护’，中国启动‘南水北调’数字孪生系统。\n📍 **相关地点**：大沙河生态长廊、茅洲河、前海桂湾公园。";
+            let outline = "📌 **《假如我是一滴水》作文大纲**\n1. 开头：想象自己变成一滴水，从哪里醒来（例如云朵、小溪）。\n2. 旅程：描写流经的地方（森林、城市、大海），遇见的人和动植物。\n3. 困难：可能遇到污染、干涸或被浪费，表达水的无奈。\n4. 升华：呼吁珍惜水资源，或实现作为水滴的价值（滋润禾苗）。\n5. 结尾：回到现实，感悟每一滴水都不平凡。";
+            let essay = "🌱 **范文（400字）**\n\n*假如我是一滴水*\n\n清晨，我睁开眼，发现自己躺在荷叶的掌心。阳光照着我，我变成一颗晶莹的露珠，风一吹，我便滑入溪流。\n\n我顺着溪水奔跑，路过一片稻田，稻子们弯着腰说：“渴了，请帮帮我们！”我跳进泥土，顺着根须爬上稻秆，稻子挺直了腰，笑着点头。我继续向前，来到一座城市——深圳。河岸边立着“碧道建设”的牌子，人们不再往河里扔垃圾，还有专门的雨水花园让我干净地流过。\n\n忽然，我蒸发了，变成水汽升上天空。我在云里挤来挤去，看见许多兄弟被酸雨污染，心里很难过。于是我和伙伴们约定：要变成干净的雨，落在需要的地方。\n\n一天，我听见一个小女孩说：“水是生命之源，我们要节约用水。”她洗完手立刻关上水龙头。我很感动，用力钻进土地，滋润了一颗刚种下的凤凰木种子。\n\n假如我是一滴水，我会珍惜每一次下落的机会，让世界多一处绿意。虽然我很小，但千万滴水就能汇成春天。";
+            
+            // 为每个字段添加地图链接
+            science = addMapLinks(science);
+            english = addMapLinks(english);
+            trends = addMapLinks(trends);
+            outline = addMapLinks(outline);
+            essay = addMapLinks(essay);
+            return { science, english, trends, outline, essay };
+        }
+        else if (lower.includes("深圳的春天") || (lower.includes("春天") && lower.includes("深圳"))) {
+            let science = "🌸 **物候学**：深圳春天平均气温18-23℃，簕杜鹃(三角梅)是市花，2-4月盛开。候鸟如黑脸琵鹭在深圳湾越冬后北飞。\n🌿 **植物知识**：落叶树如大叶榕在春天换叶，一周内老叶落尽新芽萌发，形成“落叶满街、新芽满枝”的奇特景象。\n🐦 **观鸟科学**：福田红树林湿地每年春天有数万只候鸟停歇，是东亚-澳大利西亚迁徙路线的重要驿站。\n📍 **相关地点**：深圳湾公园、福田红树林、莲花山公园。";
+            let english = "🌸 **spring** (春天) , **blossom** (开花) , **migratory bird** (候鸟) , **Shenzhen Bay** (深圳湾)\n📝 **例句**：*Spring in Shenzhen is full of flowers and warm breezes, and the mangroves turn green again.*";
+            let trends = "🏙️ **深圳本地**：2025年3月，深圳‘山海连城’计划完成塘朗山-大沙河-深圳湾全线贯通，市民可徒步从山到海。‘鲲鹏径’第七段串联塘朗山、梅林山，春天正是登山好时节。\n📰 **热点**：深圳‘公园文化季’春季活动在莲花山、人才公园举办，包含自然教育和观鸟导赏。\n📍 **地点**：大沙河生态长廊、鲲鹏径、莲花山公园。";
+            let outline = "📌 **《深圳的春天》作文大纲**\n1. 开头：总写深圳春天与其他城市不同（繁花似锦、气温舒适）。\n2. 公园见闻：选择笔架山/莲花山，描写簕杜鹃、草地风筝、跑步的人。\n3. 街道细节：深南大道旁的大叶榕落叶和新芽同时出现，像一幅画。\n4. 人与自然：观鸟、清洁义工、碧道散步，体现城市生态。\n5. 结尾：赞美深圳的春天充满活力与希望。";
+            let essay = "✍️ **范文（400字）**\n\n*深圳的春天*\n\n在许多地方，春天是细雨绵绵、绿草茵茵。但深圳的春天，更像一场热烈的花事。\n\n二月底，簕杜鹃就迫不及待地爬上立交桥、围栏和阳台，紫红、橙黄、雪白，一簇簇燃烧着。妈妈带我去莲花山公园，风筝在天上飘成彩色云朵，孩子们追逐着泡泡，老人们在榕树下唱粤剧。春风暖暖的，带着青草和泥土的气味。\n\n最让我惊奇的是深南大道两旁的大叶榕。明明还是春天，满树黄叶却哗啦啦地落，环卫工人扫也扫不完。可是三天后，光秃秃的枝干上突然钻出嫩绿的新芽，像变魔术一样。原来这是深圳独有的“落叶知春”，老叶为了给新叶让路，完成了一次快速交接。\n\n深圳湾公园里，黑脸琵鹭优雅地踱步，它们很快就要飞回北方。观鸟的叔叔架起望远镜，让小朋友们看清它们勺子一样的长嘴。红树林里，弹涂鱼在泥滩上跳跃，招潮蟹挥舞着大钳子，好像也在庆祝春天。\n\n这就是深圳的春天——没有绵绵阴雨，只有生机勃勃。它催促着每一个人：快出发吧，去奔跑，去发现，去像新叶一样生长。";
+            
+            science = addMapLinks(science);
+            english = addMapLinks(english);
+            trends = addMapLinks(trends);
+            outline = addMapLinks(outline);
+            essay = addMapLinks(essay);
+            return { science, english, trends, outline, essay };
+        }
+        else if (lower.includes("莲花山")) {
+            let science = "⛰️ **地质知识**：莲花山位于深圳福田中心区，海拔仅106米，属于低山丘陵，由花岗岩构成。山顶广场可俯瞰城市中轴线。\n🌳 **生态观察**：山上种植大量凤凰木、荔枝树，每年5月凤凰花开，火红一片。山脚有椰林草坪，是深圳的‘城市绿肺’。\n📍 **地点**：莲花山公园、邓小平铜像广场。";
+            let english = "🏞️ **Lotus Hill** (莲花山) , **square** (广场) , **statue** (雕像) , **skyline** (天际线)\n📝 **句子**：*Lotus Hill Park is a great place to see Shenzhen's skyline and learn about its history.*";
+            let trends = "🗿 **深圳时事**：2025年莲花山公园‘邓小平铜像广场’完成数字化升级，游客可扫码听语音讲解深圳改革开放故事。‘莲花山风筝节’每年春季举办，吸引数万家庭。\n🚇 **交通新闻**：地铁14号线‘莲花山站’开通后，上山步道人流增加三成，公园增设智能导览屏。\n📍 **地点**：莲花山公园、市民中心。";
+            let outline = "📌 **《莲花山游记》作文大纲**\n1. 开头：周末和家人去莲花山公园。\n2. 登山过程：山路、树木、鸟鸣，看到放风筝的人群。\n3. 山顶见闻：邓小平铜像、俯瞰市民中心和福田CBD。\n4. 感悟：深圳从小渔村变成大都市，像爬山一样努力向上。\n5. 结尾：下山时心情开阔，想起‘春天的故事’。";
+            let essay = "✍️ **范文（400字）**\n\n*登莲花山* \n\n一个晴朗的周末，爸爸带我去莲花山公园。从南门进去，一片大草坪映入眼帘，几十只风筝在蓝天跳舞，有蜈蚣、蝴蝶、老鹰，孩子们拽着线奔跑，笑声洒了一地。\n\n我们沿着石阶上山。路旁荔枝树刚抽出嫩芽，三角梅开得热闹。小鸟在枝头啁啾，好像在给我们加油。二十分钟后，我们到达山顶广场。\n\n广场中央矗立着邓小平爷爷的铜像，他迈步向前的姿态充满力量。站在铜像旁往下看，市民中心像一只大鹏展翅，远处是高楼林立的福田CBD。爸爸说：“四十年前这里还是农田和鱼塘。”我简直不敢相信。\n\n山风拂面，我忽然明白：深圳就像登山者，一步一个脚印，从低处走向世界之巅。邓爷爷在这里种下改革的种子，如今已长成参天大树。\n\n下山时，夕阳把城市镀成金色。我在心里默默说：我也要努力攀登，将来为这座城市添一块砖。";
+            
+            science = addMapLinks(science);
+            english = addMapLinks(english);
+            trends = addMapLinks(trends);
+            outline = addMapLinks(outline);
+            essay = addMapLinks(essay);
+            return { science, english, trends, outline, essay };
         }
         else {
-            // 通用智能返回 (保证任何输入都有高质量拓展，且符合“科学+英文+时事”结构)
-            return {
-                science: `🧠 **你知道吗？** 关于“${userInput}”背后的科学小秘密：知识就像种子，需要阳光（好奇心）、水（提问）和土壤（实践）。比如学古诗时，可以探索诗中出现的自然现象——风、雨、动物习性。\n🔍 试试提问：“这首诗里提到的植物/天气，有什么科学原理？”`,
-                english: `📖 **核心词汇联想**：knowledge（知识）, curiosity（好奇心）, connect（连接）\n✏️ 小句子：*“Every poem can teach us something new about the world.”*\n（每一首诗都能教给我们关于世界的新知识。）`,
-                trends: `🗞️ **时事窗**：2025年教育新趋势——“跨学科主题学习”。很多中小学开始用“古诗中的科学”做项目式学习。例如分析“月落乌啼霜满天”中的气象知识。你刚才输入的“${userInput}”恰好是这个潮流的绝佳例子！`
-            };
+            // 通用回复
+            let science = `🧪 **科学万花筒**：关于“${userInput}”，我们可以从不同角度探索。\n🌌 **物理**：能量守恒、光的折射……\n🧬 **生物**：植物向光性、动物行为……\n🌍 **地理**：板块运动、气候带……\n试着把你学到的知识和日常生活联系起来，科学就在身边。`;
+            let english = `📖 **Key words**: knowledge, explore, connect, creative\n🔤 **Sentence**: *“Every topic can be a door to a new world.”*\n✏️ 试着用这个句子写写你的想法。`;
+            let trends = `🏙️ **深圳本地**：2025年深圳即将举办“世界湿地保护论坛”，福田红树林修复工程获联合国点赞。前海“未来之城”地下空间启用，机器人送快递成为日常。\n📺 **全国热点**：“人工智能+”行动写入政府工作报告，中小学将增加AI通识课。\n📍 **地点提示**：福田红树林、前海、深圳湾。`;
+            let outline = `📌 **通用作文大纲（针对“${userInput}”）**\n1. 开头：解释题目关键词，引出自己的理解。\n2. 中间：结合自身经历或阅读，举一两个具体例子。\n3. 深入：分析现象背后的道理或情感。\n4. 结尾：总结观点，提出希望或号召。`;
+            let essay = `✍️ **参考范文（约400字）**\n\n*${userInput}* \n\n（此处为你展示通用范文结构）生活中有许多值得思考的话题。当我们面对“${userInput}”时，不妨先静下心来，问问自己：我真正了解它吗？\n\n记得有一次，我在课堂上听到老师讲起相关内容，起初觉得枯燥，后来通过查阅资料和观察身边事物，才发现原来它和我们的日常紧密相连。比如深圳的街头巷尾，处处体现着创新与活力，这正是对“${userInput}”的最好诠释。\n\n通过这次思考，我明白了学习不能只停留在课本上，更要用心感受世界。未来我会带着好奇心，去探索更多未知的领域。\n\n（注：此处为通用模板，实际使用时建议根据具体题目填充个性化内容。）`;
+            
+            science = addMapLinks(science);
+            english = addMapLinks(english);
+            trends = addMapLinks(trends);
+            outline = addMapLinks(outline);
+            essay = addMapLinks(essay);
+            return { science, english, trends, outline, essay };
         }
     }
 
-    // ---------- 真实API接入示例（注释版，方便你后续替换）----------
-    // 如果你有千问或OpenAI的API key，可以取消注释并修改下方函数
-    /*
-    async function callRealAPI(userInput) {
-        const response = await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer YOUR_DASHSCOPE_API_KEY',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: 'qwen-max',
-                input: {
-                    messages: [
-                        { role: 'system', content: '你是一个儿童知识拓展助手。请严格按照JSON格式输出，包含三个字段：science, english, trends。每个字段200字以内，生动有趣，适合小学生。不要出考题，不要评价，只提供知识拓展。' },
-                        { role: 'user', content: `语文知识点：${userInput}` }
-                    ]
-                },
-                parameters: { result_format: 'message' }
-            })
-        });
-        const data = await response.json();
-        // 解析返回的JSON，需要和提示词约定的格式一致
-        const content = data.output.choices[0].message.content;
-        return JSON.parse(content);
-    }
-    */
-
-    // 当前使用模拟函数，替换下面这一行即可接入真实API
-    const fetchExpansion = mockExpandAPI;   // 将来改成 callRealAPI
-
-    // 渲染卡片
-    function renderCards(data) {
-        const container = document.getElementById('cardsContainer');
-        container.innerHTML = `
-            <div class="card">
-                <div class="card-header science">🔬 科学拓展</div>
-                <div class="card-content">
-                    ${markedParse(data.science)}
-                    <div class="small-note">💡 可以边读边和爸爸妈妈讨论～</div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header english">🇬🇧 英文小站</div>
-                <div class="card-content">
-                    ${markedParse(data.english)}
-                    <div class="small-note">🔊 大声读出来，记忆更深刻</div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header trends">📰 时事透镜</div>
-                <div class="card-content">
-                    ${markedParse(data.trends)}
-                    <div class="small-note">🌐 新闻每天发生，保持好奇心</div>
-                </div>
-            </div>
-        `;
-    }
-
-    // 简易Markdown解析（支持换行、加粗）
-    function markedParse(text) {
+    function formatText(text) {
         if (!text) return '';
-        // 将换行转为 <br>，将 **xxx** 转为 <strong>xxx</strong>
+        // 保留 HTML 链接，同时处理换行和加粗
         let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         html = html.replace(/\n/g, '<br>');
-        // 处理列表项 -
         html = html.replace(/^- (.*?)(<br>|$)/gm, '• $1$2');
         return `<div>${html}</div>`;
     }
 
-    // 加载动画和错误处理
+    function renderCards(data) {
+        const container = document.getElementById('cardsContainer');
+        container.innerHTML = `
+            <div class="card"><div class="card-header science">🔬 科学拓展</div><div class="card-content">${formatText(data.science)}<div class="small-note">🌟 多样学科，启发好奇心</div></div></div>
+            <div class="card"><div class="card-header english">🇬🇧 英文小站</div><div class="card-content">${formatText(data.english)}<div class="small-note">🔊 试着大声朗读</div></div></div>
+            <div class="card"><div class="card-header trends">📰 时事·深圳专窗</div><div class="card-content">${formatText(data.trends)}<div class="small-note">📍 点击地点旁的🗺️可查看真实地图</div></div></div>
+            <div class="card"><div class="card-header outline">📝 作文大纲</div><div class="card-content">${formatText(data.outline)}<div class="small-note">✏️ 结构清晰，下笔不愁</div></div></div>
+            <div class="card"><div class="card-header essay">✍️ 范文（约400字）</div><div class="card-content">${formatText(data.essay)}<div class="small-note">📖 可模仿，可修改，化为己用</div></div></div>
+        `;
+    }
+
     async function onExpand() {
-        const inputElem = document.getElementById('knowledgeInput');
-        const rawInput = inputElem.value.trim();
-        if (!rawInput) {
-            alert('✨ 输入一个语文知识点吧～ 例如：望庐山瀑布 或 赵州桥');
+        const input = document.getElementById('knowledgeInput').value.trim();
+        if (!input) {
+            alert("请输入作文题目或知识点～");
             return;
         }
-
-        // 显示加载中
         const container = document.getElementById('cardsContainer');
-        container.innerHTML = '<div class="loading">🌱 正在为你的知识点长出新的触角 ... </div>';
-        
+        container.innerHTML = '<div class="loading">🌱 正在为你生成跨学科内容和作文素材……</div>';
         try {
-            const result = await fetchExpansion(rawInput);
+            const result = await mockExpandAPI(input);
             renderCards(result);
-        } catch (error) {
-            console.error(error);
-            container.innerHTML = '<div class="loading">❌ 网络开小差了，刷新一下再试试～</div>';
+        } catch(e) {
+            container.innerHTML = '<div class="loading">⚠️ 生成失败，刷新重试</div>';
         }
     }
 
-    // 示例标签点击填充
     document.querySelectorAll('.example').forEach(el => {
         el.addEventListener('click', () => {
-            const text = el.getAttribute('data-text');
-            document.getElementById('knowledgeInput').value = text;
+            document.getElementById('knowledgeInput').value = el.getAttribute('data-text');
         });
     });
-
-    // 绑定生成按钮
     document.getElementById('expandBtn').addEventListener('click', onExpand);
-
-    // 页面加载时自动给一个默认示例内容（提升第一印象）
-    window.addEventListener('load', async () => {
-        // 可选：默认显示望庐山瀑布的拓展，让用户看到惊艳效果
-        const defaultInput = "望庐山瀑布 李白";
-        document.getElementById('knowledgeInput').value = defaultInput;
-        // 自动生成一次（为了效果，自动点一下按钮）
-        setTimeout(() => {
-            onExpand();
-        }, 200);
+    window.addEventListener('load', () => {
+        document.getElementById('knowledgeInput').value = "假如我是一滴水";
+        onExpand();
     });
 </script>
 </body>
