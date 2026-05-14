@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>知了 · 作文+跨学科+深圳地图</title>
+    <title>课文望远镜 · 跨学科拓展 + 作文锦囊</title>
     <style>
         * {
             margin: 0;
@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
         body {
-            background: linear-gradient(145deg, #f0f7f0 0%, #e2ebe2 100%);
+            background: #f0f7f0;
             font-family: system-ui, 'Segoe UI', 'Noto Sans', sans-serif;
             padding: 1.5rem;
             min-height: 100vh;
@@ -19,317 +19,268 @@
         .container {
             max-width: 1300px;
             margin: 0 auto;
-        }
-        .hero {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .hero h1 {
-            font-size: 2rem;
-            background: linear-gradient(135deg, #2b5f8a, #1e7e34);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        .hero p {
-            color: #2c5a2e;
-            margin-top: 0.5rem;
-        }
-        .input-card {
             background: white;
             border-radius: 2rem;
-            padding: 1.5rem;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-        }
-        .input-group {
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
             display: flex;
             flex-wrap: wrap;
+        }
+        .sidebar {
+            width: 260px;
+            background: #fef9e6;
+            border-right: 1px solid #e2e8d5;
+            padding: 1.5rem 1rem;
+        }
+        .sidebar h2 {
+            font-size: 1.2rem;
+            color: #2d6a4f;
+            margin-bottom: 1rem;
+            border-left: 4px solid #2d6a4f;
+            padding-left: 0.75rem;
+        }
+        .topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .topic-btn {
+            background: #fff;
+            border: 1px solid #cfe3cf;
+            border-radius: 2rem;
+            padding: 0.6rem 1rem;
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #2d6a4f;
+        }
+        .topic-btn.active {
+            background: #2d6a4f;
+            color: white;
+            border-color: #2d6a4f;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .topic-btn:hover:not(.active) {
+            background: #eaf4e6;
+        }
+        .main {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            background: #ffffff;
+        }
+        .current-topic-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e3a2f;
+            margin-bottom: 0.25rem;
+        }
+        .topic-sub {
+            color: #5a7a62;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e2f0e2;
+            padding-bottom: 0.5rem;
+        }
+        .cards-grid {
+            display: flex;
+            flex-direction: column;
             gap: 1rem;
         }
-        textarea {
-            flex: 1;
-            padding: 1rem;
-            border-radius: 1.5rem;
-            border: 1px solid #c8ddd0;
-            font-family: inherit;
-            font-size: 1rem;
-            resize: vertical;
-        }
-        button {
-            background: #2b5f8a;
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        button:hover {
-            background: #1e4668;
-            transform: translateY(-2px);
-        }
-        .example-tags {
-            margin-top: 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .example {
-            background: #eef2f0;
-            padding: 0.3rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-        .cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.2rem;
-            margin-top: 1.5rem;
-        }
-        .card {
-            flex: 1;
-            min-width: 260px;
-            background: white;
-            border-radius: 1.5rem;
+        .ext-card {
+            background: #fefef7;
+            border-radius: 1.2rem;
+            border: 1px solid #e6efdf;
+            transition: 0.1s;
             overflow: hidden;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-            transition: 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-4px);
         }
         .card-header {
-            padding: 0.8rem 1.2rem;
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 1.2rem;
+            background: #f8fbf5;
+            border-bottom: 1px solid #e2e8d5;
+            font-weight: 600;
+            font-size: 1rem;
         }
-        .science { background: #2c6e9e; }
-        .english { background: #e67e22; }
-        .trends { background: #1e7e34; }
-        .outline { background: #8e44ad; }
-        .essay { background: #c0392b; }
-        .card-content {
-            padding: 1.2rem;
-            font-size: 0.95rem;
+        .card-header .tag {
+            background: #e9f0e3;
+            padding: 0.2rem 0.7rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            font-weight: normal;
+            color: #3a6b47;
+        }
+        .card-body {
+            padding: 1rem 1.2rem;
             line-height: 1.5;
-            color: #1e2a36;
+            color: #2c3e2f;
+            font-size: 0.95rem;
         }
-        .card-content p {
-            margin-bottom: 0.6rem;
+        .card-body p {
+            margin-bottom: 0.5rem;
         }
-        .map-link {
-            display: inline-block;
-            background: #eef2f5;
-            padding: 0.2rem 0.6rem;
-            border-radius: 1rem;
-            font-size: 0.8rem;
-            text-decoration: none;
-            color: #2b5f8a;
-            margin-top: 0.3rem;
-            margin-right: 0.5rem;
+        .icon {
+            font-size: 1.2rem;
         }
-        .map-link:hover {
-            background: #d0dfe8;
+        .essay-tip {
+            background: #fff7e8;
+            border-left: 4px solid #e6b422;
         }
-        .small-note {
-            font-size: 0.75rem;
-            color: #6c7a6e;
-            border-top: 1px solid #e0e8e0;
-            margin-top: 0.8rem;
-            padding-top: 0.6rem;
-        }
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #5f7f6e;
+        @media (max-width: 760px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e2e8d5;
+                padding: 1rem;
+            }
+            .topic-list {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .main {
+                padding: 1rem;
+            }
         }
         footer {
             text-align: center;
-            margin-top: 2rem;
-            font-size: 0.75rem;
-            color: #5d6e5d;
-        }
-        @media (max-width: 800px) {
-            body { padding: 1rem; }
-            .card { min-width: 100%; }
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            color: #7c8f7a;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="hero">
-        <h1>📚 知了 · 作文拓展+跨学科+深圳地图</h1>
-        <p>输入作文题或语文知识点 → 科学·英文·深圳时事·作文大纲·范文 | 点击地图链接查看真实位置</p>
-    </div>
-    <div class="input-card">
-        <div class="input-group">
-            <textarea id="knowledgeInput" rows="2" placeholder="例如：假如我是一滴水&#10;也可以输入：深圳的春天、莲花山、爱护环境……"></textarea>
-            <button id="expandBtn">✨ 生成全部</button>
+    <div class="sidebar">
+        <h2>📖 课文望远镜</h2>
+        <div class="topic-list">
+            <button class="topic-btn active" data-topic="祖父的园子">🌻 祖父的园子</button>
+            <button class="topic-btn" data-topic="古诗三首">📜 古诗三首</button>
+            <button class="topic-btn" data-topic="月是故乡明">🌙 月是故乡明</button>
         </div>
-        <div class="example-tags">
-            <span class="example" data-text="假如我是一滴水">💧 假如我是一滴水</span>
-            <span class="example" data-text="深圳的春天">🌸 深圳的春天</span>
-            <span class="example" data-text="莲花山公园">🏞️ 莲花山公园</span>
-            <span class="example" data-text="保护红树林">🌿 保护红树林</span>
-            <span class="example" data-text="我的理想">⭐ 我的理想</span>
+        <div style="margin-top: 1.5rem; font-size: 0.75rem; color: #6c8b6e; padding-left: 0.5rem;">
+            💡 每个卡片都是一个拓展点<br>🔍 科学 · 人文 · 时事 · 英文 · 作文锦囊
         </div>
     </div>
-
-    <div id="cardsContainer" class="cards">
-        <!-- 初始占位 -->
-        <div class="card"><div class="card-header science">🔬 科学</div><div class="card-content">点击上方按钮，生成拓展内容～</div></div>
-        <div class="card"><div class="card-header english">🇬🇧 英文</div><div class="card-content">包含单词和例句</div></div>
-        <div class="card"><div class="card-header trends">📰 时事·深圳</div><div class="card-content">深圳本地新闻 + 地图链接</div></div>
-        <div class="card"><div class="card-header outline">📝 作文大纲</div><div class="card-content">帮你理清思路</div></div>
-        <div class="card"><div class="card-header essay">✍️ 范文（约400字）</div><div class="card-content">可参考学习</div></div>
+    <div class="main" id="mainContent">
+        <div style="text-align: center; padding: 3rem;">加载中…</div>
     </div>
-    <footer>⭐ 所有内容均为AI模拟生成，点击 🗺️ 地图链接 可查看真实地点位置（跳转百度地图）</footer>
 </div>
+<footer>✨ 跨学科望远镜 | 时事·科学·人文·英文 | 作文锦囊（大纲+片段）仅作参考</footer>
 
 <script>
-    // 辅助函数：为文本中的地点自动添加地图链接（简单关键词匹配）
-    function addMapLinks(text) {
-        // 定义地点及其对应的搜索词（百度地图搜索）
-        const places = [
-            { name: "莲花山", keyword: "深圳莲花山公园" },
-            { name: "莲花山公园", keyword: "深圳莲花山公园" },
-            { name: "大沙河", keyword: "深圳大沙河生态长廊" },
-            { name: "深圳湾", keyword: "深圳湾公园" },
-            { name: "红树林", keyword: "福田红树林自然保护区" },
-            { name: "鲲鹏径", keyword: "鲲鹏径 深圳" },
-            { name: "茅洲河", keyword: "茅洲河 深圳" },
-            { name: "前海", keyword: "深圳前海石公园" },
-            { name: "市民中心", keyword: "深圳市民中心" },
-            { name: "邓小平铜像", keyword: "莲花山公园邓小平铜像" }
-        ];
-        let result = text;
-        for (let p of places) {
-            const regex = new RegExp(`(${p.name})`, 'g');
-            const mapLink = `<a href="https://map.baidu.com/search/${encodeURIComponent(p.keyword)}" target="_blank" class="map-link">🗺️ 查看地图</a>`;
-            result = result.replace(regex, `$1 ${mapLink}`);
-        }
-        // 处理“福田红树林”等变体
-        if (result.includes("福田红树林") && !result.includes("map-link")) {
-            result = result.replace(/福田红树林/g, `福田红树林 <a href="https://map.baidu.com/search/福田红树林自然保护区" target="_blank" class="map-link">🗺️ 查看地图</a>`);
-        }
-        return result;
-    }
+    // ---------- 拓展知识库 (含作文锦囊：极简大纲+范文片段) ----------
+    const knowledgeBase = {
+        "祖父的园子": [
+            { type: "深圳时事", icon: "🏙️", title: "光明欢乐田园", content: "深圳光明区“欢乐田园”占地约3.8平方公里，孩子们可以下田插秧、摘黄瓜，体验课文里“想做什么就做什么”的园子。还有稻田画、向日葵花海，是周末亲近泥土的好去处。" },
+            { type: "深圳时事", icon: "🏙️", title: "南山区“昆虫旅馆”", content: "深圳大学附近的大沙河公园里，有一座用木头、竹筒、瓦片搭成的“昆虫旅馆”，专门为瓢虫、独居蜂、蜻蜓提供栖息地。园子里的蜻蜓和蜜蜂，在这里找到了城市里的家。" },
+            { type: "全国时事", icon: "🇨🇳", title: "北京楼顶“天空农场”", content: "北京史家小学在教学楼顶开辟了“天空农场”，每个班分一块菜地，种黄瓜、西红柿、南瓜。他们把《祖父的园子》搬上了天空，收获的蔬菜还给食堂做午餐。" },
+            { type: "国际时事", icon: "🌍", title: "荷兰漂浮农场", content: "荷兰鹿特丹有世界上第一座海上漂浮农场，里面养着40头奶牛，屋顶收集雨水，底层种植牧草。像不像祖父的园子漂在了水上？这里的牛每天都能看到过往船只。" },
+            { type: "科学拓展", icon: "🔬", title: "倭瓜（南瓜）的环球旅行", content: "南瓜原产美洲，明朝时跟着西班牙商船来到中国。它耐旱、产量高，曾是欧洲和中国的“救命粮”。课文里的倭瓜，其实是一位环游世界的旅行家。🎃" },
+            { type: "科学拓展", icon: "🔬", title: "蜻蜓的复眼与飞行", content: "蜻蜓有两万八千只小眼睛组成的复眼，可以同时看前、后、上、下。它的四片翅膀可以独立转动，因此能悬停、倒飞、急转弯。你在深圳湾公园经常能看到它们。" },
+            { type: "科学拓展", icon: "🔬", title: "呼兰河的冬天", content: "呼兰河在黑龙江，冬天温度低至零下30度，河面结冰厚度超过1米。孩子们在冰上打陀螺、坐冰车。而在深圳，冬天还能穿短袖——这就是中国南北的奇妙差异。" },
+            { type: "人文历史", icon: "📜", title: "萧红与祖父：一生中最暖的光", content: "萧红（1911-1942），民国女作家。她童年时母亲早逝，父亲冷漠，只有祖父张维祯给她讲故事、教她背诗。祖父的园子是她整个童年的乐园。后来她病逝于香港，临终前依然在回忆那片园子。" },
+            { type: "人文历史", icon: "📜", title: "东南亚华人记忆中的“园子”", content: "马来西亚槟城、新加坡的华人家庭，常常在屋后保留一片“小园子”，种番薯、木瓜、香茅。老一辈华人下南洋时，也把故乡的菜园记忆带到了热带。那是他们心里的“祖父的园子”。" },
+            { type: "人文历史", icon: "📜", title: "呼兰河与萧红故居", content: "黑龙江呼兰区至今保留着萧红故居，院落里有泥墙、倭瓜架、一口老井。每年有东南亚华人组团去参观，寻找《呼兰河传》里的气息。园子虽小，却牵动着全球华人的乡愁。" },
+            { type: "英文小站", icon: "🇬🇧", title: "单词与句子", content: "garden (园子) , pumpkin (倭瓜/南瓜) , dragonfly (蜻蜓) , freedom (自由)\n📝 *In my grandfather's garden, even the pumpkins seem to laugh.*" },
+            { type: "作文锦囊", icon: "✍️", title: "《我心中的园子》写作锦囊", content: "【极简大纲】\n1. 开头：点出“园子”在哪里（可以是老家院子、小区花园或想象的地方）。\n2. 中间：写2-3种事物（比如倭瓜、蜻蜓、昆虫旅馆），用上拟人手法。\n3. 结尾：表达情感——自由、快乐或对自然的爱。\n\n【范文片段】\n  如果我有一座园子，我不会种名贵的花，只种几架倭瓜和黄瓜。倭瓜胖墩墩的，像一个个小太阳趴在地上；黄瓜则调皮地爬满竹架，开出黄灿灿的花。园子里一定要有一座昆虫旅馆——用竹筒和木块搭成。蜻蜓停在旅馆的阳台上，歪着复眼打量我，好像在说：“这是你的地盘，也是我的。”风来时，倭瓜叶拍着巴掌，黄瓜花轻轻落下。我躺在草地上想：自由，大概就是这个味道吧。" }
+        ],
+        "古诗三首": [
+            { type: "深圳时事", icon: "🏙️", title: "深圳儿童公园的冰趣", content: "虽然深圳不下雪，但罗湖儿童公园冬天会举办“冰雪节”，人造冰场让孩子们体验《稚子弄冰》的快乐。公园还复原了古代冰戏的玩法，敲冰、穿冰钏。" },
+            { type: "全国时事", icon: "🇨🇳", title: "哈尔滨冰雪大世界", content: "每年冬天，哈尔滨冰雪大世界吸引百万游客。小学生可以在这里看到冰雕、冰滑梯，体验杨万里诗中“敲成玉磬穿林响”的乐趣。冰雪文化成为北方孩子的童年记忆。" },
+            { type: "国际时事", icon: "🌍", title: "日本·冬日“冰镜”游戏", content: "在日本长野，孩子们冬天会把水冻成薄冰片，穿绳挂起来当镜子玩，和《稚子弄冰》几乎一模一样。东亚文化里的冰雪游戏，千年前就相通。" },
+            { type: "科学拓展", icon: "🔬", title: "冰为什么会发声？", content: "敲击冰块时，振动频率不同会发出不同音调。温度越低，冰越硬，声音越清脆。《稚子弄冰》里的“玉磬”声，科学上就是冰晶的谐振。" },
+            { type: "科学拓展", icon: "🔬", title: "宋代农具“秧马”", content: "《四时田园杂兴》里提到“儿童未解供耕织”，宋代有一种插秧工具叫“秧马”，人骑在上面插秧，腰不酸。江南水田至今仍有类似改良工具。" },
+            { type: "人文历史", icon: "📜", title: "杨万里：写童趣的大诗人", content: "杨万里（1127-1206），南宋“中兴四大诗人”之一。他一生写了两万多首诗，最喜欢观察儿童。他的诗里孩子们玩冰、捉蝴蝶、追黄蝶，被称为“儿童诗人”。" },
+            { type: "人文历史", icon: "📜", title: "东南亚华人童谣里的冰", content: "在泰国、马来西亚，华人后代传唱一首《冰条歌》：“敲冰条，叮当响，阿嬷买来一人半。”虽然热带没有冰，但祖先对冰的记忆通过童谣保留了下来。" },
+            { type: "人文历史", icon: "📜", title: "《村晚》与越南水乡", content: "雷震《村晚》“牧童归去横牛背，短笛无腔信口吹”。在越南湄公河三角洲，至今能看见水牛背上的牧童吹笛，和古诗里一模一样。这是中华文化在东南亚的活态传承。" },
+            { type: "英文小站", icon: "🇬🇧", title: "单词与句子", content: "ice (冰) , child (儿童) , flute (笛子) , ancient poem (古诗)\n📝 *Children knocking ice make sounds like ringing jade.*" },
+            { type: "作文锦囊", icon: "✍️", title: "《我穿越到古诗里》写作锦囊", content: "【极简大纲】\n1. 开头：选择一首古诗，想象自己穿越到那个场景。\n2. 中间：描写所见所闻（冰块、笛声、村庄），加入自己的互动。\n3. 结尾：回到现实，写出对古诗的新感受。\n\n【范文片段】\n  一阵眩晕后，我发现自己站在南宋的村庄里。一个小孩蹲在盆边，正从冰块上敲下一块圆冰，中间凿了个小洞，穿上彩线提在手里，当银钲敲。我凑过去，他用冰锤轻轻一敲——“叮！”声音清亮得像玉磬，穿过竹林。我也试着敲了一下，冰块震得我的手发麻。忽然冰块碎了，小孩咯咯笑起来。我醒了，手里还握着那首诗。原来，快乐古今都一样。" }
+        ],
+        "月是故乡明": [
+            { type: "深圳时事", icon: "🏙️", title: "深圳湾中秋赏月", content: "每年中秋，深圳湾公园沿海数万人赏月。海上生明月，天涯共此时。季羡林说“月是故乡明”，在深圳打拼的人，也会抬头望月，想念老家。" },
+            { type: "全国时事", icon: "🇨🇳", title: "中国探月工程", content: "嫦娥六号从月球背面采样返回，带回1.9公斤月壤。我们离月亮越来越近，但心里最明的还是故乡的那一轮。" },
+            { type: "国际时事", icon: "🌍", title: "全球华人·中秋同一个月亮", content: "从旧金山到悉尼，从伦敦到新加坡，全球华人共庆中秋。马来西亚槟城的“中秋园游会”有提灯游行，和国内一样热闹。月亮连接着五千万海外华人的乡愁。" },
+            { type: "科学拓展", icon: "🔬", title: "月亮为什么不发光", content: "月亮反射太阳光。我们看到的月光，其实是8分钟前太阳照射到月球再反射到地球。地月距离约38万公里，光走1.28秒。" },
+            { type: "科学拓展", icon: "🔬", title: "超级月亮与故乡记忆", content: "每年有2-4次“超级月亮”，月亮比平时大14%。但其实大小没变，只是心理感受。季羡林说“故乡的月亮格外亮”，也正是这种情感放大效应。" },
+            { type: "人文历史", icon: "📜", title: "季羡林与德国思乡", content: "季羡林1935-1945年留学德国哥廷根，十一年间每到中秋就站在小山上望东方。后来将思乡写成《月是故乡明》，文中月亮是贯穿全文的意象。" },
+            { type: "人文历史", icon: "📜", title: "东南亚华人的“月娘节”", content: "新加坡、马来西亚华人称中秋节为“月娘节”。孩子们提灯笼、吃榴莲月饼，依然背诵“举头望明月，低头思故乡”。他们把故乡的月亮带到了南洋。" },
+            { type: "人文历史", icon: "📜", title: "杜甫与月夜忆舍弟", content: "“露从今夜白，月是故乡明”是杜甫的诗句。季羡林借用这句诗为题，表达战乱中的家国之思。从杜甫到季羡林，再到今天的异乡人，月亮永远承载着思念。" },
+            { type: "英文小站", icon: "🇬🇧", title: "单词与句子", content: "moon (月亮) , hometown (故乡) , bright (明亮) , miss (思念)\n📝 *No matter where I go, the moon always makes me think of home.*" },
+            { type: "作文锦囊", icon: "✍️", title: "《不一样的月亮》写作锦囊", content: "【极简大纲】\n1. 开头：引用“月是故乡明”或描写你看到的月亮。\n2. 中间：写两个不同地方的月亮（比如深圳湾和老家院子），对比景象和心情。\n3. 结尾：点出“月亮相同，思念不同”。\n\n【范文片段】\n  去年中秋，我在深圳湾公园看月亮。月亮又大又圆，倒映在海面上，被海浪揉成碎银。周围人很多，大家举着手机拍照，热闹极了。可我心里总觉得缺了点什么。今年我回了老家，晚上搬个小凳坐在院子里。月亮从枣树梢升起来，月光把青瓦照得发亮，蟋蟀在墙角叫。奶奶端出月饼，咬一口，是熟悉的味道。我忽然懂了：月亮是一样的月亮，只是看月亮的地方不同，心里的温度也不一样。" }
+        ]
+    };
 
-    // 模拟智能生成器（增强地图链接）
-    async function mockExpandAPI(userInput) {
-        await new Promise(r => setTimeout(r, 700));
-        const lower = userInput.toLowerCase();
-        
-        if (lower.includes("一滴水")) {
-            let science = "💧 **水的奇幻旅程**：水有三种形态——固态(冰)、液态(水)、气态(水蒸气)。一滴水从海洋蒸发，变成云，再化作雨落回大地，这就是水循环。\n🔬 **科学实验**：用塑料袋装水扎紧，放在太阳下，观察袋内小水珠——蒸发和凝结就在眼前。\n🌍 **地理知识**：地球表面71%被水覆盖，但淡水只有2.5%，每一滴水都珍贵。";
-            let english = "💧 **drop** (水滴) , **evaporate** (蒸发) , **condense** (凝结) , **precious** (珍贵的)\n📝 **例句**：*If I were a drop of water, I would travel around the world and help everything grow.*";
-            let trends = "🌊 **深圳时事**：2025年深圳将建成‘千里碧道’，包括大沙河、茅洲河等生态长廊。前海桂湾公园利用雨水花园收集每一滴雨水。\n🏙️ **本地新闻**：深圳‘水文化节’鼓励市民节约用水，小学生可参与‘一滴水的城市之旅’绘画比赛。\n📅 **全国热点**：第34个‘世界水日’主题‘冰川保护’，中国启动‘南水北调’数字孪生系统。\n📍 **相关地点**：大沙河生态长廊、茅洲河、前海桂湾公园。";
-            let outline = "📌 **《假如我是一滴水》作文大纲**\n1. 开头：想象自己变成一滴水，从哪里醒来（例如云朵、小溪）。\n2. 旅程：描写流经的地方（森林、城市、大海），遇见的人和动植物。\n3. 困难：可能遇到污染、干涸或被浪费，表达水的无奈。\n4. 升华：呼吁珍惜水资源，或实现作为水滴的价值（滋润禾苗）。\n5. 结尾：回到现实，感悟每一滴水都不平凡。";
-            let essay = "🌱 **范文（400字）**\n\n*假如我是一滴水*\n\n清晨，我睁开眼，发现自己躺在荷叶的掌心。阳光照着我，我变成一颗晶莹的露珠，风一吹，我便滑入溪流。\n\n我顺着溪水奔跑，路过一片稻田，稻子们弯着腰说：“渴了，请帮帮我们！”我跳进泥土，顺着根须爬上稻秆，稻子挺直了腰，笑着点头。我继续向前，来到一座城市——深圳。河岸边立着“碧道建设”的牌子，人们不再往河里扔垃圾，还有专门的雨水花园让我干净地流过。\n\n忽然，我蒸发了，变成水汽升上天空。我在云里挤来挤去，看见许多兄弟被酸雨污染，心里很难过。于是我和伙伴们约定：要变成干净的雨，落在需要的地方。\n\n一天，我听见一个小女孩说：“水是生命之源，我们要节约用水。”她洗完手立刻关上水龙头。我很感动，用力钻进土地，滋润了一颗刚种下的凤凰木种子。\n\n假如我是一滴水，我会珍惜每一次下落的机会，让世界多一处绿意。虽然我很小，但千万滴水就能汇成春天。";
-            
-            // 为每个字段添加地图链接
-            science = addMapLinks(science);
-            english = addMapLinks(english);
-            trends = addMapLinks(trends);
-            outline = addMapLinks(outline);
-            essay = addMapLinks(essay);
-            return { science, english, trends, outline, essay };
-        }
-        else if (lower.includes("深圳的春天") || (lower.includes("春天") && lower.includes("深圳"))) {
-            let science = "🌸 **物候学**：深圳春天平均气温18-23℃，簕杜鹃(三角梅)是市花，2-4月盛开。候鸟如黑脸琵鹭在深圳湾越冬后北飞。\n🌿 **植物知识**：落叶树如大叶榕在春天换叶，一周内老叶落尽新芽萌发，形成“落叶满街、新芽满枝”的奇特景象。\n🐦 **观鸟科学**：福田红树林湿地每年春天有数万只候鸟停歇，是东亚-澳大利西亚迁徙路线的重要驿站。\n📍 **相关地点**：深圳湾公园、福田红树林、莲花山公园。";
-            let english = "🌸 **spring** (春天) , **blossom** (开花) , **migratory bird** (候鸟) , **Shenzhen Bay** (深圳湾)\n📝 **例句**：*Spring in Shenzhen is full of flowers and warm breezes, and the mangroves turn green again.*";
-            let trends = "🏙️ **深圳本地**：2025年3月，深圳‘山海连城’计划完成塘朗山-大沙河-深圳湾全线贯通，市民可徒步从山到海。‘鲲鹏径’第七段串联塘朗山、梅林山，春天正是登山好时节。\n📰 **热点**：深圳‘公园文化季’春季活动在莲花山、人才公园举办，包含自然教育和观鸟导赏。\n📍 **地点**：大沙河生态长廊、鲲鹏径、莲花山公园。";
-            let outline = "📌 **《深圳的春天》作文大纲**\n1. 开头：总写深圳春天与其他城市不同（繁花似锦、气温舒适）。\n2. 公园见闻：选择笔架山/莲花山，描写簕杜鹃、草地风筝、跑步的人。\n3. 街道细节：深南大道旁的大叶榕落叶和新芽同时出现，像一幅画。\n4. 人与自然：观鸟、清洁义工、碧道散步，体现城市生态。\n5. 结尾：赞美深圳的春天充满活力与希望。";
-            let essay = "✍️ **范文（400字）**\n\n*深圳的春天*\n\n在许多地方，春天是细雨绵绵、绿草茵茵。但深圳的春天，更像一场热烈的花事。\n\n二月底，簕杜鹃就迫不及待地爬上立交桥、围栏和阳台，紫红、橙黄、雪白，一簇簇燃烧着。妈妈带我去莲花山公园，风筝在天上飘成彩色云朵，孩子们追逐着泡泡，老人们在榕树下唱粤剧。春风暖暖的，带着青草和泥土的气味。\n\n最让我惊奇的是深南大道两旁的大叶榕。明明还是春天，满树黄叶却哗啦啦地落，环卫工人扫也扫不完。可是三天后，光秃秃的枝干上突然钻出嫩绿的新芽，像变魔术一样。原来这是深圳独有的“落叶知春”，老叶为了给新叶让路，完成了一次快速交接。\n\n深圳湾公园里，黑脸琵鹭优雅地踱步，它们很快就要飞回北方。观鸟的叔叔架起望远镜，让小朋友们看清它们勺子一样的长嘴。红树林里，弹涂鱼在泥滩上跳跃，招潮蟹挥舞着大钳子，好像也在庆祝春天。\n\n这就是深圳的春天——没有绵绵阴雨，只有生机勃勃。它催促着每一个人：快出发吧，去奔跑，去发现，去像新叶一样生长。";
-            
-            science = addMapLinks(science);
-            english = addMapLinks(english);
-            trends = addMapLinks(trends);
-            outline = addMapLinks(outline);
-            essay = addMapLinks(essay);
-            return { science, english, trends, outline, essay };
-        }
-        else if (lower.includes("莲花山")) {
-            let science = "⛰️ **地质知识**：莲花山位于深圳福田中心区，海拔仅106米，属于低山丘陵，由花岗岩构成。山顶广场可俯瞰城市中轴线。\n🌳 **生态观察**：山上种植大量凤凰木、荔枝树，每年5月凤凰花开，火红一片。山脚有椰林草坪，是深圳的‘城市绿肺’。\n📍 **地点**：莲花山公园、邓小平铜像广场。";
-            let english = "🏞️ **Lotus Hill** (莲花山) , **square** (广场) , **statue** (雕像) , **skyline** (天际线)\n📝 **句子**：*Lotus Hill Park is a great place to see Shenzhen's skyline and learn about its history.*";
-            let trends = "🗿 **深圳时事**：2025年莲花山公园‘邓小平铜像广场’完成数字化升级，游客可扫码听语音讲解深圳改革开放故事。‘莲花山风筝节’每年春季举办，吸引数万家庭。\n🚇 **交通新闻**：地铁14号线‘莲花山站’开通后，上山步道人流增加三成，公园增设智能导览屏。\n📍 **地点**：莲花山公园、市民中心。";
-            let outline = "📌 **《莲花山游记》作文大纲**\n1. 开头：周末和家人去莲花山公园。\n2. 登山过程：山路、树木、鸟鸣，看到放风筝的人群。\n3. 山顶见闻：邓小平铜像、俯瞰市民中心和福田CBD。\n4. 感悟：深圳从小渔村变成大都市，像爬山一样努力向上。\n5. 结尾：下山时心情开阔，想起‘春天的故事’。";
-            let essay = "✍️ **范文（400字）**\n\n*登莲花山* \n\n一个晴朗的周末，爸爸带我去莲花山公园。从南门进去，一片大草坪映入眼帘，几十只风筝在蓝天跳舞，有蜈蚣、蝴蝶、老鹰，孩子们拽着线奔跑，笑声洒了一地。\n\n我们沿着石阶上山。路旁荔枝树刚抽出嫩芽，三角梅开得热闹。小鸟在枝头啁啾，好像在给我们加油。二十分钟后，我们到达山顶广场。\n\n广场中央矗立着邓小平爷爷的铜像，他迈步向前的姿态充满力量。站在铜像旁往下看，市民中心像一只大鹏展翅，远处是高楼林立的福田CBD。爸爸说：“四十年前这里还是农田和鱼塘。”我简直不敢相信。\n\n山风拂面，我忽然明白：深圳就像登山者，一步一个脚印，从低处走向世界之巅。邓爷爷在这里种下改革的种子，如今已长成参天大树。\n\n下山时，夕阳把城市镀成金色。我在心里默默说：我也要努力攀登，将来为这座城市添一块砖。";
-            
-            science = addMapLinks(science);
-            english = addMapLinks(english);
-            trends = addMapLinks(trends);
-            outline = addMapLinks(outline);
-            essay = addMapLinks(essay);
-            return { science, english, trends, outline, essay };
-        }
-        else {
-            // 通用回复
-            let science = `🧪 **科学万花筒**：关于“${userInput}”，我们可以从不同角度探索。\n🌌 **物理**：能量守恒、光的折射……\n🧬 **生物**：植物向光性、动物行为……\n🌍 **地理**：板块运动、气候带……\n试着把你学到的知识和日常生活联系起来，科学就在身边。`;
-            let english = `📖 **Key words**: knowledge, explore, connect, creative\n🔤 **Sentence**: *“Every topic can be a door to a new world.”*\n✏️ 试着用这个句子写写你的想法。`;
-            let trends = `🏙️ **深圳本地**：2025年深圳即将举办“世界湿地保护论坛”，福田红树林修复工程获联合国点赞。前海“未来之城”地下空间启用，机器人送快递成为日常。\n📺 **全国热点**：“人工智能+”行动写入政府工作报告，中小学将增加AI通识课。\n📍 **地点提示**：福田红树林、前海、深圳湾。`;
-            let outline = `📌 **通用作文大纲（针对“${userInput}”）**\n1. 开头：解释题目关键词，引出自己的理解。\n2. 中间：结合自身经历或阅读，举一两个具体例子。\n3. 深入：分析现象背后的道理或情感。\n4. 结尾：总结观点，提出希望或号召。`;
-            let essay = `✍️ **参考范文（约400字）**\n\n*${userInput}* \n\n（此处为你展示通用范文结构）生活中有许多值得思考的话题。当我们面对“${userInput}”时，不妨先静下心来，问问自己：我真正了解它吗？\n\n记得有一次，我在课堂上听到老师讲起相关内容，起初觉得枯燥，后来通过查阅资料和观察身边事物，才发现原来它和我们的日常紧密相连。比如深圳的街头巷尾，处处体现着创新与活力，这正是对“${userInput}”的最好诠释。\n\n通过这次思考，我明白了学习不能只停留在课本上，更要用心感受世界。未来我会带着好奇心，去探索更多未知的领域。\n\n（注：此处为通用模板，实际使用时建议根据具体题目填充个性化内容。）`;
-            
-            science = addMapLinks(science);
-            english = addMapLinks(english);
-            trends = addMapLinks(trends);
-            outline = addMapLinks(outline);
-            essay = addMapLinks(essay);
-            return { science, english, trends, outline, essay };
-        }
-    }
-
-    function formatText(text) {
-        if (!text) return '';
-        // 保留 HTML 链接，同时处理换行和加粗
-        let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        html = html.replace(/\n/g, '<br>');
-        html = html.replace(/^- (.*?)(<br>|$)/gm, '• $1$2');
-        return `<div>${html}</div>`;
-    }
-
-    function renderCards(data) {
-        const container = document.getElementById('cardsContainer');
-        container.innerHTML = `
-            <div class="card"><div class="card-header science">🔬 科学拓展</div><div class="card-content">${formatText(data.science)}<div class="small-note">🌟 多样学科，启发好奇心</div></div></div>
-            <div class="card"><div class="card-header english">🇬🇧 英文小站</div><div class="card-content">${formatText(data.english)}<div class="small-note">🔊 试着大声朗读</div></div></div>
-            <div class="card"><div class="card-header trends">📰 时事·深圳专窗</div><div class="card-content">${formatText(data.trends)}<div class="small-note">📍 点击地点旁的🗺️可查看真实地图</div></div></div>
-            <div class="card"><div class="card-header outline">📝 作文大纲</div><div class="card-content">${formatText(data.outline)}<div class="small-note">✏️ 结构清晰，下笔不愁</div></div></div>
-            <div class="card"><div class="card-header essay">✍️ 范文（约400字）</div><div class="card-content">${formatText(data.essay)}<div class="small-note">📖 可模仿，可修改，化为己用</div></div></div>
-        `;
-    }
-
-    async function onExpand() {
-        const input = document.getElementById('knowledgeInput').value.trim();
-        if (!input) {
-            alert("请输入作文题目或知识点～");
+    // 辅助渲染函数
+    function renderTopic(topicKey) {
+        const mainDiv = document.getElementById('mainContent');
+        const topicTitleMap = {
+            "祖父的园子": "祖父的园子",
+            "古诗三首": "古诗三首 · 稚子弄冰 / 村晚 / 四时田园杂兴",
+            "月是故乡明": "月是故乡明"
+        };
+        const subtitleMap = {
+            "祖父的园子": "萧红 | 怀念童年与自由",
+            "古诗三首": "杨万里·雷震·范成大 | 童趣与田园",
+            "月是故乡明": "季羡林 | 月是故乡明"
+        };
+        const cards = knowledgeBase[topicKey];
+        if (!cards || cards.length === 0) {
+            mainDiv.innerHTML = `<div style="padding:2rem;text-align:center">📭 暂无拓展内容，待补充</div>`;
             return;
         }
-        const container = document.getElementById('cardsContainer');
-        container.innerHTML = '<div class="loading">🌱 正在为你生成跨学科内容和作文素材……</div>';
-        try {
-            const result = await mockExpandAPI(input);
-            renderCards(result);
-        } catch(e) {
-            container.innerHTML = '<div class="loading">⚠️ 生成失败，刷新重试</div>';
+
+        let html = `
+            <div class="current-topic-title">📖 ${topicTitleMap[topicKey]}</div>
+            <div class="topic-sub">${subtitleMap[topicKey]}</div>
+            <div class="cards-grid">
+        `;
+        for (let card of cards) {
+            let extraClass = (card.type === "作文锦囊") ? "essay-tip" : "";
+            html += `
+                <div class="ext-card ${extraClass}">
+                    <div class="card-header">
+                        <span class="icon">${card.icon}</span>
+                        <span>${card.title}</span>
+                        <span class="tag">${card.type}</span>
+                    </div>
+                    <div class="card-body">
+                        ${card.content.replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+            `;
         }
+        html += `</div>`;
+        mainDiv.innerHTML = html;
     }
 
-    document.querySelectorAll('.example').forEach(el => {
-        el.addEventListener('click', () => {
-            document.getElementById('knowledgeInput').value = el.getAttribute('data-text');
+    // 切换课文与高亮
+    const btns = document.querySelectorAll('.topic-btn');
+    function setActiveTopic(topic) {
+        btns.forEach(btn => {
+            if (btn.getAttribute('data-topic') === topic) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        renderTopic(topic);
+    }
+
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const topic = btn.getAttribute('data-topic');
+            setActiveTopic(topic);
         });
     });
-    document.getElementById('expandBtn').addEventListener('click', onExpand);
-    window.addEventListener('load', () => {
-        document.getElementById('knowledgeInput').value = "假如我是一滴水";
-        onExpand();
-    });
+
+    // 默认加载第一个课文
+    setActiveTopic('祖父的园子');
 </script>
 </body>
 </html>
